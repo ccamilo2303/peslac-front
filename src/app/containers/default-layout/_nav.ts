@@ -26,8 +26,13 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-pencil' }
   },
   {
-    name: 'Components',
+    name: 'Componentes',
     title: true
+  },
+  {
+    name: 'Usuarios',
+    url: '/user',
+    iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Base',
