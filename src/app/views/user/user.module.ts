@@ -9,7 +9,7 @@ import { ModalAddUserComponent } from './modals/modal-add-user/modal-add-user.co
   declarations: [UserComponent, ModalAddUserComponent],
   imports: [
     CommonModule,
-    UserRoutingModule,
+    UserRoutingModule,  
   ]
 })
 export class UserModule {
