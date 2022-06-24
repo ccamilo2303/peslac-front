@@ -10,6 +10,9 @@ import Swal from 'sweetalert2';
 })
 export class UserComponent implements OnInit {
 
+  displayStyle = "none";
+
+
   public listado: User[] = [
     {
       name: "Andrés Ricardo",
@@ -50,6 +53,15 @@ export class UserComponent implements OnInit {
     })
 
   }
+
+  openModal(){
+    this.displayStyle = "block";    
+  }
+
+  displayStyleEvent(e:string){
+    this.displayStyle = e;
+  }
+
 
 }
 

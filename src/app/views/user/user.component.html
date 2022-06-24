@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     <div class="p-2">
-      <button type="button" class="btn btn-outline-secondary me-5">Agregar Usuarios</button>
+      <button type="button" class="btn btn-outline-secondary me-5" (click)="openModal()">Agregar Usuarios</button>
       <button type="button" class="btn btn-outline-secondary" (click)="initData()">Recargar Pantalla</button>
     </div>
   </div>
@@ -31,3 +31,6 @@
   </div>
 </div>
 
+<!-- Modal -->
+
+<app-modal-add-user [displayStyle]="displayStyle" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-user>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserService } from '../../services/user.service';
@@ -14,12 +14,7 @@ export class ModalAddUserComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
-  }
-
-  displayStyle = "none";
-
-  form = new FormGroup({
+  form:FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     last_name: new FormControl('', [Validators.required]),
     document_number: new FormControl('', [Validators.required]),
@@ -33,18 +28,45 @@ export class ModalAddUserComponent implements OnInit {
     id_type_user: new FormControl('1', [Validators.required]),
   });
 
+
+
+  ngOnInit(): void {
+    
+
+  }
+
+  @Input()
+  public displayStyle:string = '';
+
+  @Output()
+  public displayStyleEvent = new EventEmitter<string>();
+
+
   openModal() {
     this.displayStyle = "block";
     console.log("ENTRA");
   }
   closeModal() {
     this.displayStyle = "none";
+    this.displayStyleEvent.emit(this.displayStyle);
   }
 
-  async submit() {
+  submit() {
 
     console.log(this.form.value);
-    /*await this.userService.createUser(this.form.value).subscribe(async res => {
+
+    this.userService.createUser(this.form.value).subscribe( 
+      {
+        complete: () => {
+
+        },
+        error: ()=>{
+          
+        }
+      }
+    );
+
+    this.userService.createUser(this.form.value).subscribe( res => {
 
       Swal.fire({
         position: 'top-end',
@@ -63,7 +85,7 @@ export class ModalAddUserComponent implements OnInit {
         showConfirmButton: false,
       })
 
-    });*/
+    });
 
 
 
