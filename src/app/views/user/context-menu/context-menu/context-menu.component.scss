@@ -1,0 +1,23 @@
+.contextMenu{
+    position: fixed;
+    user-select: none;
+    display: block;
+}
+
+.contextMenu ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100px;
+    height: auto;
+    color: #fff;
+    background: #262933;
+    border: 1px solid #333;
+    box-shadow: 2px 2px 2px -1px rgb(0 0 0 / 50%);
+}
+
+.contextMenu ul li{
+    border-bottom: 1px solid #fff;
+    padding: 0;
+    margin: 0;
+}

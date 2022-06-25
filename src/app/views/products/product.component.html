@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header">
+    <div class="p-2">
+      <div>
+        <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Agregar Producto</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Agregar Linea</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Descuentos</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Crear Paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Historial de paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Empaques y Dotación</button>
+      </div>
+      <div class="pt-4">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Buscador" aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <span class="input-group-text" id="basic-addon2">Buscar</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover" (contextmenu)="onTableClick($event)">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Precio Lista</th>
+          <th scope="col">Grupo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of listado" [id]="usuario.id">
+          <th>{{usuario.document_number}}</th>
+          <td>{{usuario.name}}</td>
+          <td>{{usuario.last_name}}</td>
+          <td>{{usuario.city}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div #contextMenu></div>
+  </div>
+</div>
+
+<!-- Modal -->
+
+<app-modal-add-product [displayStyle]="displayStyle" [editUser]="editUser" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+

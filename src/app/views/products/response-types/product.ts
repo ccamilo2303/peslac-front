@@ -1,4 +1,4 @@
-export class User{
+export class Product{
     
     constructor(
         public id?:number,

@@ -1,21 +1,21 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 
-import { UserService } from './services/user.service';
-import { User } from './response-types/user';
+import { ProductService } from './services/product.service';
+import { Product } from './response-types/product';
 import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
-export class UserComponent implements OnInit {
+export class ProductComponent implements OnInit {
 
   displayStyle = "none";
   editUser = false;
-  dataUser:User[] = [];
+  dataUser:Product[] = [];
 
   rightClickMenuItems: any = [];
   parentElem: any;
@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  public listado: User[] = [
+  public listado: Product[] = [
     {
       id: 1,
       name: "Andrés Ricardo",
@@ -37,7 +37,7 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     console.log('petticion get user');
@@ -57,9 +57,9 @@ export class UserComponent implements OnInit {
 
   initData() {
 
-    this.userService.getUsers().subscribe({
+    this.productService.getUsers().subscribe({
       complete: () => {
-        let results = <User[]>this.listado;
+        let results = <Product[]>this.listado;
         results.forEach(x => {
           this.listado.push(x);
         });
@@ -75,19 +75,18 @@ export class UserComponent implements OnInit {
 
   }
 
-  openModal(data?:number) {
+  openModal(data?:Product) {
     this.displayStyle = "block";
     if(data){
+      console.log("VIENE DATA: " , data);
       this.editUser = true;
-      let user:any = this.listado.find( user => user.id ===  data );
-      this.dataUser.push(user);
+      this.dataUser.push(data);
       console.log("VIENE DATA2: " , this.dataUser);
     }
   }
 
   displayStyleEvent(e: string) {
     this.displayStyle = e;
-    this.dataUser = [];
   }
 
   onTableClick(event: any) {
@@ -98,12 +97,12 @@ export class UserComponent implements OnInit {
       {
         menuText: 'Editar',
         menuEvent: 'editUser()',
-        menuId: Number(event.path[1].id)
+        menuId: event.path[1].id
       },
       {
         menuText: 'Eliminar',
         menuEvent: 'deleteUser()',
-        menuId: Number(event.path[1].id)
+        menuId: event.path[1].id
       },
     ];
     this.createContextMenuComponent();

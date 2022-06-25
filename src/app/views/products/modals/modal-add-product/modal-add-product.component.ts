@@ -1,19 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { UserService } from '../../services/user.service';
-import { User } from '../../response-types/user';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-modal-add-user',
-  templateUrl: './modal-add-user.component.html',
-  styleUrls: ['./modal-add-user.component.scss']
+  selector: 'app-modal-add-product',
+  templateUrl: './modal-add-product.component.html',
+  styleUrls: ['./modal-add-product.component.scss']
 })
-export class ModalAddUserComponent implements OnInit {
+export class ModalAddProductComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: ProductService) { }
 
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -32,9 +32,7 @@ export class ModalAddUserComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.editUser){
-      this.initForm();
-    }
+
   }
 
   @Input()
@@ -44,7 +42,7 @@ export class ModalAddUserComponent implements OnInit {
   public editUser: any = false;
 
   @Input()
-  public dataUser:User[] = [];
+  public dataUser:Product[] = [];
 
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
@@ -60,7 +58,6 @@ export class ModalAddUserComponent implements OnInit {
 
     console.log(this.form.value);
     console.log('EDITAR USUARIO ' + this.editUser);
-    console.log('EDITAR INFO ' , this.dataUser);
     this.userService.createUser(this.form.value).subscribe(
       {
         complete: () => {
@@ -86,7 +83,7 @@ export class ModalAddUserComponent implements OnInit {
 
   initForm() {
     
-    
+    if(this.editUser){
       console.log("ENTRA DATOS USUARIO");
       console.log("data modal: " , this.dataUser);
       console.log('EDITAR USUARIO ' + this.editUser);
@@ -104,7 +101,7 @@ export class ModalAddUserComponent implements OnInit {
         id_type_user: this.dataUser[0].id_type_user,
       });
   
-    
+    }
   }
 
 }

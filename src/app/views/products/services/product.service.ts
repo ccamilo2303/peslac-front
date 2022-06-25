@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
-import { User } from '../response-types/user';
+import { Product } from '../response-types/product';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ProductService {
 
   constructor(private http: HttpClient) {}
 
@@ -15,11 +15,11 @@ export class UserService {
     return this.http.get(environment.baseUrl+"user");
   }
 
-  getUser(idUser:number){
+  getUser(idUser:string){
     return this.http.get(environment.baseUrl+"user/"+idUser);
   }
 
-  createUser(data:User){
+  createUser(data:Product){
     var headers = new HttpHeaders({
       'Accept': 'application/json'
     });
@@ -27,7 +27,7 @@ export class UserService {
     return this.http.post(environment.baseUrl+"user", data, { headers });
   }
 
-  deleteUser(idUser:number){
+  deleteUser(idUser:string){
     return this.http.delete(environment.baseUrl+"user/"+idUser);
   }
 

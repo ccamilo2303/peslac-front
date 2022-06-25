@@ -6,10 +6,11 @@ import { UserRoutingModule } from './user-routing.module';
 import { ModalAddUserComponent } from './modals/modal-add-user/modal-add-user.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
 
 
 @NgModule({
-  declarations: [UserComponent, ModalAddUserComponent],
+  declarations: [UserComponent, ModalAddUserComponent, ContextMenuComponent],
   imports: [
     CommonModule,
     UserRoutingModule,  
