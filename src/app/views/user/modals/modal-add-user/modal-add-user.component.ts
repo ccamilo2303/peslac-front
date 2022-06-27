@@ -32,10 +32,11 @@ export class ModalAddUserComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.editUser){
+    //if(this.editUser){
       this.initForm();
-    }
+    //}
   }
+
 
   @Input()
   public displayStyle: string = '';
@@ -44,7 +45,7 @@ export class ModalAddUserComponent implements OnInit {
   public editUser: any = false;
 
   @Input()
-  public dataUser:User[] = [];
+  public dataUser:User = new User();
 
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
@@ -91,17 +92,17 @@ export class ModalAddUserComponent implements OnInit {
       console.log("data modal: " , this.dataUser);
       console.log('EDITAR USUARIO ' + this.editUser);
       this.form.setValue({
-        name: this.dataUser[0].name,
-        last_name: this.dataUser[0].last_name,
-        document_number: this.dataUser[0].document_number,
-        city: this.dataUser[0].city,
-        role: this.dataUser[0].role,
-        email: this.dataUser[0].email,
-        direction: this.dataUser[0].direction,
-        cel_phone: this.dataUser[0].cel_phone,
-        user: this.dataUser[0].user,
-        password: this.dataUser[0].password,
-        id_type_user: this.dataUser[0].id_type_user,
+        name: this.dataUser.name,
+        last_name: this.dataUser.last_name,
+        document_number: this.dataUser.document_number,
+        city: this.dataUser.city,
+        role: this.dataUser.role,
+        email: this.dataUser.email,
+        direction: this.dataUser.direction,
+        cel_phone: this.dataUser.cel_phone,
+        user: this.dataUser.user,
+        password: this.dataUser.password,
+        id_type_user: this.dataUser.id_type_user,
       });
   
     

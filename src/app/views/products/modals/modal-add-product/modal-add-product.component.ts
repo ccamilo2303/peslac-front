@@ -89,16 +89,7 @@ export class ModalAddProductComponent implements OnInit {
       console.log('EDITAR USUARIO ' + this.editUser);
       this.form.setValue({
         name: this.dataUser[0].name,
-        last_name: this.dataUser[0].last_name,
-        document_number: this.dataUser[0].document_number,
-        city: this.dataUser[0].city,
-        role: this.dataUser[0].role,
-        email: this.dataUser[0].email,
-        direction: this.dataUser[0].direction,
-        cel_phone: this.dataUser[0].cel_phone,
-        user: this.dataUser[0].user,
-        password: this.dataUser[0].password,
-        id_type_user: this.dataUser[0].id_type_user,
+       
       });
   
     }

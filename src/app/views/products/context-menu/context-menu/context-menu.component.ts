@@ -12,14 +12,14 @@ import Swal from 'sweetalert2';
 })
 export class ContextMenuComponent implements OnInit {
 
-  @Input() contextMenuEvent:any;
-  @Input() contextMenuSelector:any;
-  @Input() contextMenuItems:any;
+  @Input() contextMenuEvent: any;
+  @Input() contextMenuSelector: any;
+  @Input() contextMenuItems: any;
   isDisplayContextMenu: boolean = false;
   _currentMenuVisible = null;
 
 
-  constructor(private elementRef: ElementRef, private userService: ProductService, private userComponent: ProductComponent) {
+  constructor(private elementRef: ElementRef, private productService: ProductService, private productComponent: ProductComponent) {
     this.isDisplayContextMenu = false;
   }
 
@@ -36,14 +36,14 @@ export class ContextMenuComponent implements OnInit {
       this.contextMenuEvent.preventDefault();
       this.contextMenuEvent.stopPropagation();
       this.createContextMenu(this.contextMenuEvent.clientX, this.contextMenuEvent.clientY);
-      this.contextMenuSelector.addEventListener('click', (e:any) => {
+      this.contextMenuSelector.addEventListener('click', (e: any) => {
         this.closeCurrentlyOpenedMenu();
       });
     }
   }
 
 
-  createContextMenu(x:any, y:any) {
+  createContextMenu(x: any, y: any) {
     this.closeCurrentlyOpenedMenu();
     this.isDisplayContextMenu = true;
     if (this.isDisplayContextMenu && this.elementRef.nativeElement) {
@@ -59,19 +59,19 @@ export class ContextMenuComponent implements OnInit {
   }
 
 
-  closeContextMenu(menu:any) {
+  closeContextMenu(menu: any) {
     //console.log(menu);
-    menu.style.left='0px';
-    menu.style.top='0px';
+    menu.style.left = '0px';
+    menu.style.top = '0px';
     this._currentMenuVisible = null;
   }
 
 
   closeCurrentlyOpenedMenu() {
     //console.log(this._currentMenuVisible);
-      if (this._currentMenuVisible !== null) {
-          this.closeContextMenu(this._currentMenuVisible);
-      }
+    if (this._currentMenuVisible !== null) {
+      this.closeContextMenu(this._currentMenuVisible);
+    }
   }
 
 
@@ -87,42 +87,16 @@ export class ContextMenuComponent implements OnInit {
   escKeyClick(): void {
     this.isDisplayContextMenu = false;
   }
-  
-  editUser(idUser:string){
 
-    this.userService.getUser(idUser).subscribe( 
-      {
-        complete: () => {
-          this.userComponent.openModal({name:"Andres"});
-        },
-        error: (error: Error)=>{
-          /*Swal.fire({
-            icon: 'error',
-            title: error.message,
-            showConfirmButton: false,
-          })*/
-          this.userComponent.openModal({
-            name: 'asd',
-            last_name: 'asd',
-            document_number: 'asd',
-            city: 'asd',
-            role: 'asd',
-            email: 'asd',
-            direction: 'asd',
-            cel_phone: 'asd',
-            user: 'asd',
-            password: 'asd',
-            id_type_user: 'asd',
-          });
-        }
-      }
-    );
+  editUser(idUser: number) {
+
+    this.productComponent.openModalAddProduct(idUser);
 
   }
 
-  deleteUser(idUser:string){
+  deleteUser(idUser: string) {
 
-    this.userService.deleteUser(idUser).subscribe( 
+    this.productService.deleteUser(idUser).subscribe(
       {
         complete: () => {
           Swal.fire({
@@ -132,7 +106,7 @@ export class ContextMenuComponent implements OnInit {
             timer: 1500
           })
         },
-        error: (error: Error)=>{
+        error: (error: Error) => {
           Swal.fire({
             icon: 'error',
             title: error.message,
@@ -141,7 +115,7 @@ export class ContextMenuComponent implements OnInit {
         }
       }
     );
-    
+
   }
 
 }

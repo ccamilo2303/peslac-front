@@ -15,7 +15,7 @@ export class UserComponent implements OnInit {
 
   displayStyle = "none";
   editUser = false;
-  dataUser:User[] = [];
+  dataUser:User = new User();
 
   rightClickMenuItems: any = [];
   parentElem: any;
@@ -29,11 +29,18 @@ export class UserComponent implements OnInit {
       id: 1,
       name: "Andrés Ricardo",
       last_name: "Beltrán Sarta",
-      cel_phone: "3138646727",
-      city: "Bogotá",
       document_number: "1234567890",
+      city: "Bogotá",
       role: "Administrador",
-      id_type_user: "Administrador"
+      email: "cbeltran@excelcredit.co",
+      direction: "Calle 67",
+      cel_phone: "3138646727",
+      user: "crick120",
+      password: "213443",
+      id_type_user: "Administrador",
+
+      
+
     }
   ];
 
@@ -80,14 +87,16 @@ export class UserComponent implements OnInit {
     if(data){
       this.editUser = true;
       let user:any = this.listado.find( user => user.id ===  data );
-      this.dataUser.push(user);
+      this.dataUser = user;
       console.log("VIENE DATA2: " , this.dataUser);
+    }else{
+      this.dataUser = new User();
     }
   }
 
   displayStyleEvent(e: string) {
     this.displayStyle = e;
-    this.dataUser = [];
+    this.dataUser = new User();
   }
 
   onTableClick(event: any) {

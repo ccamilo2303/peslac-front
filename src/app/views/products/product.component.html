@@ -2,17 +2,17 @@
   <div class="card-header">
     <div class="p-2">
       <div>
-        <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Agregar Producto</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Agregar Linea</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Descuentos</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Crear Paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Historial de paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="openModal()">Empaques y Dotación</button>
+        <button type="button" class="btn btn-outline-secondary me-3" (click)="openModalAddProduct()">Agregar Producto</button>
+      <button type="button" class="btn btn-outline-secondary me-3">Agregar Linea</button>
+      <button type="button" class="btn btn-outline-secondary me-3">Descuentos</button>
+      <button type="button" class="btn btn-outline-secondary me-3">Crear Paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3">Historial de paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3">Empaques y Dotación</button>
       </div>
       <div class="pt-4">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Buscador" aria-label="Recipient's username" aria-describedby="basic-addon2">
-          <span class="input-group-text" id="basic-addon2">Buscar</span>
+          <span class="input-group-text" id="basic-addon2">Buscador</span>
         </div>
       </div>
       
@@ -29,11 +29,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of listado" [id]="usuario.id">
-          <th>{{usuario.document_number}}</th>
-          <td>{{usuario.name}}</td>
-          <td>{{usuario.last_name}}</td>
-          <td>{{usuario.city}}</td>
+        <tr *ngFor="let product of listado" [id]="product.id">
+          <th>{{product.name}}</th>
+          <td>{{product.supplier}}</td>
+          <td>{{product.price}}</td>
+          <td>GRUPO</td>
         </tr>
       </tbody>
     </table>

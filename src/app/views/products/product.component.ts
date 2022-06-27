@@ -15,7 +15,7 @@ export class ProductComponent implements OnInit {
 
   displayStyle = "none";
   editUser = false;
-  dataUser:Product[] = [];
+  dataUser: Product[] = [];
 
   rightClickMenuItems: any = [];
   parentElem: any;
@@ -26,14 +26,19 @@ export class ProductComponent implements OnInit {
 
   public listado: Product[] = [
     {
-      id: 1,
-      name: "Andrés Ricardo",
-      last_name: "Beltrán Sarta",
-      cel_phone: "3138646727",
-      city: "Bogotá",
-      document_number: "1234567890",
-      role: "Administrador",
-      id_type_user: "Administrador"
+      id:1,
+      name:"Mantequilla",
+      quantity:200,
+      type_product:"GR",
+      price:2000,
+      iva:"Si",
+      supplier:"avianca",
+      description:"",
+      type:"Normal",
+      image_url:"",
+      state_product:false,
+      inventary_min:false,
+      code:"123456789",
     }
   ];
 
@@ -75,12 +80,12 @@ export class ProductComponent implements OnInit {
 
   }
 
-  openModal(data?:Product) {
+  openModalAddProduct(data?:number) {
     this.displayStyle = "block";
     if(data){
-      console.log("VIENE DATA: " , data);
       this.editUser = true;
-      this.dataUser.push(data);
+      let user:any = this.listado.find( user => user.id ===  data );
+      this.dataUser.push(user);
       console.log("VIENE DATA2: " , this.dataUser);
     }
   }

@@ -33,6 +33,7 @@
 </div>
 
 <!-- Modal -->
-
-<app-modal-add-user [displayStyle]="displayStyle" [editUser]="editUser" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-user>
+<div *ngIf="displayStyle == 'block'">
+  <app-modal-add-user [displayStyle]="displayStyle" [editUser]="editUser" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-user>
+</div>
 
