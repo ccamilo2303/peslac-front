@@ -1,0 +1,9 @@
+
+
+    <div class="contextMenu" tabindex="-1" aria-hidden="true">
+        <ul *ngIf="isDisplayContextMenu">
+            <li *ngFor="let menuItem of contextMenuItems; index as i"
+                (click)="menuItem.menuEvent == 'edit' ? edit(menuItem.menuId):delete(menuItem.menuId)">{{ menuItem.menuText }}</li>
+        </ul>
+    </div>
+

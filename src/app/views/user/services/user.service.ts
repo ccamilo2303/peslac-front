@@ -27,7 +27,15 @@ export class UserService {
     return this.http.post(environment.baseUrl+"user", data, { headers });
   }
 
-  deleteUser(idUser:number){
+  editUser(data:User){
+    var headers = new HttpHeaders({
+      'Accept': 'application/json'
+    });
+
+    return this.http.put(environment.baseUrl+"user", data, { headers });
+  }
+
+  delete(idUser:number){
     return this.http.delete(environment.baseUrl+"user/"+idUser);
   }
 

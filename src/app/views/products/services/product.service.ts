@@ -11,15 +11,15 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(){
+  getProducts(){
     return this.http.get(environment.baseUrl+"user");
   }
 
-  getUser(idUser:string){
-    return this.http.get(environment.baseUrl+"user/"+idUser);
+  getProduct(idProduct:string){
+    return this.http.get(environment.baseUrl+"user/"+idProduct);
   }
 
-  createUser(data:Product){
+  createProduct(data:Product){
     var headers = new HttpHeaders({
       'Accept': 'application/json'
     });
@@ -27,8 +27,16 @@ export class ProductService {
     return this.http.post(environment.baseUrl+"user", data, { headers });
   }
 
-  deleteUser(idUser:string){
-    return this.http.delete(environment.baseUrl+"user/"+idUser);
+  editProduct(data:Product){
+    var headers = new HttpHeaders({
+      'Accept': 'application/json'
+    });
+
+    return this.http.put(environment.baseUrl+"user", data, { headers });
+  }
+
+  delete(idProduct:string){
+    return this.http.delete(environment.baseUrl+"user/"+idProduct);
   }
 
 }

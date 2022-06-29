@@ -2,7 +2,7 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRe
 
 import { ProductService } from './services/product.service';
 import { Product } from './response-types/product';
-import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
+import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
 import Swal from 'sweetalert2';
 
@@ -13,32 +13,34 @@ import Swal from 'sweetalert2';
 })
 export class ProductComponent implements OnInit {
 
-  displayStyle = "none";
-  editUser = false;
-  dataUser: Product[] = [];
+  displayStyleAddProduct = "none";
+  displayStyleGroup = "none";
+  dataUser: Product = new Product();
 
   rightClickMenuItems: any = [];
   parentElem: any;
   contextMenuSelector: string = '';
   menuEvent: any;
 
+  modal:string = '';
+
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
   public listado: Product[] = [
     {
-      id:1,
-      name:"Mantequilla",
-      quantity:200,
-      type_product:"GR",
-      price:2000,
-      iva:"Si",
-      supplier:"avianca",
-      description:"",
-      type:"Normal",
-      image_url:"",
-      state_product:false,
-      inventary_min:false,
-      code:"123456789",
+      id: 1,
+      name: "Mantequilla",
+      quantity: 200,
+      type_product: "GR",
+      price: 2000,
+      iva: "Si",
+      supplier: "avianca",
+      description: "",
+      type: "Normal",
+      image_url: "",
+      state_product: false,
+      inventary_min: false,
+      code: "123456789",
     }
   ];
 
@@ -62,7 +64,7 @@ export class ProductComponent implements OnInit {
 
   initData() {
 
-    this.productService.getUsers().subscribe({
+    this.productService.getProducts().subscribe({
       complete: () => {
         let results = <Product[]>this.listado;
         results.forEach(x => {
@@ -80,38 +82,55 @@ export class ProductComponent implements OnInit {
 
   }
 
-  openModalAddProduct(data?:number) {
-    this.displayStyle = "block";
-    if(data){
-      this.editUser = true;
-      let user:any = this.listado.find( user => user.id ===  data );
-      this.dataUser.push(user);
-      console.log("VIENE DATA2: " , this.dataUser);
+  openModal(data?: number) {
+    switch (this.modal) {
+      case 'addProduct':
+        this.displayStyleAddProduct = "block";
+        break;
+      case 'group':
+        this.displayStyleGroup = "block";
+        console.log("GRUPOOOO");
+        break;
+    }
+    if (data) {
+      let product: any = this.listado.find(product => product.id === data);
+      this.dataUser = product;
+    } else {
+      this.dataUser = new Product();
     }
   }
 
   displayStyleEvent(e: string) {
-    this.displayStyle = e;
+    switch (this.modal) {
+      case 'addProduct':
+        this.displayStyleAddProduct = e;
+        break;
+      case 'group':
+        this.displayStyleGroup = e;
+        break;
+    }
+    this.dataUser = new Product();
   }
 
   onTableClick(event: any) {
-    console.log(event.path[1].id);
+    this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
     this.rightClickMenuItems = [
       {
         menuText: 'Editar',
-        menuEvent: 'editUser()',
-        menuId: event.path[1].id
+        menuEvent: 'edit',
+        menuId: Number(event.path[1].id)
       },
       {
         menuText: 'Eliminar',
-        menuEvent: 'deleteUser()',
-        menuId: event.path[1].id
+        menuEvent: 'delete',
+        menuId: Number(event.path[1].id)
       },
     ];
     this.createContextMenuComponent();
   }
+
 
 
   createContextMenuComponent() {
@@ -121,6 +140,8 @@ export class ProductComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
+    (<ContextMenuComponent>componentRef.instance).service = this.productService;
+    (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
 

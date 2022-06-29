@@ -16,8 +16,8 @@
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
                 <div class="col-sm-9 input-group">
                   <input type="text" class="form-control" formControlName="name" id="name">
-                  <input type="number" class="form-control" formControlName="name" id="name">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_type_user">
+                  <input type="number" class="form-control" formControlName="quantity" id="quantity">
+                  <select class="form-select" aria-label="Default select example" formControlName="type_product">
                     <option selected value="1">gr</option>
                     <option value="2">Unidades</option>
                   </select>
@@ -26,13 +26,13 @@
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Precio</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="document_number" id="document_number">
+                  <input type="text" class="form-control" formControlName="price" id="price">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">IVA</label>
                 <div class="col-sm-9">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_type_user">
+                  <select class="form-select" aria-label="Default select example" formControlName="iva">
                     <option selected value="1">Elegir</option>
                     <option value="2">Si</option>
                     <option value="2">No</option>
@@ -42,7 +42,7 @@
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Proveedor</label>
                 <div class="col-sm-9">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_type_user">
+                  <select class="form-select" aria-label="Default select example" formControlName="supplier">
                     <option selected value="1">Elegir</option>
                     <option value="2">Si</option>
                     <option value="2">No</option>
@@ -52,13 +52,13 @@
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Cargo</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Tipo</label>
                 <div class="col-sm-9">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_type_user">
+                  <select class="form-select" aria-label="Default select example" formControlName="type">
                     <option selected value="1">Normal</option>
                     <option value="2">Paquete</option>
                   </select>
@@ -78,19 +78,19 @@
                   </div>
                   <div class="col mt-5">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                      <input class="form-check-input" type="checkbox" value="" formControlName="state_product" id="state_product">
                       <label class="form-check-label" for="flexCheckDefault">
                         Deshabilitar
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                      <input class="form-check-input" type="checkbox" value="" formControlName="inventary_min" id="inventary_min">
                       <label class="form-check-label" for="flexCheckDefault">
                         Inventario min
                       </label>
                     </div>
                     <div class="input-group">
-                      <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                      <input type="file" class="form-control" id="image_url" formControlName="image_url" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                     </div>
                   </div>
                 </div>
@@ -98,7 +98,7 @@
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Código</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="city" id="city">
+                  <input type="text" class="form-control" formControlName="code" id="code">
                   <div class="input-group mt-3">
                     <span class="input-group-text" id="basic-addon1">|||||</span>
                     <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">

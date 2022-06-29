@@ -42,9 +42,6 @@ export class ModalAddUserComponent implements OnInit {
   public displayStyle: string = '';
 
   @Input()
-  public editUser: any = false;
-
-  @Input()
   public dataUser:User = new User();
 
   @Output()
@@ -52,45 +49,64 @@ export class ModalAddUserComponent implements OnInit {
 
   closeModal() {
     this.displayStyle = "none";
-    this.editUser = "false";
     this.form.reset();
     this.displayStyleEvent.emit(this.displayStyle);
   }
 
   submit() {
 
-    console.log(this.form.value);
-    console.log('EDITAR USUARIO ' + this.editUser);
-    console.log('EDITAR INFO ' , this.dataUser);
-    this.userService.createUser(this.form.value).subscribe(
-      {
-        complete: () => {
-          this.closeModal();
-          Swal.fire({
-            icon: 'success',
-            title: 'Registro exitoso',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        },
-        error: (error: Error) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.message,
-            showConfirmButton: false,
-          })
+    if(this.dataUser.id == null){
+      this.userService.createUser(this.form.value).subscribe(
+        {
+          complete: () => {
+            this.closeModal();
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro exitoso',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          error: (error: Error) => {
+            Swal.fire({
+              icon: 'error',
+              title: error.message,
+              showConfirmButton: false,
+            })
+          }
         }
-      }
-    );
+      );  
 
+    }else{
+      this.userService.editUser(this.form.value).subscribe(
+        {
+          complete: () => {
+            this.closeModal();
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro exitoso',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          error: (error: Error) => {
+            Swal.fire({
+              icon: 'error',
+              title: error.message,
+              showConfirmButton: false,
+            })
+          }
+        }
+      );
+  
+    }
+
+    
+    
   }
 
   initForm() {
-    
-    
-      console.log("ENTRA DATOS USUARIO");
-      console.log("data modal: " , this.dataUser);
-      console.log('EDITAR USUARIO ' + this.editUser);
+    if(this.dataUser.id != null){
       this.form.setValue({
         name: this.dataUser.name,
         last_name: this.dataUser.last_name,
@@ -104,6 +120,8 @@ export class ModalAddUserComponent implements OnInit {
         password: this.dataUser.password,
         id_type_user: this.dataUser.id_type_user,
       });
+    }
+      
   
     
   }

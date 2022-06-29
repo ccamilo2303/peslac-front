@@ -2,8 +2,8 @@
   <div class="card-header">
     <div class="p-2">
       <div>
-        <button type="button" class="btn btn-outline-secondary me-3" (click)="openModalAddProduct()">Agregar Producto</button>
-      <button type="button" class="btn btn-outline-secondary me-3">Agregar Linea</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Producto</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'group'; openModal()">Agregar Grupo</button>
       <button type="button" class="btn btn-outline-secondary me-3">Descuentos</button>
       <button type="button" class="btn btn-outline-secondary me-3">Crear Paquetes</button>
       <button type="button" class="btn btn-outline-secondary me-3">Historial de paquetes</button>
@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of listado" [id]="product.id">
+        <tr *ngFor="let product of listado" [id]="product.id" [attr.modal]="'addProduct'">
           <th>{{product.name}}</th>
           <td>{{product.supplier}}</td>
           <td>{{product.price}}</td>
@@ -43,5 +43,7 @@
 
 <!-- Modal -->
 
-<app-modal-add-product [displayStyle]="displayStyle" [editUser]="editUser" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+<div *ngIf="displayStyleAddProduct == 'block'">
+  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+</div>
 

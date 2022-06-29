@@ -4,17 +4,18 @@ import { CommonModule } from '@angular/common';
 import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product-routing.module';
 import { ModalAddProductComponent } from './modals/modal-add-product/modal-add-product.component';
-
+import { DocsComponentsModule } from '@docs-components/docs-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
+
 
 
 @NgModule({
-  declarations: [ProductComponent, ModalAddProductComponent, ContextMenuComponent],
+  declarations: [ProductComponent, ModalAddProductComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,  
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DocsComponentsModule
   ]
 })
 export class ProductModule {

@@ -17,82 +17,107 @@ export class ModalAddProductComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    last_name: new FormControl('', [Validators.required]),
-    document_number: new FormControl('', [Validators.required]),
-    city: new FormControl('', [Validators.required]),
-    role: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
-    direction: new FormControl('', [Validators.required]),
-    cel_phone: new FormControl('', [Validators.required]),
-    user: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    id_type_user: new FormControl('1', [Validators.required]),
+    quantity: new FormControl('', [Validators.required]),
+    type_product: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required]),
+    iva: new FormControl('', [Validators.required]),
+    supplier: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    type: new FormControl('', [Validators.required]),
+    image_url: new FormControl('', [Validators.required]),
+    state_product: new FormControl('', [Validators.required]),
+    inventary_min: new FormControl('', [Validators.required]),
+    code: new FormControl('', [Validators.required]),
   });
 
 
 
   ngOnInit(): void {
-
+    this.initForm();
   }
 
   @Input()
   public displayStyle: string = '';
 
   @Input()
-  public editUser: any = false;
-
-  @Input()
-  public dataUser:Product[] = [];
+  public dataUser: Product = new Product();
 
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
 
   closeModal() {
     this.displayStyle = "none";
-    this.editUser = "false";
     this.form.reset();
     this.displayStyleEvent.emit(this.displayStyle);
   }
 
   submit() {
-
-    console.log(this.form.value);
-    console.log('EDITAR USUARIO ' + this.editUser);
-    this.userService.createUser(this.form.value).subscribe(
-      {
-        complete: () => {
-          this.closeModal();
-          Swal.fire({
-            icon: 'success',
-            title: 'Registro exitoso',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        },
-        error: (error: Error) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.message,
-            showConfirmButton: false,
-          })
+    if (this.dataUser.id == null) {
+      this.userService.createProduct(this.form.value).subscribe(
+        {
+          complete: () => {
+            this.closeModal();
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro exitoso',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          error: (error: Error) => {
+            Swal.fire({
+              icon: 'error',
+              title: error.message,
+              showConfirmButton: false,
+            })
+          }
         }
-      }
-    );
+      );
+    }else{
+      this.userService.editProduct(this.form.value).subscribe(
+        {
+          complete: () => {
+            this.closeModal();
+            Swal.fire({
+              icon: 'success',
+              title: 'Registro exitoso',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          error: (error: Error) => {
+            Swal.fire({
+              icon: 'error',
+              title: error.message,
+              showConfirmButton: false,
+            })
+          }
+        }
+      );
+    }
+   
 
   }
 
   initForm() {
-    
-    if(this.editUser){
-      console.log("ENTRA DATOS USUARIO");
-      console.log("data modal: " , this.dataUser);
-      console.log('EDITAR USUARIO ' + this.editUser);
+
+    if (this.dataUser.id != null) {
       this.form.setValue({
-        name: this.dataUser[0].name,
-       
+        name: this.dataUser.name,
+        quantity: this.dataUser.quantity,
+        type_product: this.dataUser.type_product,
+        price: this.dataUser.price,
+        iva: this.dataUser.iva,
+        supplier: this.dataUser.supplier,
+        description: this.dataUser.description,
+        type: this.dataUser.type,
+        image_url: this.dataUser.image_url,
+        state_product: this.dataUser.state_product,
+        inventary_min: this.dataUser.inventary_min,
+        code: this.dataUser.code,
       });
-  
     }
+
   }
 
 }

@@ -4,17 +4,18 @@ import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
 import { UserRoutingModule } from './user-routing.module';
 import { ModalAddUserComponent } from './modals/modal-add-user/modal-add-user.component';
-
+import { DocsComponentsModule } from '@docs-components/docs-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
+
 
 
 @NgModule({
-  declarations: [UserComponent, ModalAddUserComponent, ContextMenuComponent],
+  declarations: [UserComponent, ModalAddUserComponent],
   imports: [
     CommonModule,
     UserRoutingModule,  
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DocsComponentsModule
   ]
 })
 export class UserModule {

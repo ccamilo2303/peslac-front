@@ -2,7 +2,7 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRe
 
 import { UserService } from './services/user.service';
 import { User } from './response-types/user';
-import { ContextMenuComponent } from './context-menu/context-menu/context-menu.component';
+import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
 import Swal from 'sweetalert2';
 
@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 export class UserComponent implements OnInit {
 
   displayStyle = "none";
-  editUser = false;
   dataUser:User = new User();
 
   rightClickMenuItems: any = [];
@@ -44,10 +43,13 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) {
+    
+   }
 
+  
+  
   ngOnInit(): void {
-    console.log('petticion get user');
     this.initData();
     /*this.userService.getUsers().subscribe(res => {
       let results = <User[]>res;
@@ -85,10 +87,8 @@ export class UserComponent implements OnInit {
   openModal(data?:number) {
     this.displayStyle = "block";
     if(data){
-      this.editUser = true;
       let user:any = this.listado.find( user => user.id ===  data );
       this.dataUser = user;
-      console.log("VIENE DATA2: " , this.dataUser);
     }else{
       this.dataUser = new User();
     }
@@ -100,18 +100,17 @@ export class UserComponent implements OnInit {
   }
 
   onTableClick(event: any) {
-    console.log(event.path[1].id);
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
     this.rightClickMenuItems = [
       {
         menuText: 'Editar',
-        menuEvent: 'editUser()',
+        menuEvent: 'edit',
         menuId: Number(event.path[1].id)
       },
       {
         menuText: 'Eliminar',
-        menuEvent: 'deleteUser()',
+        menuEvent: 'delete',
         menuId: Number(event.path[1].id)
       },
     ];
@@ -126,6 +125,8 @@ export class UserComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
+    (<ContextMenuComponent>componentRef.instance).service = this.userService;
+    (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
 
