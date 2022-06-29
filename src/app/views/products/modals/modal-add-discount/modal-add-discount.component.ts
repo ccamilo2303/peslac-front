@@ -1,36 +1,27 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
 
-import { ProductService } from '../../services/product.service';
+import { DiscountService } from '../../services/discount.service';
 import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-modal-add-product',
-  templateUrl: './modal-add-product.component.html',
-  styleUrls: ['./modal-add-product.component.scss']
+  selector: 'app-modal-add-discount',
+  templateUrl: './modal-add-discount.component.html',
+  styleUrls: ['./modal-add-discount.component.scss']
 })
-export class ModalAddProductComponent implements OnInit {
-
-  constructor(private productService: ProductService) { }
+export class ModalAddDiscountComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    quantity: new FormControl('', [Validators.required]),
-    type_product: new FormControl('', [Validators.required]),
-    price: new FormControl('', [Validators.required]),
-    iva: new FormControl('', [Validators.required]),
-    supplier: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    type: new FormControl('', [Validators.required]),
-    image_url: new FormControl('', [Validators.required]),
-    state_product: new FormControl('', [Validators.required]),
-    inventary_min: new FormControl('', [Validators.required]),
-    code: new FormControl('', [Validators.required]),
+    quantity_minimal: new FormControl('', [Validators.required]),
+    quantity_maximum: new FormControl('', [Validators.required]),
+    discount: new FormControl('', [Validators.required]),
+    discounted_value: new FormControl('', [Validators.required]),
   });
 
-
+  constructor(private discountService: DiscountService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -53,7 +44,7 @@ export class ModalAddProductComponent implements OnInit {
 
   submit() {
     if (this.data.id == null) {
-      this.productService.createProduct(this.form.value).subscribe(
+      this.discountService.createDiscount(this.form.value).subscribe(
         {
           complete: () => {
             this.closeModal();
@@ -74,7 +65,7 @@ export class ModalAddProductComponent implements OnInit {
         }
       );
     }else{
-      this.productService.editProduct(this.form.value).subscribe(
+      this.discountService.editDiscount(this.form.value).subscribe(
         {
           complete: () => {
             this.closeModal();
@@ -103,18 +94,11 @@ export class ModalAddProductComponent implements OnInit {
 
     if (this.data.id != null) {
       this.form.setValue({
-        name: this.data.name,
-        quantity: this.data.quantity,
-        type_product: this.data.type_product,
-        price: this.data.price,
-        iva: this.data.iva,
-        supplier: this.data.supplier,
-        description: this.data.description,
-        type: this.data.type,
-        image_url: this.data.image_url,
-        state_product: this.data.state_product,
-        inventary_min: this.data.inventary_min,
-        code: this.data.code,
+        name: '1',
+        quantity_minimal: '1',
+        quantity_maximum: '1',
+        discount: '1',
+        discounted_value: '1',
       });
     }
 

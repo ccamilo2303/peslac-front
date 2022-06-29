@@ -1,0 +1,54 @@
+<div class="modal" style="display: block;" tabindex="-1" [ngStyle]="{'display':displayStyle}">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Grupo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="form">
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Nombre del grupo</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="group_name" formControlName="group_name">
+                        </div>
+                    </div>
+                    <div formArrayName="products"
+                        *ngFor="let product of form.controls.products?.value; let i = index">
+                        <ng-container [formGroupName]="i">
+                            <input type="text" value="" formControlName="id" hidden>
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Producto</label>
+                                <div class="col-sm-5">
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected value="1">Mantequilla</option>
+                                        <option value="2">Salchichas</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">|||||</span>
+                                        <input type="text" class="form-control" placeholder="Código producto"
+                                            aria-label="Username" aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </ng-container>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary col-12" (click)="addProduct()">Add</button>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid"
+                    (click)="submit()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

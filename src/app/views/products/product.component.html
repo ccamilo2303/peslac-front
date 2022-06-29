@@ -4,10 +4,9 @@
       <div>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Producto</button>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'group'; openModal()">Agregar Grupo</button>
-      <button type="button" class="btn btn-outline-secondary me-3">Descuentos</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'discount'; openModal()">Descuentos</button>
       <button type="button" class="btn btn-outline-secondary me-3">Crear Paquetes</button>
       <button type="button" class="btn btn-outline-secondary me-3">Historial de paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3">Empaques y Dotación</button>
       </div>
       <div class="pt-4">
         <div class="input-group mb-3">
@@ -44,6 +43,14 @@
 <!-- Modal -->
 
 <div *ngIf="displayStyleAddProduct == 'block'">
-  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="data" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+</div>
+
+<div *ngIf="displayStyleGroup == 'block'">
+  <app-modal-group [displayStyle]="displayStyleGroup" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-group>
+</div>
+
+<div *ngIf="displayStyleDiscount == 'block'">
+  <app-modal-discount [displayStyle]="displayStyleDiscount" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-discount>
 </div>
 

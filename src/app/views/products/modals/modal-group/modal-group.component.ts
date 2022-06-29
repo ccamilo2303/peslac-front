@@ -1,21 +1,20 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-
-import { ProductService } from './services/product.service';
-import { Product } from './response-types/product';
+import { Component, EventEmitter, Input, OnInit, Output, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
+
+import { GroupService } from '../../services/group.service';
+import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: 'app-modal-group',
+  templateUrl: './modal-group.component.html',
+  styleUrls: ['./modal-group.component.scss']
 })
-export class ProductComponent implements OnInit {
-
-  displayStyleAddProduct = "none";
-  displayStyleGroup = "none";
-  displayStyleDiscount = "none";
+export class ModalGroupComponent implements OnInit {
+  
+  displayStyleAddGroup = "none";
   data: Product = new Product();
 
   rightClickMenuItems: any = [];
@@ -23,9 +22,11 @@ export class ProductComponent implements OnInit {
   contextMenuSelector: string = '';
   menuEvent: any;
 
-  modal: string = '';
+  modal:string = '';
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
+
+  constructor(private groupService: GroupService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   public listado: Product[] = [
     {
@@ -45,17 +46,24 @@ export class ProductComponent implements OnInit {
     }
   ];
 
-  constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
-
   ngOnInit(): void {
-    console.log('petticion get user');
     this.initData();
+  }
 
+  @Input()
+  public displayStyle: string = '';
+
+  @Output()
+  public displayStyleEvent = new EventEmitter<string>();
+
+  closeModal() {
+    this.displayStyle = "none";
+    this.displayStyleEvent.emit(this.displayStyle);
   }
 
   initData() {
 
-    this.productService.getProducts().subscribe({
+    this.groupService.getGroups().subscribe({
       complete: () => {
         let results = <Product[]>this.listado;
         results.forEach(x => {
@@ -75,14 +83,8 @@ export class ProductComponent implements OnInit {
 
   openModal(data?: number) {
     switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = "block";
-        break;
-      case 'group':
-        this.displayStyleGroup = "block";
-        break;
-      case 'discount':
-        this.displayStyleDiscount = "block";
+      case 'addGroup':
+        this.displayStyleAddGroup = "block";
         break;
     }
     if (data) {
@@ -93,16 +95,10 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  displayStyleEvent(e: string) {
+  displayStyleEvent2(e: string) {
     switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = e;
-        break;
-      case 'group':
-        this.displayStyleGroup = e;
-        break;
-      case 'discount':
-        this.displayStyleDiscount = e;
+      case 'addGroup':
+        this.displayStyleAddGroup = e;
         break;
     }
     this.data = new Product();
@@ -136,11 +132,9 @@ export class ProductComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.productService;
+    (<ContextMenuComponent>componentRef.instance).service = this.groupService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
 
-
 }
-
