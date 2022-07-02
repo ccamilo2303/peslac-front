@@ -1,17 +1,18 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 
 import { UserService } from './services/user.service';
 import { User } from './response-types/user';
-import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
+import { ContextMenuComponent } from '../../../components/context-menu/context-menu.component';
+import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy  {
 
   displayStyle = "none";
   dataUser:User = new User();
@@ -21,27 +22,14 @@ export class UserComponent implements OnInit {
   contextMenuSelector: string = '';
   menuEvent: any;
 
+  loading: boolean = false;
+  listado: any = [];
+  private querySubscription!: Subscription;
+
+
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  public listado: User[] = [
-    {
-      id: 1,
-      name: "Andrés Ricardo",
-      last_name: "Beltrán Sarta",
-      document_number: "1234567890",
-      city: "Bogotá",
-      role: "Administrador",
-      email: "cbeltran@excelcredit.co",
-      direction: "Calle 67",
-      cel_phone: "3138646727",
-      user: "crick120",
-      password: "213443",
-      id_type_user: "Administrador",
 
-      
-
-    }
-  ];
 
   constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) {
     
@@ -50,47 +38,34 @@ export class UserComponent implements OnInit {
   
   
   ngOnInit(): void {
-    this.initData();
-    /*this.userService.getUsers().subscribe(res => {
-      let results = <User[]>res;
-      results.forEach(x => {
-        this.listado.push(x);
+
+    
+    this.querySubscription = this.userService.getUsers()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.usuarios;
+        console.log("Listado de usuarios: ", data.usuarios);
       });
-    }, err => {
-      if (err.status == 401) {
-        console.log(err);
-      }
-    });*/
 
   }
 
-  initData() {
-
-    this.userService.getUsers().subscribe({
-      complete: () => {
-        let results = <User[]>this.listado;
-        results.forEach(x => {
-          this.listado.push(x);
-        });
-      },
-      error: (err: Error) => {
-        Swal.fire({
-          icon: 'error',
-          title: err.message,
-          showConfirmButton: false,
-        })
-      }
-    })
+  refresh() {
+    this.userService.refreshUsers();
 
   }
 
-  openModal(data?:number) {
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
+  }
+
+
+  
+  openModal(data?:any) {
     this.displayStyle = "block";
     if(data){
-      let user:any = this.listado.find( user => user.id ===  data );
-      this.dataUser = user;
+      this.dataUser = data;
     }else{
-      this.dataUser = new User();
+      this.dataUser = {};
     }
   }
 
@@ -99,22 +74,24 @@ export class UserComponent implements OnInit {
     this.dataUser = new User();
   }
 
-  onTableClick(event: any) {
+  onTableClick(event: any, data:any) {
+    
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
     this.rightClickMenuItems = [
       {
         menuText: 'Editar',
         menuEvent: 'edit',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
       {
         menuText: 'Eliminar',
         menuEvent: 'delete',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
     ];
     this.createContextMenuComponent();
+    
   }
 
 

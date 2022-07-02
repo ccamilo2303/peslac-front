@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { UserService } from '../../services/user.service';
-import { User } from '../../response-types/user';
-
 import Swal from 'sweetalert2';
+import { Apollo, gql, QueryRef } from 'apollo-angular';
+
+
+
 
 @Component({
   selector: 'app-modal-add-user',
@@ -13,20 +14,21 @@ import Swal from 'sweetalert2';
 })
 export class ModalAddUserComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private apollo: Apollo) { }
 
   form: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    last_name: new FormControl('', [Validators.required]),
-    document_number: new FormControl('', [Validators.required]),
-    city: new FormControl('', [Validators.required]),
-    role: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
-    direction: new FormControl('', [Validators.required]),
-    cel_phone: new FormControl('', [Validators.required]),
-    user: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    id_type_user: new FormControl('1', [Validators.required]),
+    nombres: new FormControl('', [Validators.required]),
+    apellidos: new FormControl('', [Validators.required]),
+    nit: new FormControl('', [Validators.required]),
+    ciudad: new FormControl('', [Validators.required]),
+    estacion: new FormControl('', [Validators.required]),
+    correo: new FormControl('', [Validators.required]),
+    direccion: new FormControl('', [Validators.required]),
+    telefono: new FormControl('', [Validators.required]),
+    usuario: new FormControl('', [Validators.required]),
+    clave: new FormControl('', [Validators.required]),
+    id_tipo_usuario: new FormControl('1', [Validators.required]),
+
   });
 
 
@@ -42,7 +44,7 @@ export class ModalAddUserComponent implements OnInit {
   public displayStyle: string = '';
 
   @Input()
-  public dataUser:User = new User();
+  public dataUser!:any;
 
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
@@ -55,49 +57,53 @@ export class ModalAddUserComponent implements OnInit {
 
   submit() {
 
-    if(this.dataUser.id == null){
-      this.userService.createUser(this.form.value).subscribe(
-        {
-          complete: () => {
-            this.closeModal();
-            Swal.fire({
-              icon: 'success',
-              title: 'Registro exitoso',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          },
-          error: (error: Error) => {
-            Swal.fire({
-              icon: 'error',
-              title: error.message,
-              showConfirmButton: false,
-            })
-          }
+    if(!this.dataUser.id){
+      const POST_USUARIOS = gql`
+      mutation InsertarUsuario($object: usuarios_insert_input!) {
+        insert_usuarios_one(object: $object) {
+          id
         }
-      );  
+      }
+      `;
+
+      console.log("Formulario INSERT: ", this.form.value);
+      this.apollo.mutate({
+        mutation: POST_USUARIOS,
+        variables: {
+          object: this.form.value
+        }
+      }).subscribe(({ data }) => {
+        console.log('got data', data);
+      },(error) => {
+        console.log('there was an error sending the query', error);
+      });
 
     }else{
-      this.userService.editUser(this.form.value).subscribe(
-        {
-          complete: () => {
-            this.closeModal();
-            Swal.fire({
-              icon: 'success',
-              title: 'Registro exitoso',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          },
-          error: (error: Error) => {
-            Swal.fire({
-              icon: 'error',
-              title: error.message,
-              showConfirmButton: false,
-            })
+      console.log("Formulario UPDATE: ", this.form.value);
+      console.log("Formulario UPDATE: ", this.dataUser.id);
+
+      const POST_USUARIOS = gql`
+      mutation ActualizarUsuario($object: usuarios_set_input!, $id: Int) {
+        update_usuarios(where: {id: {_eq: $id}}, _set: $object) {
+          returning {
+            id
           }
         }
-      );
+      }
+      
+      `;
+
+      this.apollo.mutate({
+        mutation: POST_USUARIOS,
+        variables: {
+          object: this.form.value,
+          id : this.dataUser.id
+        }
+      }).subscribe(({ data }) => {
+        console.log('got data', data);
+      },(error) => {
+        console.log('there was an error sending the query', error);
+      });
   
     }
 
@@ -108,17 +114,17 @@ export class ModalAddUserComponent implements OnInit {
   initForm() {
     if(this.dataUser.id != null){
       this.form.setValue({
-        name: this.dataUser.name,
-        last_name: this.dataUser.last_name,
-        document_number: this.dataUser.document_number,
-        city: this.dataUser.city,
-        role: this.dataUser.role,
-        email: this.dataUser.email,
-        direction: this.dataUser.direction,
-        cel_phone: this.dataUser.cel_phone,
-        user: this.dataUser.user,
-        password: this.dataUser.password,
-        id_type_user: this.dataUser.id_type_user,
+        nombres: this.dataUser.nombres,
+        apellidos: this.dataUser.apellidos,
+        nit: this.dataUser.nit,
+        ciudad: this.dataUser.ciudad,
+        estacion: this.dataUser.estacion,
+        correo: this.dataUser.correo,
+        direccion: this.dataUser.direccion,
+        telefono: this.dataUser.telefono,
+        usuario: this.dataUser.usuario,
+        clave: this.dataUser.clave,
+        id_tipo_usuario: this.dataUser.id_tipo_usuario,
       });
     }
       

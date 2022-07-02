@@ -2,29 +2,29 @@
   <div class="card-header">
     <div class="p-2">
       <button type="button" class="btn btn-outline-secondary me-5" (click)="openModal()">Agregar Usuarios</button>
-      <button type="button" class="btn btn-outline-secondary" (click)="initData()">Recargar Pantalla</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="refresh()">Recargar Pantalla</button>
     </div>
   </div>
   <div class="card-body">
-    <table class="table table-hover" (contextmenu)="onTableClick($event)">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">CC</th>
           <th scope="col">Nombre</th>
           <th scope="col">Apellido</th>
           <th scope="col">Ciudad</th>
-          <th scope="col">Cargo</th>
+          <th scope="col">Establecimiento</th>
           <th scope="col">Tipo Usuario</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of listado" [id]="usuario.id">
-          <th>{{usuario.document_number}}</th>
-          <td>{{usuario.name}}</td>
-          <td>{{usuario.last_name}}</td>
-          <td>{{usuario.city}}</td>
-          <td>{{usuario.role}}</td>
-          <td>{{usuario.id_type_user}}</td>
+        <tr *ngFor="let usuario of listado" (contextmenu)="onTableClick($event, usuario)">
+          <th>{{usuario.nit}}</th>
+          <td>{{usuario.nombres}}</td>
+          <td>{{usuario.apellidos}}</td>
+          <td>{{usuario.ciudad}}</td>
+          <td>{{usuario.estacion}}</td>
+          <td>{{usuario.id_tipo_usuario}}</td>
         </tr>
       </tbody>
     </table>

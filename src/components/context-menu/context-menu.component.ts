@@ -91,7 +91,7 @@ export class ContextMenuComponent implements OnInit {
     this.isDisplayContextMenu = false;
   }
   
-  edit(id:number){
+  edit(id:any){
     this.component.openModal(id);
   }
 
