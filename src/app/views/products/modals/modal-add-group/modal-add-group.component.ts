@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 
-import { GroupService } from '../../services/group.service';
+import { GroupService } from '../../services/group-service/group.service';
 import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';

@@ -1,7 +1,6 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 
 import { UserService } from './services/user.service';
-import { User } from './response-types/user';
 import { ContextMenuComponent } from '../../../components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
 
@@ -15,7 +14,7 @@ import { Subscription } from 'rxjs';
 export class UserComponent implements OnInit, OnDestroy  {
 
   displayStyle = "none";
-  dataUser:User = new User();
+  dataUser:any;
 
   rightClickMenuItems: any = [];
   parentElem: any;
@@ -70,7 +69,7 @@ export class UserComponent implements OnInit, OnDestroy  {
 
   displayStyleEvent(e: string) {
     this.displayStyle = e;
-    this.dataUser = new User();
+    this.dataUser = {};
   }
 
   onTableClick(event: any, data:any) {

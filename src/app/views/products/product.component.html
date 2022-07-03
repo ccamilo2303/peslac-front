@@ -18,21 +18,23 @@
     </div>
   </div>
   <div class="card-body">
-    <table class="table table-hover" (contextmenu)="onTableClick($event)">
+    <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Nombre</th>
+          <th scope="col">Producto</th>
           <th scope="col">Proveedor</th>
-          <th scope="col">Precio Lista</th>
-          <th scope="col">Grupo</th>
+          <th scope="col">Valor Unt.</th>
+          <th scope="col">Línea</th>
+          <th scope="col">Código</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of listado" [id]="product.id" [attr.modal]="'addProduct'">
-          <th>{{product.name}}</th>
-          <td>{{product.supplier}}</td>
-          <td>{{product.price}}</td>
-          <td>GRUPO</td>
+        <tr *ngFor="let producto of listado" (contextmenu)="onTableClick($event, producto)" [attr.modal]="'addProduct'">
+          <th>{{producto.nombre}}</th>
+          <td>{{producto.id_proveedor}}</td>
+          <td>{{producto.precio_costo}}</td>
+          <td>{{producto.id_linea}}</td>
+          <td>{{producto.codigo_barras}}</td>
         </tr>
       </tbody>
     </table>
@@ -43,7 +45,7 @@
 <!-- Modal -->
 
 <div *ngIf="displayStyleAddProduct == 'block'">
-  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="data" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
 </div>
 
 <div *ngIf="displayStyleGroup == 'block'">

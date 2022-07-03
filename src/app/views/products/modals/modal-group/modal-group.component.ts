@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ComponentFactoryResolve
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
-import { GroupService } from '../../services/group.service';
+import { GroupService } from '../../services/group-service/group.service';
 import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';

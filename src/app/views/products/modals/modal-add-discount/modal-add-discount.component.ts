@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 
-import { DiscountService } from '../../services/discount.service';
+import { DiscountService } from '../../services/discount-service/discount.service';
 import { Product } from '../../response-types/product';
 
 import Swal from 'sweetalert2';

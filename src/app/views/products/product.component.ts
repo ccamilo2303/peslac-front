@@ -1,8 +1,8 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 
-import { ProductService } from './services/product.service';
-import { Product } from './response-types/product';
+import { ProductService } from './services/product-service/product.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
+import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 
@@ -11,69 +11,47 @@ import Swal from 'sweetalert2';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
 
   displayStyleAddProduct = "none";
   displayStyleGroup = "none";
   displayStyleDiscount = "none";
-  data: Product = new Product();
+  dataProduct: any;
 
   rightClickMenuItems: any = [];
   parentElem: any;
   contextMenuSelector: string = '';
   menuEvent: any;
 
+  loading: boolean = false;
   modal: string = '';
+  listado: any = [];
+  private querySubscription!: Subscription;
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
-
-  public listado: Product[] = [
-    {
-      id: 1,
-      name: "Mantequilla",
-      quantity: 200,
-      type_product: "GR",
-      price: 2000,
-      iva: "Si",
-      supplier: "avianca",
-      description: "",
-      type: "Normal",
-      image_url: "",
-      state_product: false,
-      inventary_min: false,
-      code: "123456789",
-    }
-  ];
 
   constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    console.log('petticion get user');
-    this.initData();
+    
+    this.querySubscription = this.productService.getProducts()
+    .subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.listado = data.productos;
+    });
 
   }
 
-  initData() {
-
-    this.productService.getProducts().subscribe({
-      complete: () => {
-        let results = <Product[]>this.listado;
-        results.forEach(x => {
-          this.listado.push(x);
-        });
-      },
-      error: (err: Error) => {
-        Swal.fire({
-          icon: 'error',
-          title: err.message,
-          showConfirmButton: false,
-        })
-      }
-    })
+  refresh() {
+    this.productService.refreshProducts();
 
   }
 
-  openModal(data?: number) {
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
+  }
+
+  openModal(data?: any) {
     switch (this.modal) {
       case 'addProduct':
         this.displayStyleAddProduct = "block";
@@ -85,11 +63,10 @@ export class ProductComponent implements OnInit {
         this.displayStyleDiscount = "block";
         break;
     }
-    if (data) {
-      let product: any = this.listado.find(product => product.id === data);
-      this.data = product;
-    } else {
-      this.data = new Product();
+    if(data){
+      this.dataProduct = data;
+    }else{
+      this.dataProduct = {};
     }
   }
 
@@ -105,10 +82,10 @@ export class ProductComponent implements OnInit {
         this.displayStyleDiscount = e;
         break;
     }
-    this.data = new Product();
+    this.dataProduct = {};
   }
 
-  onTableClick(event: any) {
+  onTableClick(event: any, data:any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
@@ -116,12 +93,12 @@ export class ProductComponent implements OnInit {
       {
         menuText: 'Editar',
         menuEvent: 'edit',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
       {
         menuText: 'Eliminar',
         menuEvent: 'delete',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
     ];
     this.createContextMenuComponent();
