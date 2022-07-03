@@ -44,7 +44,6 @@ export class UserComponent implements OnInit, OnDestroy  {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.usuarios;
-        console.log("Listado de usuarios: ", data.usuarios);
       });
 
   }

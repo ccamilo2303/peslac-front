@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
+import { AppService } from '../../../../app.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -12,9 +14,21 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
   templateUrl: './modal-add-user.component.html',
   styleUrls: ['./modal-add-user.component.scss']
 })
-export class ModalAddUserComponent implements OnInit {
+export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
-  constructor(private userService: UserService, private apollo: Apollo) { }
+
+  @Input()
+  public displayStyle: string = '';
+
+  @Input()
+  public dataUser!:any;
+
+  @Output()
+  public displayStyleEvent = new EventEmitter<string>();
+  
+  public tiposUsuarios!:any;
+  private querySubscription!: Subscription;
+
 
   form: FormGroup = new FormGroup({
     nombres: new FormControl('', [Validators.required]),
@@ -27,27 +41,22 @@ export class ModalAddUserComponent implements OnInit {
     telefono: new FormControl('', [Validators.required]),
     usuario: new FormControl('', [Validators.required]),
     clave: new FormControl('', [Validators.required]),
-    id_tipo_usuario: new FormControl('1', [Validators.required]),
+    id_tipo_usuario: new FormControl('', [Validators.required]),
 
   });
 
 
 
+  constructor(private userService: UserService, private appService: AppService) { }
+
+
   ngOnInit(): void {
-    //if(this.editUser){
       this.initForm();
-    //}
   }
 
-
-  @Input()
-  public displayStyle: string = '';
-
-  @Input()
-  public dataUser!:any;
-
-  @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
+  }
 
   closeModal() {
     this.displayStyle = "none";
@@ -58,48 +67,16 @@ export class ModalAddUserComponent implements OnInit {
   submit() {
 
     if(!this.dataUser.id){
-      const POST_USUARIOS = gql`
-      mutation InsertarUsuario($object: usuarios_insert_input!) {
-        insert_usuarios_one(object: $object) {
-          id
-        }
-      }
-      `;
-
-      console.log("Formulario INSERT: ", this.form.value);
-      this.apollo.mutate({
-        mutation: POST_USUARIOS,
-        variables: {
-          object: this.form.value
-        }
-      }).subscribe(({ data }) => {
+      this.userService.createUser(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
         console.log('there was an error sending the query', error);
       });
 
     }else{
-      console.log("Formulario UPDATE: ", this.form.value);
-      console.log("Formulario UPDATE: ", this.dataUser.id);
-
-      const POST_USUARIOS = gql`
-      mutation ActualizarUsuario($object: usuarios_set_input!, $id: Int) {
-        update_usuarios(where: {id: {_eq: $id}}, _set: $object) {
-          returning {
-            id
-          }
-        }
-      }
-      
-      `;
-
-      this.apollo.mutate({
-        mutation: POST_USUARIOS,
-        variables: {
-          object: this.form.value,
-          id : this.dataUser.id
-        }
-      }).subscribe(({ data }) => {
+     
+      this.userService.editUser(this.form.value, this.dataUser.id)
+      .subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
         console.log('there was an error sending the query', error);
@@ -112,6 +89,11 @@ export class ModalAddUserComponent implements OnInit {
   }
 
   initForm() {
+
+    this.querySubscription = this.appService.getTiposUsuarios().subscribe(({ data, loading }) => {
+      this.tiposUsuarios = data.tipos_usuarios;
+    });
+
     if(this.dataUser.id != null){
       this.form.setValue({
         nombres: this.dataUser.nombres,

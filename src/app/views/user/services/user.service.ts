@@ -1,9 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { environment } from 'src/environments/environment';
-import { User } from '../response-types/user';
-
 import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
@@ -23,13 +18,27 @@ query ConsultarUsarios {
     clave
     id_tipo_usuario
   }
-  tipos_usuarios(order_by: {id: asc}) {
+}
+`;
+
+const POST_USUARIOS = gql`
+mutation InsertarUsuario($object: usuarios_insert_input!) {
+  insert_usuarios_one(object: $object) {
     id
-    nombre
   }
 }
 `;
 
+const PUT_USUARIOS = gql`
+mutation ActualizarUsuario($object: usuarios_set_input!, $id: Int) {
+  update_usuarios(where: {id: {_eq: $id}}, _set: $object) {
+    returning {
+      id
+    }
+  }
+}
+
+`;
 
 
 @Injectable({
@@ -40,9 +49,9 @@ export class UserService {
   postsQuery!: QueryRef<any>;
 
 
-  constructor(private http: HttpClient, private apollo: Apollo) {}
+  constructor(private apollo: Apollo) { }
 
-  getUsers(): Observable<any>{
+  getUsers(): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
       query: GET_USUARIOS
@@ -51,33 +60,33 @@ export class UserService {
     return this.postsQuery.valueChanges;
   }
 
-  refreshUsers(){
+  refreshUsers() {
     this.postsQuery.refetch();
   }
 
 
-  getUser(idUser:number){
-    return this.http.get(environment.baseUrl+"user/"+idUser);
-  }
+  createUser(data: any) {
 
-  createUser(data:User){
-    var headers = new HttpHeaders({
-      'Accept': 'application/json'
+    return this.apollo.mutate({
+      mutation: POST_USUARIOS,
+      variables: {
+        object: data
+      }
     });
-
-    return this.http.post(environment.baseUrl+"user", data, { headers });
   }
 
-  editUser(data:User){
-    var headers = new HttpHeaders({
-      'Accept': 'application/json'
+  editUser(data: any, id: any) {
+    return this.apollo.mutate({
+      mutation: PUT_USUARIOS,
+      variables: {
+        object: data,
+        id: id
+      }
     });
-
-    return this.http.put(environment.baseUrl+"user", data, { headers });
   }
 
-  delete(idUser:number){
-    return this.http.delete(environment.baseUrl+"user/"+idUser);
+  delete(idUser: number) {
+
   }
 
 }
