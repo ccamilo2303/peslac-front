@@ -40,7 +40,9 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "chart.js",
-              "@coreui/chartjs/dist/js/coreui-chartjs.js"
+              "@coreui/chartjs/dist/js/coreui-chartjs.js",
+			  "./node_modules/jquery/dist/jquery.min.js",
+			  "./node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {
