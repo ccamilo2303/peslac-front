@@ -19,27 +19,33 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   public displayStyle: string = '';
 
   @Input()
-  public dataProducto: any;
+  public dataProduct: any;
 
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
 
-  public tiposUsuarios!:any;
+  public tiposProveedores!:any;
+  public tiposCantidades!:any;
+  public tiposImpuestos!:any;
+  public tiposLineas!:any;
   private querySubscription!: Subscription;
 
   form: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    quantity: new FormControl('', [Validators.required]),
-    type_product: new FormControl('', [Validators.required]),
-    price: new FormControl('', [Validators.required]),
-    iva: new FormControl('', [Validators.required]),
-    supplier: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    type: new FormControl('', [Validators.required]),
-    image_url: new FormControl('', [Validators.required]),
-    state_product: new FormControl('', [Validators.required]),
-    inventary_min: new FormControl('', [Validators.required]),
-    code: new FormControl('', [Validators.required]),
+    nombre: new FormControl('', [Validators.required]),
+    cantidad: new FormControl('', [Validators.required]),
+    precio_costo: new FormControl('', [Validators.required]),
+    id_tipo_impuesto: new FormControl('', [Validators.required]),
+    valor_impuesto: new FormControl('', [Validators.required]),
+    precio_venta: new FormControl('', [Validators.required]),
+    id_proveedor: new FormControl('', [Validators.required]),
+    descripcion: new FormControl('', [Validators.required]),
+    id_linea: new FormControl('', [Validators.required]),
+    imagen: new FormControl('', [Validators.required]),
+    codigo_barras: new FormControl('', [Validators.required]),
+    inventario_min: new FormControl(''),
+    habilitado: new FormControl(''),
+    id_usuario_registro: new FormControl('', [Validators.required]),
+    id_tipo_cantidad: new FormControl('', [Validators.required]),
   });
 
   constructor(private productService: ProductService, private appService: AppService) { }
@@ -60,7 +66,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   submit() {
 
-    if(!this.dataProducto.id){
+    if(!this.dataProduct.id){
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
@@ -69,7 +75,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
     }else{
      
-      this.productService.editProduct(this.form.value, this.dataProducto.id)
+      this.productService.editProduct(this.form.value, this.dataProduct.id)
       .subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
@@ -82,24 +88,33 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   initForm() {
 
-    this.querySubscription = this.appService.getTiposUsuarios().subscribe(({ data, loading }) => {
-      this.tiposUsuarios = data.tipos_usuarios;
+    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
+      this.tiposProveedores = data.proveedores;
+    });
+    this.querySubscription = this.appService.getTiposCantidad().subscribe(({ data, loading }) => {
+      this.tiposCantidades = data.tipos_cantidad;
+    });
+    this.querySubscription = this.appService.getTiposImpuesto().subscribe(({ data, loading }) => {
+      this.tiposImpuestos = data.tipos_impuesto;
+    });
+    this.querySubscription = this.appService.getLineasProducto().subscribe(({ data, loading }) => {
+      this.tiposLineas = data.lineas_producto;
     });
 
-    if (this.dataProducto.id != null) {
+    if (this.dataProduct.id != null) {
       this.form.setValue({
-        name: this.dataProducto.name,
-        quantity: this.dataProducto.quantity,
-        type_product: this.dataProducto.type_product,
-        price: this.dataProducto.price,
-        iva: this.dataProducto.iva,
-        supplier: this.dataProducto.supplier,
-        description: this.dataProducto.description,
-        type: this.dataProducto.type,
-        image_url: this.dataProducto.image_url,
-        state_product: this.dataProducto.state_product,
-        inventary_min: this.dataProducto.inventary_min,
-        code: this.dataProducto.code,
+        name: this.dataProduct.name,
+        quantity: this.dataProduct.quantity,
+        type_product: this.dataProduct.type_product,
+        price: this.dataProduct.price,
+        iva: this.dataProduct.iva,
+        supplier: this.dataProduct.supplier,
+        description: this.dataProduct.description,
+        type: this.dataProduct.type,
+        image_url: this.dataProduct.image_url,
+        state_product: this.dataProduct.state_product,
+        inventary_min: this.dataProduct.inventary_min,
+        code: this.dataProduct.code,
       });
     }
 
