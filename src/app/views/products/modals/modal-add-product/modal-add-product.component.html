@@ -25,19 +25,19 @@
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-4 col-form-label">Precio Costo</label>
                 <div class="col-sm-8">
-                  <input type="number" class="form-control" formControlName="precio_costo" id="precio_costo">
+                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="precio_costo" id="precio_costo">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-3 col-form-label">Impuesto</label>
                 <div class="col-sm-5">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_tipo_impuesto">
+                  <select class="form-select" (ngModelChange)="inputImpuesto($event)" aria-label="Default select example" formControlName="id_tipo_impuesto">
                     <option *ngFor="let item of tiposImpuestos" value="{{item.id}}">{{item.nombre}}</option>
                   </select>
                 </div>
-                <label for="inputEmail3" class="col-sm-2 col-form-label">IVA:</label>
-                <div class="col-2">
-                  <input type="number" class="form-control" formControlName="valor_impuesto" id="valor_impuesto">
+                <label for="inputEmail3" class="col-sm-1 col-form-label">IVA:</label>
+                <div class="col-3">
+                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="valor_impuesto" id="valor_impuesto" value="0">
                 </div>
               </div>
               <div class="row mb-3">
@@ -87,28 +87,29 @@
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Imagen</label>
                     <div class="col-sm-9">
                       <img
-                        src="data:image/jpeg;base64,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"
-                        class="img-thumbnail" alt="..." id="imagen_url">
+                        src="{{form.controls['imagen'].value}}"
+                        class="img-thumbnail" alt="{{form.controls['nombre'].value}}" id="imagen_url">
                     </div>
                   </div>
                   <div class="col mt-5">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="false" formControlName="habilitado"
+                      <input class="form-check-input" type="number" value="0" formControlName="habilitado"
                         id="habilitado">
                       <label class="form-check-label" for="flexCheckDefault">
                         Deshabilitar
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="false" formControlName="inventario_min"
+                      <input class="form-check-input" type="number" value="0" formControlName="inventario_min"
                         id="inventario_min">
                       <label class="form-check-label" for="flexCheckDefault">
                         Inventario min
                       </label>
                     </div>
                     <div class="input-group">
-                      <input type="file" class="form-control" id="imagen" formControlName="imagen"
+                      <input type="file" class="form-control" (change)="handleUpload($event)"
                         aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                      <input type="text" hidden id="imagen" formControlName="imagen">
                     </div>
                   </div>
                 </div>

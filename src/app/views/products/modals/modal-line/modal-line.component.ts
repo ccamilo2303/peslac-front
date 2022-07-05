@@ -1,54 +1,30 @@
-import { Component, EventEmitter, Input, OnInit, Output, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
-import { GroupService } from '../../services/group-service/group.service';
+import { LineService } from '../../services/line-service/line.service';
 import { Product } from '../../response-types/product';
-
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-modal-group',
-  templateUrl: './modal-group.component.html',
-  styleUrls: ['./modal-group.component.scss']
+  selector: 'app-modal-line',
+  templateUrl: './modal-line.component.html',
+  styleUrls: ['./modal-line.component.scss']
 })
-export class ModalGroupComponent implements OnInit {
-  
+export class ModalLineComponent implements OnInit, OnDestroy {
+
   displayStyleAddGroup = "none";
-  data: Product = new Product();
+  dataLine: any;
 
   rightClickMenuItems: any = [];
   parentElem: any;
   contextMenuSelector: string = '';
   menuEvent: any;
-
-  modal:string = '';
-
-  @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
-
-  constructor(private groupService: GroupService, private componentFactoryResolver: ComponentFactoryResolver) { }
-
-  public listado: Product[] = [
-    {
-      id: 1,
-      name: "Mantequilla",
-      quantity: 200,
-      type_product: "GR",
-      price: 2000,
-      iva: "Si",
-      supplier: "avianca",
-      description: "",
-      type: "Normal",
-      image_url: "",
-      state_product: false,
-      inventary_min: false,
-      code: "123456789",
-    }
-  ];
-
-  ngOnInit(): void {
-    this.initData();
-  }
+  listado: any = [];
+  modal: string = '';
+  loading: boolean = false;
+  private querySubscription!: Subscription;
 
   @Input()
   public displayStyle: string = '';
@@ -56,30 +32,49 @@ export class ModalGroupComponent implements OnInit {
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
 
+  @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
+
+  form: FormGroup = new FormGroup({
+    nombre: new FormControl('', [Validators.required])
+  });
+
+  constructor(private lineService: LineService, private componentFactoryResolver: ComponentFactoryResolver) { }
+
+
+  ngOnInit(): void {
+
+    this.querySubscription = this.lineService.getLines()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.lineas_producto;
+      });
+
+  }
+
+  refresh() {
+    this.lineService.refreshLines();
+  }
+
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
+  }
+
+  submit() {
+
+    this.lineService.createLine(this.form.value).subscribe(({ data }) => {
+      console.log('got data', data);
+      this.refresh();
+    }, (error) => {
+      console.log('there was an error sending the query', error);
+    });
+
+  }
+
   closeModal() {
     this.displayStyle = "none";
     this.displayStyleEvent.emit(this.displayStyle);
   }
 
-  initData() {
-
-    this.groupService.getGroups().subscribe({
-      complete: () => {
-        let results = <Product[]>this.listado;
-        results.forEach(x => {
-          this.listado.push(x);
-        });
-      },
-      error: (err: Error) => {
-        Swal.fire({
-          icon: 'error',
-          title: err.message,
-          showConfirmButton: false,
-        })
-      }
-    })
-
-  }
 
   openModal(data?: number) {
     switch (this.modal) {
@@ -88,10 +83,9 @@ export class ModalGroupComponent implements OnInit {
         break;
     }
     if (data) {
-      let product: any = this.listado.find(product => product.id === data);
-      this.data = product;
+      this.dataLine = data;
     } else {
-      this.data = new Product();
+      this.dataLine = {};
     }
   }
 
@@ -101,10 +95,10 @@ export class ModalGroupComponent implements OnInit {
         this.displayStyleAddGroup = e;
         break;
     }
-    this.data = new Product();
+    this.dataLine = {};
   }
 
-  onTableClick(event: any) {
+  onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
@@ -112,12 +106,12 @@ export class ModalGroupComponent implements OnInit {
       {
         menuText: 'Editar',
         menuEvent: 'edit',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
       {
         menuText: 'Eliminar',
         menuEvent: 'delete',
-        menuId: Number(event.path[1].id)
+        menuId: data
       },
     ];
     this.createContextMenuComponent();
@@ -132,7 +126,7 @@ export class ModalGroupComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.groupService;
+    (<ContextMenuComponent>componentRef.instance).service = this.lineService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 

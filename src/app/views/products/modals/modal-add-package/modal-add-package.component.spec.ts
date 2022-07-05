@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalGroupComponent } from './modal-group.component';
+import { ModalAddPackageComponent } from './modal-add-package.component';
 
-describe('ModalGroupComponent', () => {
-  let component: ModalGroupComponent;
-  let fixture: ComponentFixture<ModalGroupComponent>;
+describe('ModalAddPackageComponent', () => {
+  let component: ModalAddPackageComponent;
+  let fixture: ComponentFixture<ModalAddPackageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalGroupComponent ]
+      declarations: [ ModalAddPackageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalGroupComponent);
+    fixture = TestBed.createComponent(ModalAddPackageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

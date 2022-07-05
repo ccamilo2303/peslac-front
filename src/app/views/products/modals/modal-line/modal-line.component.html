@@ -1,0 +1,55 @@
+<div class="modal" style="display: block;" tabindex="-1" [ngStyle]="{'display':displayStyle}">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Líneas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="g-3" [formGroup]="form">
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Nombre</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                        </div>
+                        <div class="col-2">
+                            <button type="button" (click)="submit()" class="btn btn-primary mb-3">Agregar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let linea of listado" (contextmenu)="onTableClick($event, linea)" [attr.modal]="'addGroup'">
+                            <th>{{linea.nombre}}</th>
+                            <td>{{linea.fecha_registro}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div #contextMenu></div>
+
+            </div>
+            <div class="modal-footer">
+                
+
+                <div class="">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="closeModal()">Cancelar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="displayStyleAddGroup == 'block'">
+    <app-modal-add-line [displayStyle]="displayStyleAddGroup" [dataLine]="dataLine"
+        (displayStyleEvent)="displayStyleEvent2($event)"></app-modal-add-line>
+</div>
