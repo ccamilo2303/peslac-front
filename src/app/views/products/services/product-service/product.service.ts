@@ -11,7 +11,7 @@ query ConsultaProductos {
     id_tipo_cantidad
     precio_costo
     id_tipo_impuesto
-    valor_inpuesto
+    valor_impuesto
     precio_venta
     id_proveedor
     descripcion
