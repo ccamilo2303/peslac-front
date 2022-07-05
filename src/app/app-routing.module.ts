@@ -48,9 +48,9 @@ const routes: Routes = [
       
 
       {
-        path: 'base',
+        path: 'clientes',
         loadChildren: () =>
-          import('./views/base/base.module').then((m) => m.BaseModule)
+        import('./views/clientes/clientes.module').then((m) => m.ClientesModule)
       },
       {
         path: 'buttons',

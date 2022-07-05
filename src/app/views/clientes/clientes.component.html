@@ -1,0 +1,56 @@
+<div class="card">
+  <div class="card-header">
+    <div class="p-2">
+
+      <div class="row">
+        <div class="col-7">
+          <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Proveedor</button>
+          <button type="button" class="btn btn-outline-secondary me-3" (click)="refresh()">Recargar Pantalla</button>
+        </div>
+        
+        <div class="col-5">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar Razón social" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <span class="input-group-text" id="basic-addon2">Buscador</span>
+          </div>
+        </div>
+      
+
+    </div>
+      
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Razón Social</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">N.I.T</th>
+          <th scope="col">Celular</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proveedores of listado" (contextmenu)="onTableClick($event, proveedores)" [attr.modal]="'addProduct'">
+          <th>{{proveedores.razon_social}}</th>
+          <td>{{proveedores.nombre}}</td>
+          <td></td>
+          <td>{{proveedores.nit}}</td>
+          <td>{{proveedores.celular}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div #contextMenu></div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!--
+<div *ngIf="displayStyleAddProduct == 'block'">
+  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+</div>
+-->
+<div *ngIf="modalProveedores">
+  <app-modal-agregar-proveedores (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-proveedores>
+</div>

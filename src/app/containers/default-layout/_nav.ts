@@ -23,7 +23,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Clientes y Estaciones',
-    url: '/product',
+    url: '/clientes',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
