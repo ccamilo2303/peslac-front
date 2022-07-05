@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalAddDiscountComponent } from './modal-add-discount.component';
+import { ModalAddPriceListComponent } from './modal-add-price-list.component';
 
-describe('ModalAddDiscountComponent', () => {
-  let component: ModalAddDiscountComponent;
-  let fixture: ComponentFixture<ModalAddDiscountComponent>;
+describe('ModalAddPriceListComponent', () => {
+  let component: ModalAddPriceListComponent;
+  let fixture: ComponentFixture<ModalAddPriceListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalAddDiscountComponent ]
+      declarations: [ ModalAddPriceListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalAddDiscountComponent);
+    fixture = TestBed.createComponent(ModalAddPriceListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,7 +1,7 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
-import { ProveedoresService } from './services/proveedores.service';
+import { ClientesService } from './services/clientes.service';
 
 
 @Component({
@@ -11,9 +11,6 @@ import { ProveedoresService } from './services/proveedores.service';
 })
 export class ClientesComponent implements OnInit, OnDestroy {
 
-  displayStyleAddProduct = "none";
-  displayStyleGroup = "none";
-  displayStyleDiscount = "none";
   dataModal!: any;
 
   rightClickMenuItems: any = [];
@@ -27,24 +24,24 @@ export class ClientesComponent implements OnInit, OnDestroy {
   private querySubscription!: Subscription;
 
   modalProveedores:boolean = false;
-
+  
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private proveedoresService:ProveedoresService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private clientesService:ClientesService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
   
-    this.querySubscription = this.proveedoresService.getProveedores()
+    this.querySubscription = this.clientesService.getClientes()
     .subscribe(({ data, loading }) => {
       this.loading = loading;
-      this.listado = data.proveedores;
+      this.listado = data.clientes;
       console.log("--> ", data);
     });
 
   }
 
   refresh() {
-    this.proveedoresService.refreshProducts();
+    this.clientesService.refreshClientes();
 
   }
 
@@ -61,22 +58,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
   closeEventModal(){
     this.modalProveedores = false;
     this.refresh();
-  }
-
-
-  displayStyleEvent(e: string) {
-    switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = e;
-        break;
-      case 'group':
-        this.displayStyleGroup = e;
-        break;
-      case 'discount':
-        this.displayStyleDiscount = e;
-        break;
-    }
-    this.dataModal = {};
   }
 
   onTableClick(event: any, data:any) {

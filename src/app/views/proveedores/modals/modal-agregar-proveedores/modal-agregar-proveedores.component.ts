@@ -16,9 +16,6 @@ declare var $: any;
 export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
 
   @Input()
-  public displayStyle: string = '';
-
-  @Input()
   public data: any;
 
   @Output()

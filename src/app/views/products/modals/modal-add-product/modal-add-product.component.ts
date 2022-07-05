@@ -24,6 +24,9 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   @Output()
   public displayStyleEvent = new EventEmitter<string>();
 
+  modalProveedores: boolean = false;
+  modal: string = "";
+
   public tiposProveedores!: any;
   public tiposCantidades!: any;
   public tiposImpuestos!: any;
@@ -59,9 +62,33 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.displayStyle = "none";
-    this.form.reset();
-    this.displayStyleEvent.emit(this.displayStyle);
+    switch (this.modal) {
+      case 'addSuplier':
+        this.modalProveedores = false;
+        this.modal = "";
+        this.initForm();
+        //this.refresh();
+        break;
+      default:
+        this.displayStyle = "none";
+        this.form.reset();
+        this.displayStyleEvent.emit(this.displayStyle);
+        break;
+    }
+    //this.dataProduct = {};
+  }
+
+  openModal(data?: any) {
+    switch (this.modal) {
+      case 'addSuplier':
+        this.modalProveedores = true;
+        break;
+    }
+    if (data) {
+      this.dataProduct = data;
+    } else {
+      this.dataProduct = {};
+    }
   }
 
   handleUpload(event: any) {
@@ -93,7 +120,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     this.form.controls['valor_impuesto'].enable();
     this.form.controls['precio_venta'].enable();
     console.log(this.form.value);
-    
+
     if (!this.dataProduct.id) {
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);

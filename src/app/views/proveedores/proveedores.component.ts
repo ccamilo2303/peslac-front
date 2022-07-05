@@ -11,9 +11,6 @@ import { ProveedoresService } from './services/proveedores.service';
 })
 export class ProveedoresComponent implements OnInit, OnDestroy {
 
-  displayStyleAddProduct = "none";
-  displayStyleGroup = "none";
-  displayStyleDiscount = "none";
   dataModal!: any;
 
   rightClickMenuItems: any = [];
@@ -61,22 +58,6 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
   closeEventModal(){
     this.modalProveedores = false;
     this.refresh();
-  }
-
-
-  displayStyleEvent(e: string) {
-    switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = e;
-        break;
-      case 'group':
-        this.displayStyleGroup = e;
-        break;
-      case 'discount':
-        this.displayStyleDiscount = e;
-        break;
-    }
-    this.dataModal = {};
   }
 
   onTableClick(event: any, data:any) {

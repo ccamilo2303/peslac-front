@@ -19,6 +19,8 @@ export class ContextMenuComponent implements OnInit {
   @Input() contextMenuItems:any;
   @Input() service:any;
   @Input() component:any;
+  @Input() modal:any = null;
+
   isDisplayContextMenu: boolean = false;
   _currentMenuVisible = null;
 
@@ -92,6 +94,9 @@ export class ContextMenuComponent implements OnInit {
   }
   
   edit(id:any){
+    if(this.modal != null){
+      this.component.modal =this.modal;
+    }
     this.component.openModal(id);
   }
 

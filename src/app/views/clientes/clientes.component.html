@@ -4,7 +4,7 @@
 
       <div class="row">
         <div class="col-7">
-          <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Proveedor</button>
+          <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Cliente</button>
           <button type="button" class="btn btn-outline-secondary me-3" (click)="refresh()">Recargar Pantalla</button>
         </div>
         
@@ -24,20 +24,22 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Razón Social</th>
+          <th scope="col">C.C</th>
           <th scope="col">Nombre</th>
           <th scope="col">Apellido</th>
-          <th scope="col">N.I.T</th>
           <th scope="col">Celular</th>
+          <th scope="col">Ciudad</th>
+          <th scope="col">Dirección</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let proveedores of listado" (contextmenu)="onTableClick($event, proveedores)" [attr.modal]="'addProduct'">
-          <th>{{proveedores.razon_social}}</th>
-          <td>{{proveedores.nombre}}</td>
-          <td></td>
-          <td>{{proveedores.nit}}</td>
-          <td>{{proveedores.celular}}</td>
+        <tr *ngFor="let cliente of listado" (contextmenu)="onTableClick($event, cliente)" [attr.modal]="'addProduct'">
+          <th>{{cliente.cedula}}</th>
+          <td>{{cliente.nombres}}</td>
+          <td>{{cliente.apellidos}}</td>
+          <td>{{cliente.celular}}</td>
+          <td>{{cliente.ciudad}}</td>
+          <td>{{cliente.direccion}}</td>
         </tr>
       </tbody>
     </table>
@@ -52,5 +54,5 @@
 </div>
 -->
 <div *ngIf="modalProveedores">
-  <app-modal-agregar-proveedores (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-proveedores>
+  <app-modal-agregar-clientes (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-clientes>
 </div>

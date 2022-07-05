@@ -14,8 +14,11 @@ import Swal from 'sweetalert2';
 export class ProductComponent implements OnInit, OnDestroy {
 
   displayStyleAddProduct = "none";
-  displayStyleGroup = "none";
-  displayStyleDiscount = "none";
+  displayStyleLine = "none";
+  displayStyleAddPackage = "none";
+  displayStylePackage = "none";
+  displayStylePriceList = "none";
+
   dataProduct: any;
 
   rightClickMenuItems: any = [];
@@ -33,12 +36,12 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    
+
     this.querySubscription = this.productService.getProducts()
-    .subscribe(({ data, loading }) => {
-      this.loading = loading;
-      this.listado = data.productos;
-    });
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.productos;
+      });
 
   }
 
@@ -56,16 +59,22 @@ export class ProductComponent implements OnInit, OnDestroy {
       case 'addProduct':
         this.displayStyleAddProduct = "block";
         break;
-      case 'group':
-        this.displayStyleGroup = "block";
+      case 'line':
+        this.displayStyleLine = "block";
         break;
-      case 'discount':
-        this.displayStyleDiscount = "block";
+      case 'addPackage':
+        this.displayStyleAddPackage = "block";
+        break;
+      case 'package':
+        this.displayStylePackage = "block";
+        break;
+      case 'priceList':
+        this.displayStylePriceList = "block";
         break;
     }
-    if(data){
+    if (data) {
       this.dataProduct = data;
-    }else{
+    } else {
       this.dataProduct = {};
     }
   }
@@ -75,17 +84,23 @@ export class ProductComponent implements OnInit, OnDestroy {
       case 'addProduct':
         this.displayStyleAddProduct = e;
         break;
-      case 'group':
-        this.displayStyleGroup = e;
+      case 'line':
+        this.displayStyleLine = e;
         break;
-      case 'discount':
-        this.displayStyleDiscount = e;
+      case 'addPackage':
+        this.displayStyleAddPackage = e;
+        break;
+      case 'package':
+        this.displayStylePackage = e;
+        break;
+      case 'priceList':
+        this.displayStylePriceList = e;
         break;
     }
     this.dataProduct = {};
   }
 
-  onTableClick(event: any, data:any) {
+  onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;

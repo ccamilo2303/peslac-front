@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Proveedor</h5>
+        <h5 class="modal-title">Cliente</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
           aria-label="Close"></button>
       </div>
@@ -13,18 +13,18 @@
             <div class="row mb-3">
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Razón social</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">Nombre:</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="razon_social" id="razon_social">
+                    <input type="text" class="form-control" formControlName="nombres" id="nombres">
                   </div>
                 </div>
               </div>
 
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Nombre</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">Apellido:</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="nombre" id="nombre">
+                    <input type="text" class="form-control" formControlName="apellidos" id="apellidos">
                   </div>
                 </div>
               </div>
@@ -34,9 +34,9 @@
             <div class="row mb-3">
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">N.I.T</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">C.C:</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="nit" id="nit">
+                    <input type="text" class="form-control" formControlName="cedula" id="cedula">
                   </div>
                 </div>
               </div>
@@ -54,36 +54,16 @@
             <div class="row mb-3">
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">No. cuenta</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">Ciudad:</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="cuenta" id="cuenta">
+                    <input type="text" class="form-control" formControlName="ciudad" id="ciudad">
                   </div>
                 </div>
               </div>
 
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Banco</label>
-                  <div class="col-8">
-                    <input type="text" class="form-control" formControlName="banco" id="banco">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mb-3">
-              <div class="col-6">
-                <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Tipo de cuenta</label>
-                  <div class="col-8">
-                    <input type="text" class="form-control" formControlName="tipo_cuenta" id="tipo_cuenta">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-6">
-                <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Dirección</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">Dirección:</label>
                   <div class="col-8">
                     <input type="text" class="form-control" formControlName="direccion" id="direccion">
                   </div>
@@ -91,26 +71,27 @@
               </div>
             </div>
 
-
             <div class="row mb-3">
               <div class="col-6">
                 <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Correo</label>
+                  <label for="inputEmail3" class="col-4 col-form-label">Lista de precios</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="correo" id="correo">
+                    <select class="form-select" aria-label="Default select example" formControlName="id_lista_precios">
+                      <option *ngFor="let item of listaPrecios" value="{{item.id}}">{{item.nombre}}</option>
+                    </select>
                   </div>
                 </div>
               </div>
 
               <div class="col-6">
-                <div class="row">
-                  <label for="inputEmail3" class="col-4 col-form-label">Teléfono 2</label>
-                  <div class="col-8">
-                    <input type="text" class="form-control" formControlName="telefono" id="telefono">
-                  </div>
-                </div>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+              (click)="closeModal()">Agregar</button>
               </div>
+
+
             </div>
+
+
           </div>
 
 

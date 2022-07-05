@@ -3,10 +3,10 @@
     <div class="p-2">
       <div>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Producto</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'group'; openModal()">Agregar Grupo</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'discount'; openModal()">Descuentos</button>
-      <button type="button" class="btn btn-outline-secondary me-3">Crear Paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3">Historial de paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'line'; openModal()">Agregar Línea</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addPackage'; openModal()">Crear Paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'package'; openModal()">Historial de paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'priceList'; openModal()">Lista de precios</button>
       </div>
       <div class="pt-4">
         <div class="input-group mb-3">
@@ -48,11 +48,19 @@
   <app-modal-add-product [displayStyle]="displayStyleAddProduct" [dataProduct]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
 </div>
 
-<div *ngIf="displayStyleGroup == 'block'">
-  <app-modal-group [displayStyle]="displayStyleGroup" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-group>
+<div *ngIf="displayStyleLine == 'block'">
+  <app-modal-line [displayStyle]="displayStyleLine" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-line>
 </div>
 
-<div *ngIf="displayStyleDiscount == 'block'">
-  <app-modal-discount [displayStyle]="displayStyleDiscount" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-discount>
+<div *ngIf="displayStyleAddPackage == 'block'">
+  <app-modal-add-package [displayStyle]="displayStyleAddPackage" [dataPackage]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-package>
+</div>
+
+<div *ngIf="displayStylePackage == 'block'">
+  <app-modal-package [displayStyle]="displayStylePackage" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-package>
+</div>
+
+<div *ngIf="displayStylePriceList == 'block'">
+  <app-modal-price-list [displayStyle]="displayStylePriceList" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-price-list>
 </div>
 

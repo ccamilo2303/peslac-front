@@ -1,0 +1,56 @@
+<div class="modal" style="display: block;" tabindex="-1" [ngStyle]="{'display':displayStyle}">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lista De Precios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row mb-3">
+                                <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre de la lista:</label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control" formControlName="nombre" id="nombre">
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Proveedor</th>
+                            <th scope="col">Valor Unt.</th>
+                            <th scope="col">Línea</th>
+                            <th scope="col">Código <span style="background-color: darkgrey;">|||||</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let producto of listado">
+                            <th>{{producto.nombre}}</th>
+                            <td>{{producto.id_proveedor}}</td>
+                            <th><input type="number" class="form-control" value="{{producto.precio_costo}}"></th>
+                            <th>{{producto.id_linea}}</th>
+                            <th>{{producto.codigo_barras}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div #contextMenu></div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                
+            </div>
+        </div>
+    </div>
+</div>

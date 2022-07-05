@@ -54,7 +54,7 @@
                   </select>
                 </div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-primary col-12">Crear</button>
+                  <button type="button" class="btn btn-primary col-12" (click)="modal = 'addSuplier'; openModal()">Crear</button>
                 </div>
               </div>
               <div class="row mb-3">
@@ -140,4 +140,8 @@
       </form>
     </div>
   </div>
+</div>
+
+<div *ngIf="modalProveedores">
+  <app-modal-agregar-proveedores (closeEvent)="closeModal()"></app-modal-agregar-proveedores>
 </div>

@@ -11,6 +11,9 @@ import { ModalAgregarProveedoresComponent } from './modals/modal-agregar-proveed
 
 @NgModule({
   declarations: [ProveedoresComponent, ModalAgregarProveedoresComponent],
+  exports: [
+    ModalAgregarProveedoresComponent
+  ],
   imports: [
     CommonModule,
     ProveedoresRoutingModule,  

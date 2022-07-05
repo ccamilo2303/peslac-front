@@ -6,20 +6,23 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ModalAddProductComponent } from './modals/modal-add-product/modal-add-product.component';
 import { DocsComponentsModule } from '@docs-components/docs-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalGroupComponent } from './modals/modal-group/modal-group.component';
-import { ModalAddGroupComponent } from './modals/modal-add-group/modal-add-group.component';
-import { ModalDiscountComponent } from './modals/modal-discount/modal-discount.component';
-import { ModalAddDiscountComponent } from './modals/modal-add-discount/modal-add-discount.component';
+import { ModalLineComponent } from './modals/modal-line/modal-line.component';
+import { ModalAddLineComponent } from './modals/modal-add-line/modal-add-line.component';
+import { ModalAddPackageComponent } from './modals/modal-add-package/modal-add-package.component';
+import { ModalPackageComponent } from './modals/modal-package/modal-package.component';
+import { ModalPriceListComponent } from './modals/modal-price-list/modal-price-list.component';
+import { ModalAddPriceListComponent } from './modals/modal-add-price-list/modal-add-price-list.component';
 
-
+import { ProveedoresModule } from '../proveedores/proveedores.module';
 
 @NgModule({
-  declarations: [ProductComponent, ModalAddProductComponent, ModalGroupComponent, ModalAddGroupComponent, ModalDiscountComponent, ModalAddDiscountComponent],
+  declarations: [ProductComponent, ModalAddProductComponent, ModalLineComponent, ModalAddLineComponent, ModalAddPackageComponent, ModalPackageComponent, ModalPriceListComponent, ModalAddPriceListComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,  
     ReactiveFormsModule,
-    DocsComponentsModule
+    DocsComponentsModule,
+    ProveedoresModule
   ]
 })
 export class ProductModule {

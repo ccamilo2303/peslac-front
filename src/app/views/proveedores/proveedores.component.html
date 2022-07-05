@@ -35,7 +35,7 @@
         <tr *ngFor="let proveedores of listado" (contextmenu)="onTableClick($event, proveedores)" [attr.modal]="'addProduct'">
           <th>{{proveedores.razon_social}}</th>
           <td>{{proveedores.nombre}}</td>
-          <td></td>
+          <td>{{proveedores.apellido}}</td>
           <td>{{proveedores.nit}}</td>
           <td>{{proveedores.celular}}</td>
         </tr>
@@ -53,4 +53,4 @@
 -->
 <div *ngIf="modalProveedores">
   <app-modal-agregar-proveedores (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-proveedores>
-</div>
+</div> 

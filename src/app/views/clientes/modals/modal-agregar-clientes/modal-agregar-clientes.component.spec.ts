@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalAddProductComponent } from './modal-add-product.component';
+import { ModalAgregarClientesComponent } from '../modal-agregar-clientes/modal-agregar-clientes.component';
 
 describe('ModalAddUserComponent', () => {
-  let component: ModalAddProductComponent;
-  let fixture: ComponentFixture<ModalAddProductComponent>;
+  let component: ModalAgregarClientesComponent;
+  let fixture: ComponentFixture<ModalAgregarClientesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalAddProductComponent ]
+      declarations: [ ModalAgregarClientesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalAddProductComponent);
+    fixture = TestBed.createComponent(ModalAgregarClientesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
