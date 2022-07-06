@@ -28,7 +28,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Inventarios',
-    url: '/product',
+    url: '/inventario',
     iconComponent: { name: 'cil-puzzle' },
   },
   {

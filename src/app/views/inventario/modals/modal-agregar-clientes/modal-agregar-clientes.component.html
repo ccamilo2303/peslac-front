@@ -1,0 +1,107 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="form">
+        <div class="modal-body">
+          <div class="m-1">
+            <div class="row mb-3">
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Nombre:</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="nombres" id="nombres">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Apellido:</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="apellidos" id="apellidos">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row mb-3">
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">C.C:</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="cedula" id="cedula">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Celular</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="celular" id="celular">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Ciudad:</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="ciudad" id="ciudad">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Dirección:</label>
+                  <div class="col-8">
+                    <input type="text" class="form-control" formControlName="direccion" id="direccion">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6">
+                <div class="row">
+                  <label for="inputEmail3" class="col-4 col-form-label">Lista de precios</label>
+                  <div class="col-8">
+                    <select class="form-select" aria-label="Default select example" formControlName="id_lista_precios">
+                      <option *ngFor="let item of listaPrecios" value="{{item.id}}">{{item.nombre}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+              (click)="closeModal()">Agregar</button>
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Aceptar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
