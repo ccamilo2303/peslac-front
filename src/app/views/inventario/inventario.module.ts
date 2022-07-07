@@ -5,14 +5,14 @@ import { InventarioComponent } from './inventario.component';
 import { InventarioRoutingModule } from './inventario-routing.module';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalAgregarClientesComponent } from './modals/modal-agregar-clientes/modal-agregar-clientes.component';
+import { ModalHistorialComponent } from './modals/modal-historial/modal-historial.component';
 import { ModalAgregarSalidaComponent } from './modals/modal-agregar-salida/modal-agregar-salida.component';
 import { ModalAgregarDevolucionComponent } from './modals/modal-agregar-devolucion/modal-agregar-devolucion.component';
 
 @NgModule({
   declarations: [
     InventarioComponent,
-    ModalAgregarClientesComponent,
+    ModalHistorialComponent,
     ModalAgregarSalidaComponent,
     ModalAgregarDevolucionComponent
   ],

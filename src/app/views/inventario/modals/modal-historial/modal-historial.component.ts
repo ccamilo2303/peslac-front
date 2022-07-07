@@ -9,11 +9,11 @@ declare var $: any;
 
 
 @Component({
-  selector: 'app-modal-agregar-clientes',
-  templateUrl: './modal-agregar-clientes.component.html',
-  styleUrls: ['./modal-agregar-clientes.component.scss']
+  selector: 'app-modal-historial',
+  templateUrl: './modal-historial.component.html',
+  styleUrls: ['./modal-historial.component.scss']
 })
-export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
+export class ModalHistorialComponent implements OnInit, OnDestroy {
 
   @Input()
   public displayStyle: string = '';
@@ -24,18 +24,8 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
-  public listaPrecios!: any;
+  public listado!: any;
   private querySubscription!: Subscription;
-
-  form: FormGroup = new FormGroup({
-    nombres: new FormControl('', [Validators.required]),
-    apellidos: new FormControl('', [Validators.required]),
-    cedula: new FormControl('', [Validators.required]),
-    celular: new FormControl('', [Validators.required]),
-    ciudad: new FormControl('', [Validators.required]),
-    direccion: new FormControl('', [Validators.required]),
-    id_lista_precios: new FormControl('', [Validators.required]),
-  });
 
   constructor(private inventarioService: InventarioService, private appService: AppService) { }
 
@@ -53,7 +43,6 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.form.reset();
     this.closeEvent.emit(true);
     $("#modalProveedor").modal('hide');
   }
@@ -62,12 +51,12 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   submit() {
 
     
-      this.inventarioService.createSalidaInventario(this.form.value).subscribe(({ data }) => {
+      /*this.inventarioService.createSalidaInventario(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);
         this.closeModal();
       }, (error) => {
         console.log('there was an error sending the query', error);
-      });
+      });*/
 
     
 
@@ -75,11 +64,12 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.listaPrecios = data.proveedores;
+    this.querySubscription = this.inventarioService.getHistorial().subscribe(({ data, loading }) => {
+      this.listado = data.historial_devoluciones_salidas_productos;
     });
+    
 
-    if (this.data && this.data.id != null) {
+    /*if (this.data && this.data.id != null) {
       this.form.setValue({
         nombres: this.data.nombres,
         apellidos: this.data.apellidos,
@@ -89,7 +79,7 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
         direccion: this.data.direccion,
         id_lista_precios: this.data.id_lista_precios,
       });
-    }
+    }*/
 
   }
 

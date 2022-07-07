@@ -3,28 +3,106 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
 
-const GET_INVENTARIO = gql`
-query ConsultarInventario {
-  productos(order_by: {id: asc}) {
+const GET_HISTORIAL_VENTAS_GENERAL = gql`
+query InformeVentasGeneral($fechaInicio: date = "2022-07-02", $fechaFin: date = "2022-07-03") {
+  ventas(order_by: {id: asc}, where: {ordene: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}, anulado: {_eq: false}}) {
     id
-    nombre
-    id_linea
-    cantidad
-    precio_costo 
+    fecha_registro
+    ordene {
+      cliente {
+        nombres
+        apellidos
+      }
+      usuario {
+        nombres
+        apellidos
+      }
+      detalle_ordenes {
+        total
+      }
+    }
   }
 }
 `;
 
-const GET_HISTORIAL = gql`
-query ConsultarHistorialInventario {
-  historial_devoluciones_salidas_productos(order_by: {id: asc}) {
-    id
-    fecha_registro
+const GET_HISTORIAL_VENTAS_DETALLADO = gql`
+query InformeVentasDetallado($fechaInicio: date = "2022-07-02", $fechaFin: date = "2022-07-03") {
+  detalle_ordenes(where: {ordene: {ventas: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}}}) {
+    ordene {
+      id
+      cliente {
+        nombres
+        apellidos
+      }
+    }
     producto {
       nombre
+      precio_venta
+      lineas_producto {
+        nombre
+      }
     }
     cantidad
-    comentario
+    total
+  }
+}
+`;
+
+const GET_DETALLE_VENTA = gql`
+query ConsultarDetalleVenta($idVenta: Int = 4) {
+  ventas(where: {id: {_eq: $idVenta}}) {
+    ordene{
+      
+    fecha_registro
+    usuario {
+      estacion
+      nombres
+      apellidos
+      nit
+    }
+    cliente {
+      nombres
+      apellidos
+    }
+    metodos_pago {
+      nombre
+    }
+    consecutivo
+    detalle_ordenes {
+      producto {
+        id
+        nombre
+        lineas_producto {
+          nombre
+        }
+        precio_venta
+        valor_inpuesto
+      }
+      cantidad
+      total
+    }
+    }
+  }
+}
+`;
+
+const GET_HISTORIAL_VENTAS_ANULADAS = gql`
+query VentasAnuladas($fechaInicio: date = "2022-07-02", $fechaFin: date = "2022-07-03") {
+  ventas_anuladas(where: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}) {
+    venta {
+      id
+      fecha_registro
+      ordene{
+      cliente {
+        nombres
+        apellidos
+      }
+      usuario {
+        nombres
+        apellidos
+      }
+      }
+    }
   }
 }
 `;
@@ -59,26 +137,26 @@ mutation InsertarDevolucion($cantidad: Int = 1, $id_producto: Int = 2, $id_tipo_
   providedIn: 'root'
 })
 
-export class InventarioService {
+export class HistorialVentasService {
 
   postsQuery!: QueryRef<any>;
 
 
   constructor(private apollo: Apollo) { }
 
-  getInventario(): Observable<any> {
+  getHistorialVentasGeneral(): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_INVENTARIO
+      query: GET_HISTORIAL_VENTAS_GENERAL
     });
 
     return this.postsQuery.valueChanges;
   }
 
-  getHistorial(): Observable<any> {
+  getHistorialVentasDetallado(): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_HISTORIAL
+      query: GET_HISTORIAL_VENTAS_DETALLADO
     });
 
     return this.postsQuery.valueChanges;

@@ -1,0 +1,43 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Historial Devoluciones y Salidas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+          aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Cant.</th>
+              <th scope="col">Comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let itemHistorial of listado">
+              <th>{{itemHistorial.id}}</th>
+              <td>{{itemHistorial.fecha_registro}}</td>
+              <td>{{itemHistorial.producto.nombre}}</td>
+              <td>{{itemHistorial.cantidad}}</td>
+              <td><textarea class="form-control" id="exampleFormControlTextarea1" rows="3" value="{{itemHistorial.comentario}}" disabled style="background-color: white;"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

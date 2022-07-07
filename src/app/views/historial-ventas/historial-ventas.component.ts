@@ -1,14 +1,14 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
-import { InventarioService } from './services/inventario.service';
+import { HistorialVentasService } from './services/historial-ventas.service';
 
 @Component({
-  selector: 'app-inventario',
-  templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.scss']
+  selector: 'app-historial-ventas',
+  templateUrl: './historial-ventas.component.html',
+  styleUrls: ['./historial-ventas.component.scss']
 })
-export class InventarioComponent implements OnInit {
+export class HistorialVentasComponent implements OnInit {
 
   dataModal!: any;
 
@@ -26,28 +26,27 @@ export class InventarioComponent implements OnInit {
   modalSalida: boolean = false;
   modalDevolucion: boolean = false;
 
+  tipoVista = 1;
+
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private inventarioService: InventarioService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private historialVentasService: HistorialVentasService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
-  ngOnInit(): void {
-
-    this.querySubscription = this.inventarioService.getInventario()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.productos;
-        console.log("--> ", data);
-      });
-
+  ngOnInit(): void { 
+    this.initData();
   }
 
   refresh() {
-    this.inventarioService.refreshInventario();
+    this.historialVentasService.refreshInventario();
 
   }
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
+  }
+
+  cambiarVista(event:any){
+    this.tipoVista = event.target.value
   }
 
   openModal(data?: any) {
@@ -119,6 +118,38 @@ export class InventarioComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
     //(<ContextMenuComponent>componentRef.instance).service = this.productService;
     (<ContextMenuComponent>componentRef.instance).component = this;
+  }
+
+  initData(){
+    if(this.tipoVista == 1){
+      this.querySubscription = this.historialVentasService.getHistorialVentasDetallado()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.detalle_ordenes;
+        console.log("--> ", data);
+      });
+    }else{
+      this.querySubscription = this.historialVentasService.getHistorialVentasGeneral()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.ventas;
+        console.log("--> ", data);
+        data.ventas.forEach((venta:any) => {
+          let total:any = 0;
+          venta.ordene.detalle_ordenes.forEach((orden:any) => {
+            total += orden.total;
+          });
+          console.log("total: ", total);
+          let obj:any = {total: total};
+
+          console.log(venta.ordene.detalle_ordenes);
+          venta.ordene.detalle_ordenes = [obj]
+          //console.log(venta.ordene.detalle_ordenes = [{}]);
+        });
+        this.tipoVista = 3;
+      });
+      
+    }
   }
 
 }

@@ -1,0 +1,121 @@
+<div class="card">
+    <div class="card-header">
+        <div class="p-2">
+
+            <div class="row">
+                <div class="col-4">
+                    <button type="button" class="btn btn-outline-secondary me-3"
+                        (click)="modal = 'historial'; openModal()">Informe Ventas</button>
+                    <button type="button" class="btn btn-outline-secondary me-3" (click)="refresh()">Anulados</button>
+                </div>
+
+                <div class="col-8">
+                    <div class="row mb-3">
+
+                        <label for="inputEmail3" class="col-2 col-form-label">Fecha:</label>
+                        <div class="col-3">
+                            <input type="date" class="form-control" formControlName="precio_venta" id="precio_venta">
+                        </div>
+
+                        <label for="inputEmail3" class="col-1 col-form-label">Al</label>
+                        <div class="col-3">
+                            <input type="date" class="form-control" formControlName="precio_venta" id="precio_venta">
+                        </div>
+
+                        <div class="col-3">
+                            <button type="button" class="btn btn-outline-secondary col-12"
+                                (click)="refresh()">Aplicar</button>
+                        </div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Buscar Razón social"
+                                    aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <span class="input-group-text" id="basic-addon2">Buscador</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-select" aria-label="Default select example" (change)="cambiarVista($event); initData()">
+                                <option selected value="1">Detallada</option>
+                                <option value="2">General</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover" *ngIf="tipoVista == 1">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Valor Unt.</th>
+                    <th scope="col">Grupo</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
+                    [attr.modal]="'addProduct'">
+                    <th>{{venta.ordene.id}}</th>
+                    <td>{{venta.producto.nombre}}</td>
+                    <td>{{venta.cantidad}}</td>
+                    <td>{{venta.producto.precio_venta}}</td>
+                    <td>{{venta.producto.lineas_producto.nombre}}</td>
+                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
+                    <td>{{venta.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-hover" *ngIf="tipoVista == 3"> 
+            <thead>
+                <tr>
+                    <th scope="col">Cód.</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Vendedor</th>
+                    <th scope="col">Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
+                    [attr.modal]="'addProduct'">
+                    <th>{{venta.id}}</th>
+                    <td>{{venta.fecha_registro}}</td>
+                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
+                    <td>{{venta.ordene.usuario.nombres}} {{venta.ordene.usuario.apellidos}}</td>
+                    <td>{{venta.id}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div #contextMenu></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<!--
+  <div *ngIf="displayStyleAddProduct == 'block'">
+    <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+  </div>
+ 
+  <div *ngIf="modalHistorial">
+    <app-modal-historial (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-historial>
+  </div>
+
+  <div *ngIf="modalSalida">
+    <app-modal-agregar-salida (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-salida>
+  </div>
+
+  <div *ngIf="modalDevolucion">
+    <app-modal-agregar-devolucion (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-devolucion>
+  </div> -->

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalAgregarClientesComponent } from '../modal-agregar-clientes/modal-agregar-clientes.component';
+import { ModalHistorialComponent } from './modal-historial.component';
 
 describe('ModalAddUserComponent', () => {
-  let component: ModalAgregarClientesComponent;
-  let fixture: ComponentFixture<ModalAgregarClientesComponent>;
+  let component: ModalHistorialComponent;
+  let fixture: ComponentFixture<ModalHistorialComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalAgregarClientesComponent ]
+      declarations: [ ModalHistorialComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalAgregarClientesComponent);
+    fixture = TestBed.createComponent(ModalHistorialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

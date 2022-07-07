@@ -21,17 +21,13 @@ export class ModalAgregarSalidaComponent implements OnInit {
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
-  public listaPrecios!: any;
   private querySubscription!: Subscription;
 
   form: FormGroup = new FormGroup({
-    nombres: new FormControl('', [Validators.required]),
-    apellidos: new FormControl('', [Validators.required]),
-    cedula: new FormControl('', [Validators.required]),
-    celular: new FormControl('', [Validators.required]),
-    ciudad: new FormControl('', [Validators.required]),
-    direccion: new FormControl('', [Validators.required]),
-    id_lista_precios: new FormControl('', [Validators.required]),
+    id_producto: new FormControl('', [Validators.required]),
+    id_tipo_operacion: new FormControl('', [Validators.required]),
+    cantidad: new FormControl('', [Validators.required]),
+    comentario: new FormControl('', [Validators.required]),
   });
 
   constructor(private inventarioService: InventarioService, private appService: AppService) { }
@@ -58,35 +54,38 @@ export class ModalAgregarSalidaComponent implements OnInit {
 
   submit() {
 
-    
-      this.inventarioService.createSalidaInventario(this.form.value).subscribe(({ data }) => {
+    if(this.form.controls["cantidad"].value <= this.data.cantidad && this.form.controls["cantidad"].value > 0){
+      
+      this.inventarioService.createSalidaInventario(
+        this.form.controls["id_producto"].value,
+        this.form.controls["id_tipo_operacion"].value,
+        (this.form.controls["cantidad"].value * -1),
+        this.form.controls["comentario"].value
+      ).subscribe(({ data }) => {
         console.log('got data', data);
         this.closeModal();
       }, (error) => {
         console.log('there was an error sending the query', error);
       });
 
-    
+    }else{
 
+      console.log("ERROR EN LA CANTIDAD DE SALIDA");
+      
+    }
+    
   }
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.listaPrecios = data.proveedores;
-    });
-
-    /*if (this.data && this.data.id != null) {
+    if (this.data && this.data.id != null) {
       this.form.setValue({
-        nombres: this.data.nombres,
-        apellidos: this.data.apellidos,
-        cedula: this.data.cedula,
-        celular: this.data.celular,
-        ciudad: this.data.ciudad,
-        direccion: this.data.direccion,
-        id_lista_precios: this.data.id_lista_precios,
+        id_producto: this.data.id,
+        id_tipo_operacion: 1,
+        cantidad: '',
+        comentario: '',
       });
-    }*/
+    }
 
   }
 

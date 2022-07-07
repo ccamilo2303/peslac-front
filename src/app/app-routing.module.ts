@@ -56,6 +56,21 @@ const routes: Routes = [
         import('./views/inventario/inventario.module').then((m) => m.InventarioModule)
       },
       {
+        path: 'historial/ventas',
+        loadChildren: () =>
+        import('./views/historial-ventas/historial-ventas.module').then((m) => m.HistorialVentasModule)
+      },
+      {
+        path: 'historial/ventas/anulados',
+        loadChildren: () =>
+        import('./views/historial-ventas/components/historial-anulados/historial-anulados.module').then((m) => m.HistorialAnuladosModule)
+      },
+      {
+        path: 'historial/ventas/informe',
+        loadChildren: () =>
+        import('./views/historial-ventas/components/informe-ventas/informe-ventas.module').then((m) => m.InformeVentasModule)
+      },
+      {
         path: 'buttons',
         loadChildren: () =>
           import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)
