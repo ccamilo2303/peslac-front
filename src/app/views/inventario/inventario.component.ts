@@ -8,7 +8,7 @@ import { InventarioService } from './services/inventario.service';
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss']
 })
-export class InventarioComponent implements OnInit {
+export class InventarioComponent implements OnInit, OnDestroy {
 
   dataModal!: any;
 

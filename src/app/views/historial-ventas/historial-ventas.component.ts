@@ -1,4 +1,5 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
 import { HistorialVentasService } from './services/historial-ventas.service';
@@ -8,7 +9,7 @@ import { HistorialVentasService } from './services/historial-ventas.service';
   templateUrl: './historial-ventas.component.html',
   styleUrls: ['./historial-ventas.component.scss']
 })
-export class HistorialVentasComponent implements OnInit {
+export class HistorialVentasComponent implements OnInit, OnDestroy {
 
   dataModal!: any;
 
@@ -22,45 +23,49 @@ export class HistorialVentasComponent implements OnInit {
   listado: any = [];
   private querySubscription!: Subscription;
 
-  modalHistorial: boolean = false;
-  modalSalida: boolean = false;
+  modalDetalleVenta: boolean = false;
+  modalAnularVenta: boolean = false;
   modalDevolucion: boolean = false;
 
   tipoVista = 1;
+
+  form: FormGroup = new FormGroup({
+    fechaInicio: new FormControl('', [Validators.required]),
+    fechaFin: new FormControl('', [Validators.required]),
+  });
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
   constructor(private historialVentasService: HistorialVentasService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.initData();
   }
 
   refresh() {
     this.historialVentasService.refreshInventario();
-
   }
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
   }
 
-  cambiarVista(event:any){
+  cambiarVista(event: any) {
     this.tipoVista = event.target.value
+  }
+
+  filtroFecha() {
+    this.initData(this.form.controls["fechaInicio"].value, this.form.controls["fechaFin"].value);
   }
 
   openModal(data?: any) {
 
     switch (this.modal) {
-      case 'historial':
-        this.modalHistorial = true;
+      case 'modalDetalleVenta':
+        this.modalDetalleVenta = true;
         break;
-      case 'modalSalida':
-        this.modalSalida = true;
-        break;
-      case 'modalDevolucion':
-        console.log("Entra a mostrar modal..: ", this.modal);
-        this.modalDevolucion = true;
+      case 'modalAnularVenta':
+        this.modalAnularVenta = true;
         break;
     }
     if (data) {
@@ -73,14 +78,11 @@ export class HistorialVentasComponent implements OnInit {
 
   closeEventModal() {
     switch (this.modal) {
-      case 'historial':
-        this.modalHistorial = false;
+      case 'modalDetalleVenta':
+        this.modalDetalleVenta = false;
         break;
-      case 'modalSalida':
-        this.modalSalida = false;
-        break;
-      case 'modalDevolucion':
-        this.modalDevolucion = false;
+      case 'modalAnularVenta':
+        this.modalAnularVenta = false;
         break;
     }
     this.refresh();
@@ -90,20 +92,30 @@ export class HistorialVentasComponent implements OnInit {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
-    this.rightClickMenuItems = [
-      {
-        menuText: 'Devolución por error',
-        menuEvent: 'edit',
-        menuId: data,
-        modalDevolucion: true
-      },
-      {
-        menuText: 'Salida por error',
-        menuEvent: 'delete',
-        menuId: data,
-        modalSalida: true
-      },
-    ];
+    if(this.tipoVista == 1){
+      this.rightClickMenuItems = [
+        {
+          menuText: 'Ver',
+          menuEvent: 'edit',
+          menuId: data,
+        }
+      ];
+    }else{
+      this.rightClickMenuItems = [
+        {
+          menuText: 'Ver',
+          menuEvent: 'edit',
+          menuId: data,
+        },
+        {
+          menuText: 'Anular',
+          menuEvent: 'delete',
+          menuId: data,
+          modalAnularVenta: true
+        },
+      ];
+    }
+   
     this.createContextMenuComponent();
   }
 
@@ -120,35 +132,34 @@ export class HistorialVentasComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
-  initData(){
-    if(this.tipoVista == 1){
-      this.querySubscription = this.historialVentasService.getHistorialVentasDetallado()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.detalle_ordenes;
-        console.log("--> ", data);
-      });
-    }else{
-      this.querySubscription = this.historialVentasService.getHistorialVentasGeneral()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.ventas;
-        console.log("--> ", data);
-        data.ventas.forEach((venta:any) => {
-          let total:any = 0;
-          venta.ordene.detalle_ordenes.forEach((orden:any) => {
-            total += orden.total;
-          });
-          console.log("total: ", total);
-          let obj:any = {total: total};
-
-          console.log(venta.ordene.detalle_ordenes);
-          venta.ordene.detalle_ordenes = [obj]
-          //console.log(venta.ordene.detalle_ordenes = [{}]);
+  initData(fechaInicio?: any, fechaFin?: any) {
+    if (this.tipoVista == 1) {
+      this.querySubscription = this.historialVentasService.getHistorialVentasDetallado(fechaInicio, fechaFin)
+        .subscribe(({ data, loading }) => {
+          this.loading = loading;
+          this.listado = data.detalle_ordenes;
+          console.log("--> ", data);
         });
-        this.tipoVista = 3;
-      });
-      
+    } else {
+      this.querySubscription = this.historialVentasService.getHistorialVentasGeneral(fechaInicio, fechaFin)
+        .subscribe(({ data, loading }) => {
+          this.loading = loading;
+          console.log("--> ", data);
+          let ventas:any[] = [];
+          data.ventas.forEach((venta:any)=>{
+            let total:any = 0;
+
+            venta.ordene.detalle_ordenes.forEach((orden:any) => {
+              total += orden.total;
+            });
+            let ventaNueva = {...venta, total:total};
+            ventas.push(ventaNueva);
+          });
+
+          this.listado = ventas;
+          this.tipoVista = 3;
+        });
+
     }
   }
 

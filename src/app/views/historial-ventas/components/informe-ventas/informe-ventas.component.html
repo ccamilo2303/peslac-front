@@ -1,1 +1,81 @@
-<p>informe-ventas works!</p>
+<div class="card">
+    <div class="card-header">
+        <div class="p-2">
+
+            <div class="row">
+                <div class="col-4">
+                    <button type="button" class="btn btn-outline-secondary col-6" 
+                    [routerLink]="['/historial/ventas']">Atrás</button>
+                </div>
+
+                <div class="col-8">
+                    <form [formGroup]="form">
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-2 col-form-label">Fecha:</label>
+                            <div class="col-3">
+                                <input type="date" class="form-control" formControlName="fechaInicio" id="fechaInicio">
+                            </div>
+
+                            <label for="inputEmail3" class="col-1 col-form-label">Al</label>
+                            <div class="col-3">
+                                <input type="date" class="form-control" formControlName="fechaFin" id="fechaFin">
+                            </div>
+
+                            <div class="col-3">
+                                <button type="button" class="btn btn-outline-secondary col-12" [disabled]="form.invalid"
+                                    (click)="filtroFecha()">Aplicar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Mes</th>
+                    <th scope="col">Estación</th>
+                    <th scope="col">Descuentos</th>
+                    <th scope="col">Base Grabada</th>
+                    <th scope="col">Base No Grabada</th>
+                    <th scope="col">Total Ventas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let informe of listado">
+                    <th>{{informe.ordene.id}}</th>
+                    <td>{{informe.producto.nombre}}</td>
+                    <td>{{informe.cantidad}}</td>
+                    <td>{{informe.producto.precio_informe}}</td>
+                    <td>{{informe.producto.lineas_producto.nombre}}</td>
+                    <td>{{informe.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <c-chart [data]="dataGrafico" type="bar"></c-chart>
+    </div>
+</div>
+
+<!-- Modal -->
+<!--
+  <div *ngIf="displayStyleAddProduct == 'block'">
+    <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+  </div>
+ 
+  <div *ngIf="modalHistorial">
+    <app-modal-historial (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-historial>
+  </div>
+
+  <div *ngIf="modalSalida">
+    <app-modal-agregar-salida (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-salida>
+  </div>
+
+  <div *ngIf="modalDevolucion">
+    <app-modal-agregar-devolucion (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-devolucion>
+  </div> -->
