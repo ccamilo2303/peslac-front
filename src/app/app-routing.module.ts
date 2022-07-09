@@ -51,6 +51,11 @@ const routes: Routes = [
         import('./views/clientes/clientes.module').then((m) => m.ClientesModule)
       },
       {
+        path: 'ventas',
+        loadChildren: () =>
+        import('./views/ventas/ventas.module').then((m) => m.VentasModule)
+      },
+      {
         path: 'inventario',
         loadChildren: () =>
         import('./views/inventario/inventario.module').then((m) => m.InventarioModule)
