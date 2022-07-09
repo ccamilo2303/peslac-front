@@ -2,15 +2,15 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
-import { HistorialVentasService } from '../../services/historial-ventas.service';
+import { HistorialComprasService } from '../../services/historial-ventas.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-modal-anular-venta',
-  templateUrl: './modal-anular-venta.component.html',
-  styleUrls: ['./modal-anular-venta.component.scss']
+  selector: 'app-modal-anular-compra',
+  templateUrl: './modal-anular-compra.component.html',
+  styleUrls: ['./modal-anular-compra.component.scss']
 })
-export class ModalAnularVentaComponent implements OnInit {
+export class ModalAnularCompraComponent implements OnInit {
 
   @Input()
   public data: any;
@@ -25,7 +25,7 @@ export class ModalAnularVentaComponent implements OnInit {
     comentario: new FormControl('', [Validators.required]),
   });
 
-  constructor(private historialVentasService: HistorialVentasService, private appService: AppService) { }
+  constructor(private historialComprasService: HistorialComprasService, private appService: AppService) { }
 
   ngOnInit(): void {
 
@@ -51,7 +51,7 @@ export class ModalAnularVentaComponent implements OnInit {
   submit() {
 
 
-    this.historialVentasService.createAnularVenta(
+    this.historialComprasService.createAnularCompra(
       this.form.controls["id_venta"].value,
       this.form.controls["comentario"].value
     ).subscribe(({ data }) => {

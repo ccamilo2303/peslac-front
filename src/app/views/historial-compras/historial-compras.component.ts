@@ -2,14 +2,14 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRe
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
-import { HistorialVentasService } from './services/historial-ventas.service';
+import { HistorialComprasService } from './services/historial-ventas.service';
 
 @Component({
-  selector: 'app-historial-ventas',
-  templateUrl: './historial-ventas.component.html',
-  styleUrls: ['./historial-ventas.component.scss']
+  selector: 'app-historial-compras',
+  templateUrl: './historial-compras.component.html',
+  styleUrls: ['./historial-compras.component.scss']
 })
-export class HistorialVentasComponent implements OnInit, OnDestroy {
+export class HistorialComprasComponent implements OnInit {
 
   dataModal!: any;
 
@@ -23,9 +23,8 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
   listado: any = [];
   private querySubscription!: Subscription;
 
-  modalDetalleVenta: boolean = false;
-  modalAnularVenta: boolean = false;
-  modalDevolucion: boolean = false;
+  modalDetalleCompra: boolean = false;
+  modalAnularCompra: boolean = false;
 
   tipoVista = 1;
 
@@ -36,14 +35,14 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private historialVentasService: HistorialVentasService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private historialComprasService: HistorialComprasService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     this.initData();
   }
 
   refresh() {
-    this.historialVentasService.refreshHistorial();
+    this.historialComprasService.refreshHistorial();
   }
 
   ngOnDestroy() {
@@ -62,10 +61,10 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
 
     switch (this.modal) {
       case 'modalDetalleVenta':
-        this.modalDetalleVenta = true;
+        this.modalDetalleCompra = true;
         break;
       case 'modalAnularVenta':
-        this.modalAnularVenta = true;
+        this.modalAnularCompra = true;
         break;
     }
     if (data) {
@@ -79,10 +78,10 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
   closeEventModal() {
     switch (this.modal) {
       case 'modalDetalleVenta':
-        this.modalDetalleVenta = false;
+        this.modalDetalleCompra = false;
         break;
       case 'modalAnularVenta':
-        this.modalAnularVenta = false;
+        this.modalAnularCompra = false;
         break;
     }
     this.refresh();
@@ -92,30 +91,20 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
-    if(this.tipoVista == 1){
-      this.rightClickMenuItems = [
-        {
-          menuText: 'Ver',
-          menuEvent: 'edit',
-          menuId: data,
-        }
-      ];
-    }else{
-      this.rightClickMenuItems = [
-        {
-          menuText: 'Ver',
-          menuEvent: 'edit',
-          menuId: data,
-        },
-        {
-          menuText: 'Anular',
-          menuEvent: 'delete',
-          menuId: data,
-          modalAnularVenta: true
-        },
-      ];
-    }
-   
+    this.rightClickMenuItems = [
+      {
+        menuText: 'Ver',
+        menuEvent: 'edit',
+        menuId: data,
+      },
+      {
+        menuText: 'Anular',
+        menuEvent: 'delete',
+        menuId: data,
+        modalAnularVenta: true
+      },
+    ];
+
     this.createContextMenuComponent();
   }
 
@@ -134,25 +123,25 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
 
   initData(fechaInicio?: any, fechaFin?: any) {
     if (this.tipoVista == 1) {
-      this.querySubscription = this.historialVentasService.getHistorialVentasDetallado(fechaInicio, fechaFin)
+      this.querySubscription = this.historialComprasService.getHistorialComprasDetallado(fechaInicio, fechaFin)
         .subscribe(({ data, loading }) => {
           this.loading = loading;
           this.listado = data.detalle_ordenes;
           console.log("--> ", data);
         });
     } else {
-      this.querySubscription = this.historialVentasService.getHistorialVentasGeneral(fechaInicio, fechaFin)
+      this.querySubscription = this.historialComprasService.getHistorialComprasGeneral(fechaInicio, fechaFin)
         .subscribe(({ data, loading }) => {
           this.loading = loading;
           console.log("--> ", data);
-          let ventas:any[] = [];
-          data.ventas.forEach((venta:any)=>{
-            let total:any = 0;
+          let ventas: any[] = [];
+          data.ventas.forEach((venta: any) => {
+            let total: any = 0;
 
-            venta.ordene.detalle_ordenes.forEach((orden:any) => {
+            venta.ordene.detalle_ordenes.forEach((orden: any) => {
               total += orden.total;
             });
-            let ventaNueva = {...venta, total:total};
+            let ventaNueva = { ...venta, total: total };
             ventas.push(ventaNueva);
           });
 
@@ -162,5 +151,6 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
 
     }
   }
+
 
 }

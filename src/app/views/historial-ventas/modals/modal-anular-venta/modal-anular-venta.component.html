@@ -23,7 +23,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="submit()">Anular</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="form.invalid" (click)="submit()">Anular</button>
         </div>
     </div>
   </div>

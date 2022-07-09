@@ -1,0 +1,82 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Resumen De Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+          aria-label="Close"></button>
+      </div>
+      
+        <div class="modal-body">
+
+            <div class="">
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Fecha:</strong> {{listado[0].ordene.fecha_registro}}</label>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Proveedor:</strong> {{listado[0].ordene.usuario.estacion}}</label>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>No. Compra:</strong> {{listado[0].id}}</label>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Consecutivo:</strong> {{listado[0].ordene.consecutivo}}</label>
+                    </div>
+                </div>
+    
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Comprador:</strong> {{listado[0].ordene.cliente.nombres}} {{listado[0].ordene.cliente.apellidos}}</label>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Forma de pago:</strong> {{listado[0].ordene.metodos_pago.nombre}}</label>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Estado:</strong> {{listado[0].ordene.consecutivo}}</label>
+                    </div>
+                </div>
+    
+            </div>
+            
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cant.</th>
+                        <th scope="col">Valor Unt.</th>
+                        <th scope="col">Línea</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Impuesto</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let orden of listado[0].ordene.detalle_ordenes" (contextmenu)="onTableClick($event, orden)"
+                        [attr.modal]="'modalDevolucion'">
+                        <th>{{orden.producto.nombre}}</th>
+                        <th>{{orden.cantidad}}</th>
+                        <th>{{orden.producto.precio_venta}}</th>
+                        <th>{{orden.producto.lineas_producto.nombre}}</th>
+                        <th>{{orden.producto.valor_impuesto}}</th>
+                        <th>{{orden.producto.valor_impuesto}}</th>
+                        <th>{{orden.total}}</th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div #contextMenu></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="modalDevolucion">
+    <app-modal-devolucion-compra (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-devolucion-compra>
+</div>

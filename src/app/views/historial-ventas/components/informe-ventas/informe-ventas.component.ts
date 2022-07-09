@@ -51,7 +51,7 @@ export class InformeVentasComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.historialVentasService.refreshInventario();
+    this.historialVentasService.refreshHistorial();
   }
 
   ngOnDestroy() {

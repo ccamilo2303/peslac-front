@@ -2,18 +2,18 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ComponentFac
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
-import { HistorialVentasService } from '../../services/historial-ventas.service';
+import { HistorialComprasService } from '../../services/historial-ventas.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-modal-detalle-venta',
-  templateUrl: './modal-detalle-venta.component.html',
-  styleUrls: ['./modal-detalle-venta.component.scss']
+  selector: 'app-modal-detalle-compra',
+  templateUrl: './modal-detalle-compra.component.html',
+  styleUrls: ['./modal-detalle-compra.component.scss']
 })
-export class ModalDetalleVentaComponent implements OnInit, OnDestroy {
-  
+export class ModalDetalleCompraComponent implements OnInit {
+
   dataModal!: any;
   listado: any = [];
 
@@ -40,11 +40,11 @@ export class ModalDetalleVentaComponent implements OnInit, OnDestroy {
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private historialVentasService: HistorialVentasService, private appService: AppService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private historialComprasService: HistorialComprasService, private appService: AppService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
 
-    this.querySubscription = this.historialVentasService.getDetalleVenta(this.data.id)
+    this.querySubscription = this.historialComprasService.getDetalleCompra(this.data.id)
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.listado = data.ventas;
@@ -56,7 +56,7 @@ export class ModalDetalleVentaComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.historialVentasService.refreshHistorial();
+    this.historialComprasService.refreshHistorial();
   }
 
   ngOnDestroy() {
@@ -119,6 +119,5 @@ export class ModalDetalleVentaComponent implements OnInit, OnDestroy {
     //(<ContextMenuComponent>componentRef.instance).service = this.productService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
-
 
 }

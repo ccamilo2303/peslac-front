@@ -141,7 +141,7 @@ mutation InsertarDevolucion($cantidad: Int = 1, $id_producto: Int = 2, $id_tipo_
   providedIn: 'root'
 })
 
-export class HistorialVentasService {
+export class TransformacionService {
 
   postsQuery!: QueryRef<any>;
 

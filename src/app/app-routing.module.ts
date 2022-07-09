@@ -71,6 +71,21 @@ const routes: Routes = [
         import('./views/historial-ventas/components/informe-ventas/informe-ventas.module').then((m) => m.InformeVentasModule)
       },
       {
+        path: 'historial/compras',
+        loadChildren: () =>
+        import('./views/historial-compras/historial-compras.module').then((m) => m.HistorialComprasModule)
+      },
+      {
+        path: 'remisiones',
+        loadChildren: () =>
+        import('./views/historial-compras/historial-compras.module').then((m) => m.HistorialComprasModule)
+      },
+      {
+        path: 'transformacion',
+        loadChildren: () =>
+        import('./views/transformacion/transformacion.module').then((m) => m.TransformacionModule)
+      },
+      {
         path: 'buttons',
         loadChildren: () =>
           import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)

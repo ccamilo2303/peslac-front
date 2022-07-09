@@ -1,4 +1,4 @@
-<div id="modalProveedor2" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -9,13 +9,13 @@
       
         <div class="modal-body">
           
-            <h5 class="text-center mb-3">¿Cuánto desea devolver?</h5>
-            
+            <h5 class="text-center mb-3">Agrega un comentario para anular la compra</h5>
 
             <form [formGroup]="form">
                 <div class="row">
-                    <div class="col-4 offset-4">
-                        <input type="number" class="form-control" formControlName="cantidad">
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Comentario</label>
+                        <textarea class="form-control" formControlName="comentario" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
                 </div>
             </form>
@@ -23,7 +23,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="form.invalid" (click)="submit()">Aceptar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="form.invalid" (click)="submit()">Anular</button>
         </div>
     </div>
   </div>

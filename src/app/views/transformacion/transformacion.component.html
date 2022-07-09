@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="card-header">
+        <div class="p-2">
+
+            <div class="row">
+                <div class="col-4">
+                    <button type="button" class="btn btn-outline-secondary me-3"
+                    (click)="modal = 'modalAgregarTransformacion'; openModal()">Crear Transformacion</button>
+                </div>
+
+                <div class="col-8">
+                    <form [formGroup]="form">
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-2 col-form-label">Fecha:</label>
+                            <div class="col-3">
+                                <input type="date" class="form-control" formControlName="fechaInicio" id="fechaInicio">
+                            </div>
+
+                            <label for="inputEmail3" class="col-1 col-form-label">Al:</label>
+                            <div class="col-3">
+                                <input type="date" class="form-control" formControlName="fechaFin" id="fechaFin">
+                            </div>
+
+                            <div class="col-3">
+                                <button type="button" class="btn btn-outline-secondary col-12" [disabled]="form.invalid"
+                                    (click)="filtroFecha()">Aplicar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Valor Unt.</th>
+                    <th scope="col">Línea</th>
+                    <th scope="col">Código</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
+                    [attr.modal]="'modalAgregarTransformacion'">
+                    <td>{{venta.producto.nombre}}</td>
+                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
+                    <td>{{venta.producto.precio_venta}}</td>
+                    <td>{{venta.producto.lineas_producto.nombre}}</td>
+                    <td>{{venta.cantidad}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div #contextMenu></div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+<div *ngIf="modalAgregarTransformacion">
+    <app-modal-agregar-transformacion (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-transformacion>
+</div>

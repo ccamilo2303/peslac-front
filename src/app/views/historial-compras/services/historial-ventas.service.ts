@@ -3,7 +3,7 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
 
-const GET_HISTORIAL_VENTAS_GENERAL = gql`
+const GET_HISTORIAL_COMPRAS_GENERAL = gql`
 query InformeVentasGeneral($fechaInicio: date = "2022-01-01", $fechaFin: date = "2500-01-01") {
   ventas(order_by: {id: asc}, where: {ordene: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}, anulado: {_eq: false}}) {
     id
@@ -25,7 +25,7 @@ query InformeVentasGeneral($fechaInicio: date = "2022-01-01", $fechaFin: date = 
 }
 `;
 
-const GET_HISTORIAL_VENTAS_DETALLADO = gql`
+const GET_HISTORIAL_COMPRAS_DETALLADO = gql`
 query InformeVentasDetallado($fechaInicio: date = "2022-01-01", $fechaFin: date = "2500-01-01") {
   detalle_ordenes(where: {ordene: {ventas: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}}}) {
     ordene {
@@ -48,7 +48,7 @@ query InformeVentasDetallado($fechaInicio: date = "2022-01-01", $fechaFin: date 
 }
 `;
 
-const GET_DETALLE_VENTA = gql`
+const GET_DETALLE_COMPRA = gql`
 query ConsultarDetalleVenta($idVenta: Int = 4) {
   ventas(where: {id: {_eq: $idVenta}}) {
     id
@@ -87,31 +87,8 @@ query ConsultarDetalleVenta($idVenta: Int = 4) {
 }
 `;
 
-const GET_HISTORIAL_VENTAS_ANULADAS = gql`
-query VentasAnuladas($fechaInicio: date = "2022-01-01", $fechaFin: date = "2500-01-01") {
-  ventas_anuladas(where: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}) {
-    venta {
-      id
-      fecha_registro
-      ordene{
-      cliente {
-        nombres
-        apellidos
-      }
-      usuario {
-        nombres
-        apellidos
-      }
-      detalle_ordenes {
-        total
-      }
-      }
-    }
-  }
-}
-`;
 
-const POST_ANULAR_VENTA = gql`
+const POST_ANULAR_COMPRA = gql`
 mutation AnularVenta($id_venta: Int = 10, $comentario: String = "") {
   insert_ventas_anuladas_one(object: {id_venta: $id_venta, comentario: $comentario}) {
     id
@@ -141,17 +118,17 @@ mutation InsertarDevolucion($cantidad: Int = 1, $id_producto: Int = 2, $id_tipo_
   providedIn: 'root'
 })
 
-export class HistorialVentasService {
+export class HistorialComprasService {
 
   postsQuery!: QueryRef<any>;
 
 
   constructor(private apollo: Apollo) { }
 
-  getHistorialVentasGeneral(fechaInicio?: any, fechaFin?: any): Observable<any> {
+  getHistorialComprasGeneral(fechaInicio?: any, fechaFin?: any): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_HISTORIAL_VENTAS_GENERAL,
+      query: GET_HISTORIAL_COMPRAS_GENERAL,
       variables: {
         fechaInicio: fechaInicio,
         fechaFin: fechaFin
@@ -161,10 +138,10 @@ export class HistorialVentasService {
     return this.postsQuery.valueChanges;
   }
 
-  getHistorialVentasDetallado(fechaInicio?: any, fechaFin?: any): Observable<any> {
+  getHistorialComprasDetallado(fechaInicio?: any, fechaFin?: any): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_HISTORIAL_VENTAS_DETALLADO,
+      query: GET_HISTORIAL_COMPRAS_DETALLADO,
       variables: {
         fechaInicio: fechaInicio,
         fechaFin: fechaFin
@@ -174,23 +151,10 @@ export class HistorialVentasService {
     return this.postsQuery.valueChanges;
   }
 
-  getHistorialVentasAnuladas(fechaInicio?: any, fechaFin?: any): Observable<any> {
+  getDetalleCompra(idVenta:any): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_HISTORIAL_VENTAS_ANULADAS,
-      variables: {
-        fechaInicio: fechaInicio,
-        fechaFin: fechaFin
-      }
-    });
-
-    return this.postsQuery.valueChanges;
-  }
-
-  getDetalleVenta(idVenta:any): Observable<any> {
-
-    this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_DETALLE_VENTA,
+      query: GET_DETALLE_COMPRA,
       variables: {
         idVenta: idVenta
       }
@@ -204,9 +168,9 @@ export class HistorialVentasService {
   }
 
 
-  createAnularVenta(id_venta: any, comentario: any) {
+  createAnularCompra(id_venta: any, comentario: any) {
     return this.apollo.mutate({
-      mutation: POST_ANULAR_VENTA,
+      mutation: POST_ANULAR_COMPRA,
       variables: {
         id_venta: id_venta,
         comentario: comentario
