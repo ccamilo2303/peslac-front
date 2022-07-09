@@ -86,6 +86,11 @@ const routes: Routes = [
         import('./views/transformacion/transformacion.module').then((m) => m.TransformacionModule)
       },
       {
+        path: 'devoluciones',
+        loadChildren: () =>
+        import('./views/devoluciones/devoluciones.module').then((m) => m.DevolucionesModule)
+      },
+      {
         path: 'buttons',
         loadChildren: () =>
           import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)

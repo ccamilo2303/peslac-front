@@ -63,7 +63,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Devoluciones',
-    url: '/product',
+    url: '/devoluciones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {

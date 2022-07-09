@@ -1,0 +1,77 @@
+<div class="card">
+    <div class="card-header">
+        <div class="p-2">
+
+            <div class="row">
+
+                <div class="col-12">
+                    <form [formGroup]="form">
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-1 col-form-label">Fecha:</label>
+                            <div class="col-4">
+                                <input type="date" class="form-control" formControlName="fechaInicio" id="fechaInicio">
+                            </div>
+
+                            <label for="inputEmail3" class="col-1 col-form-label">Al:</label>
+                            <div class="col-4">
+                                <input type="date" class="form-control" formControlName="fechaFin" id="fechaFin">
+                            </div>
+
+                            <div class="col-2">
+                                <button type="button" class="btn btn-outline-secondary col-12" [disabled]="form.invalid"
+                                    (click)="filtroFecha()">Aplicar</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Buscar Razón social"
+                                    aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <span class="input-group-text" id="basic-addon2">Buscador</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cant.</th>
+                    <th scope="col">Valor Unt.</th>
+                    <th scope="col">Línea</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
+                    [attr.modal]="'modalDetalleDevolucion'">
+                    <th>{{venta.ordene.id}}</th>
+                    <td>{{venta.producto.nombre}}</td>
+                    <td>{{venta.cantidad}}</td>
+                    <td>{{venta.producto.precio_venta}}</td>
+                    <td>{{venta.producto.lineas_producto.nombre}}</td>
+                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
+                    <td>{{venta.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div #contextMenu></div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+<div *ngIf="modalDetalleDevolucion">
+    <app-modal-detalle-devolucion (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-detalle-devolucion>
+</div>
