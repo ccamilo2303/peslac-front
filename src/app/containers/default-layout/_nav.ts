@@ -33,7 +33,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Ventas',
-    url: '/product',
+    url: '/ventas',
     iconComponent: { name: 'cil-puzzle' },
   },
   {

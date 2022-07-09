@@ -45,12 +45,15 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/proveedores/proveedores.module').then((m) => m.ProveedoresModule)
       },
-      
-
       {
         path: 'clientes',
         loadChildren: () =>
         import('./views/clientes/clientes.module').then((m) => m.ClientesModule)
+      },
+      {
+        path: 'ventas',
+        loadChildren: () =>
+        import('./views/ventas/ventas.module').then((m) => m.VentasModule)
       },
       {
         path: 'buttons',
