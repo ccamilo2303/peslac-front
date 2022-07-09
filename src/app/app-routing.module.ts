@@ -56,6 +56,41 @@ const routes: Routes = [
         import('./views/ventas/ventas.module').then((m) => m.VentasModule)
       },
       {
+        path: 'inventario',
+        loadChildren: () =>
+        import('./views/inventario/inventario.module').then((m) => m.InventarioModule)
+      },
+      {
+        path: 'historial/ventas',
+        loadChildren: () =>
+        import('./views/historial-ventas/historial-ventas.module').then((m) => m.HistorialVentasModule)
+      },
+      {
+        path: 'historial/ventas/anulados',
+        loadChildren: () =>
+        import('./views/historial-ventas/components/historial-anulados/historial-anulados.module').then((m) => m.HistorialAnuladosModule)
+      },
+      {
+        path: 'historial/ventas/informe',
+        loadChildren: () =>
+        import('./views/historial-ventas/components/informe-ventas/informe-ventas.module').then((m) => m.InformeVentasModule)
+      },
+      {
+        path: 'historial/compras',
+        loadChildren: () =>
+        import('./views/historial-compras/historial-compras.module').then((m) => m.HistorialComprasModule)
+      },
+      {
+        path: 'remisiones',
+        loadChildren: () =>
+        import('./views/historial-compras/historial-compras.module').then((m) => m.HistorialComprasModule)
+      },
+      {
+        path: 'transformacion',
+        loadChildren: () =>
+        import('./views/transformacion/transformacion.module').then((m) => m.TransformacionModule)
+      },
+      {
         path: 'buttons',
         loadChildren: () =>
           import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)

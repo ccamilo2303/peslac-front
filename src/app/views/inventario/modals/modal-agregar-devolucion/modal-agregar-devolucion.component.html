@@ -1,0 +1,84 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Devolución Por Error</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="form">
+        <div class="modal-body">
+          <div class="m-1">
+            <div class="row mb-3">
+
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Cód.</label>
+                  <div>
+                    <label for="exampleFormControlInput1" class="form-label">{{data.id}}</label>
+                  </div>
+                </div> 
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+                  <div>
+                    <label for="exampleFormControlInput1" class="form-label">{{data.nombre}}</label>
+                  </div>
+                </div> 
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Unidades</label>
+                  <input type="number" class="form-control" formControlName="cantidad" id="cantidad">
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Línea</label>
+                  <div>
+                    <label for="exampleFormControlInput1" class="form-label">{{data.id_linea}}</label>
+                  </div>
+                </div> 
+              </div>
+
+              <div class="col">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Valor Unitario</label>
+                  <div>
+                    <label for="exampleFormControlInput1" class="form-label">{{data.precio_costo}}</label>
+                  </div>
+                </div> 
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="row">
+            <h5 for="exampleFormControlTextarea1" class="form-h5 text-center">Agrega un comentario del error</h5>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Comentario</label>
+                <textarea class="form-control" formControlName="comentario" id="comentario" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

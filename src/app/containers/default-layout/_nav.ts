@@ -27,8 +27,8 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-puzzle' },
   },
   {
-    name: 'Inventarios',
-    url: '/product',
+    name: 'Inventario',
+    url: '/inventario',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
@@ -38,7 +38,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Historial de Ventas',
-    url: '/product',
+    url: '/historial/ventas',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
@@ -48,7 +48,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Historial de Compras',
-    url: '/product',
+    url: '/historial/compras',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
@@ -58,7 +58,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Transformación',
-    url: '/product',
+    url: '/transformacion',
     iconComponent: { name: 'cil-puzzle' },
   },
   {

@@ -19,7 +19,6 @@ export class ContextMenuComponent implements OnInit {
   @Input() contextMenuItems:any;
   @Input() service:any;
   @Input() component:any;
-  @Input() modal:any = null;
 
   isDisplayContextMenu: boolean = false;
   _currentMenuVisible = null;
@@ -94,32 +93,23 @@ export class ContextMenuComponent implements OnInit {
   }
   
   edit(id:any){
-    if(this.modal != null){
-      this.component.modal =this.modal;
+    if(this.contextMenuItems[0].modalDevolucion){
+      this.component.modal = "modalDevolucion";
     }
     this.component.openModal(id);
   }
 
-  delete(id:number){ 
-    this.service.delete(id).subscribe( 
-      {
-        complete: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Usuario eliminado con exito',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        },
-        error: (error: Error)=>{
-          Swal.fire({
-            icon: 'error',
-            title: error.message,
-            showConfirmButton: false,
-          })
-        }
-      }
-    );
+  delete(id:any){ 
+    
+    if(this.contextMenuItems[1].modalSalida){
+      this.component.modal = "modalSalida";
+      this.component.openModal(id);
+    }
+
+    if(this.contextMenuItems[1].modalAnularVenta){
+      this.component.modal = "modalAnularVenta";
+      this.component.openModal(id);
+    }
     
   }
 

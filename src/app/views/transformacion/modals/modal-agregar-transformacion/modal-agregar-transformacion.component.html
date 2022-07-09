@@ -1,0 +1,113 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form">
+                    <div class="m-1 ">
+                        <div class="row">
+
+                            <div class="col">
+                                <form [formGroup]="productForm">
+                                    <div formArrayName="productos">
+                                        <div class="row" *ngFor="let producto of productos().controls; let i=index"
+                                            [formGroupName]="i">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Producto:</label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        formControlName="id_producto">
+                                                        <option *ngFor="let item of listadoProductos"
+                                                            value="{{item.id}}">
+                                                            {{item.nombre}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="exampleFormControlInput1"
+                                                        class="form-label">Cantidad</label>
+                                                    <input type="number" class="form-control"
+                                                        id="exampleFormControlInput1">
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <button class="btn btn-danger" style="margin-top: 2rem !important;"
+                                                    (click)="deleteProducto(i)">x</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <button class="btn btn-primary col-12" (click)="addProducto()">Añadir
+                                                Producto</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Producto:</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                formControlName="id_producto">
+                                                <option *ngFor="let item of listadoProductos" value="{{item.id}}">
+                                                    {{item.nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 row">
+                                            <label for="staticEmail" class="col-sm-5 col-form-label">Código de
+                                                barras:</label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    <span class="input-group-text" id="basic-addon1">|||||</span>
+                                                    <input type="text" class="form-control" placeholder="Username"
+                                                        aria-label="Username" aria-describedby="basic-addon1"
+                                                        formControlName="codigo_barras">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid"
+                    (click)="submit()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>

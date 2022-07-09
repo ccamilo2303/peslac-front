@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
-import { ClientesService } from '../../services/clientes.service';
+import { TransformacionService } from '../../services/transformacion.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-modal-agregar-clientes',
-  templateUrl: './modal-agregar-clientes.component.html',
-  styleUrls: ['./modal-agregar-clientes.component.scss']
+  selector: 'app-modal-agregar-transformacion',
+  templateUrl: './modal-agregar-transformacion.component.html',
+  styleUrls: ['./modal-agregar-transformacion.component.scss']
 })
-export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
+export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
 
   @Input()
   public data: any;
@@ -18,7 +18,7 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
-  public listaPrecios!: any;
+  public listadoProductos!: any;
   private querySubscription!: Subscription;
 
   form: FormGroup = new FormGroup({
@@ -31,7 +31,33 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
     id_lista_precios: new FormControl('', [Validators.required]),
   });
 
-  constructor(private clientesService: ClientesService, private appService: AppService) { }
+  productForm: FormGroup;
+
+  constructor(private transformacionService: TransformacionService, private appService: AppService, private fb:FormBuilder) { 
+    this.productForm = this.fb.group({  
+      productos: this.fb.array([]) ,  
+    }); 
+  }
+
+  productos() : FormArray {  
+    return this.productForm.get("productos") as FormArray  
+  }  
+     
+  nuevoProducto(): FormGroup {  
+    return this.fb.group({  
+      id_producto: new FormControl('', [Validators.required]),
+      id_paquete: new FormControl('0', [Validators.required]),
+      cantidad: new FormControl('', [Validators.required]),
+    })  
+  }  
+     
+  addProducto() {  
+    this.productos().push(this.nuevoProducto());  
+  }  
+     
+  deleteProducto(i:number) {  
+    this.productos().removeAt(i);  
+  }  
 
   ngOnInit(): void {
 
@@ -55,8 +81,8 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   submit() {
 
-    if (!this.data) {
-      this.clientesService.createClientes(this.form.value).subscribe(({ data }) => {
+    /*if (!this.data) {
+      this.transformacionService.createClientes(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);
         this.closeModal();
       }, (error) => {
@@ -65,7 +91,7 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
     } else {
 
-      this.clientesService.editClientes(this.form.value, this.data.id)
+      this.transformacionService.editClientes(this.form.value, this.data.id)
         .subscribe(({ data }) => {
           console.log('got data', data);
           this.closeModal();
@@ -73,14 +99,14 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
           console.log('there was an error sending the query', error);
         });
 
-    }
+    }*/
 
   }
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.listaPrecios = data.proveedores;
+    this.querySubscription = this.appService.getListadoProductos().subscribe(({ data, loading }) => {
+      this.listadoProductos = data.productos;
     });
 
     if (this.data && this.data.id != null) {
@@ -97,5 +123,5 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   }
 
-}
 
+}

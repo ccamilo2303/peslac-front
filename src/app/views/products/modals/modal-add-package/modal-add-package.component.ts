@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './modal-add-package.component.html',
   styleUrls: ['./modal-add-package.component.scss']
 })
-export class ModalAddPackageComponent implements OnInit {
+export class ModalAddPackageComponent implements OnInit, OnDestroy {
 
   @Input()
   public displayStyle: string = '';
