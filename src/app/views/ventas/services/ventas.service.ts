@@ -75,11 +75,11 @@ export class VentasService {
     });
   }
 
-  crearVenta(data: any) {
+  crearVenta(id_orden: any) {
     return this.apollo.mutate({
       mutation: PUT_VENTA,
       variables: {
-        object: data
+        id_orden: id_orden
       }
     });
   }

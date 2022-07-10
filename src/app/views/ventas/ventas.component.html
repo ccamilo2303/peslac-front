@@ -1,7 +1,10 @@
-<div class="card">
+<div class="card"  (window:keypress)="onKey($event)">
 
   <div class="card-body">
-
+    <div class="row">
+      <input type="text"/>
+      <p>barcode: {{ barcode }}</p> 
+  </div>
 
     <form [formGroup]="form">
 
@@ -63,6 +66,25 @@
         </div>
 
         <div class="col-md-3">
+          <label class="form-label">&nbsp;</label>
+          <button type="button" class="form-control btn btn-outline-dark" (click)="addProducto()">Agregar Producto</button>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Precio de venta</label>
+          <!--value="{{|currency:'CAD':'symbol-narrow'}}"-->
+          <input type="text" class="form-control" formControlName="precioVenta" id="precioVenta">
+        </div>
+        
+
+
+
+      </div>
+
+      <div class="row mb-3">
+        
+
+        <div class="col-md-3">
           <label class="form-label">Método de pago</label>
           <select class="form-select" formControlName="metodoPago" id="metodoPago">
             <option *ngFor="let item of metodosPago" [ngValue]="item">{{item.nombre}}</option>
@@ -72,22 +94,10 @@
         <div class="col-md-3">
           <label class="form-label">Condición de pago</label>
           <select class="form-select" formControlName="condicionPago" id="condicionPago">
-            <option *ngFor="let item of condicionesPago" [value]="item">{{item.nombre}}</option>
+            <option *ngFor="let item of condicionesPago" [ngValue]="item">{{item.nombre}}</option>
           </select>
         </div>
 
-      </div>
-
-      <div class="row mb-3">
-        <div class="col-md-3">
-          <label class="form-label">Precio de venta</label>
-          <!--value="{{|currency:'CAD':'symbol-narrow'}}"-->
-          <input type="text" class="form-control" formControlName="precioVenta" id="precioVenta">
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">&nbsp;</label>
-          <button type="button" class="form-control btn btn-outline-dark" (click)="addProducto()">Agregar Producto</button>
-        </div>
         <div class="col-md-3">
           <label class="form-label">Tipo de Orden</label>
           <select class="form-select" formControlName="tipoOrden" id="tipoOrden">

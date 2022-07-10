@@ -1,5 +1,5 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { ignoreElements, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { VentasService } from './services/ventas.service';
 import { ClientesService } from '../clientes/services/clientes.service';
 import { ProductService } from '../products/services/product-service/product.service';
@@ -17,44 +17,55 @@ export class VentasComponent implements OnInit, OnDestroy {
 
 
 
+  onStarted(started: any) {
+    console.log(started);
+  }
+
+  barcode: string = '';
+
+  onKey(event: any) {
+    this.barcode = event.target.value;
+  }
+
+
   //Suscripciones
   private queryClientesSubscription!: Subscription;
   private queryProductosSubscription!: Subscription;
   private queryMetodosPagoSubscription!: Subscription;
   private queryCondicionPagoSubscription!: Subscription;
-  
+
 
 
   //Variables de vista
-  public clientes:any[] = [];
-  public productos:any[] = [];
-  public metodosPago:any[] = [];
-  public condicionesPago:any[] = [];
-  public listadoProductos:any[] = [];
-  public modalCliente:boolean = false;
+  public clientes: any[] = [];
+  public productos: any[] = [];
+  public metodosPago: any[] = [];
+  public condicionesPago: any[] = [];
+  public listadoProductos: any[] = [];
+  public modalCliente: boolean = false;
   public dataModal!: any;
 
   form: FormGroup = new FormGroup({
-    fecha: new FormControl({value: this.formatDate(new Date()), disabled: true}, []),
-    vendedor: new FormControl({value: this.authService.getInfoUsuario().nombres +' '+ this.authService.getInfoUsuario().apellidos, disabled: true}, []),
-    nit: new FormControl({value: this.authService.getInfoUsuario().nit, disabled: true}, []),
+    fecha: new FormControl({ value: this.formatDate(new Date()), disabled: true }, []),
+    vendedor: new FormControl({ value: this.authService.getInfoUsuario().nombres + ' ' + this.authService.getInfoUsuario().apellidos, disabled: true }, []),
+    nit: new FormControl({ value: this.authService.getInfoUsuario().nit, disabled: true }, []),
     consecutivo: new FormControl('', [Validators.required]),
     cliente: new FormControl({}, [Validators.required]),
-    estacion: new FormControl({value: this.authService.getInfoUsuario().estacion, disabled: true}, []),
-    noVenta: new FormControl({value: '', disabled: true}, []),
+    estacion: new FormControl({ value: this.authService.getInfoUsuario().estacion, disabled: true }, []),
+    noVenta: new FormControl({ value: '', disabled: true }, []),
     producto: new FormControl({}, []),
     cantidad: new FormControl(0, []),
     metodoPago: new FormControl({}, [Validators.required]),
     condicionPago: new FormControl({}, [Validators.required]),
-    precioVenta: new FormControl({value: '', disabled: true}, []),
+    precioVenta: new FormControl({ value: '', disabled: true }, []),
     tipoOrden: new FormControl({}, [Validators.required])
   });
 
 
-  constructor(private authService:AuthService, private appService: AppService, private productService:ProductService, private clientesService: ClientesService, private ventasService:VentasService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private authService: AuthService, private appService: AppService, private productService: ProductService, private clientesService: ClientesService, private ventasService: VentasService) { }
 
   ngOnInit(): void {
-  
+
     this.queryClientesSubscription = this.clientesService.getClientes().subscribe(({ data }) => {
       this.clientes = data.clientes;
     });
@@ -66,42 +77,42 @@ export class VentasComponent implements OnInit, OnDestroy {
     this.queryMetodosPagoSubscription = this.appService.getListadoMetodosPago().subscribe(({ data }) => {
       this.metodosPago = data.metodos_pago;
     });
-    
+
     this.queryCondicionPagoSubscription = this.appService.getListadoCondicionPago().subscribe(({ data }) => {
       this.condicionesPago = data.condiciones_pago;
     });
 
   }
 
-  addProducto(){
+  addProducto() {
 
 
-    let productoSeleccionado:any = this.form.controls['producto'].value;
+    let productoSeleccionado: any = this.form.controls['producto'].value;
 
-    if(!productoSeleccionado.id){
+    if (!productoSeleccionado.id) {
       Swal.fire({
         title: 'Error!',
         text: 'Debe seleccionar un producto',
         icon: 'error',
         confirmButtonText: 'Ok'
       });
-      return ;
+      return;
     }
 
     let cantidad = this.form.controls['cantidad'].value;
 
-    if(cantidad <= 0){
+    if (cantidad <= 0) {
       Swal.fire({
         title: 'Error!',
         text: 'La cantidad debe ser mayor o igual a cero',
         icon: 'error',
         confirmButtonText: 'Ok'
       });
-      return ;
+      return;
     }
 
-    
-    let productoLista = {...productoSeleccionado, cantidad : this.form.controls['cantidad'].value}
+
+    let productoLista = { ...productoSeleccionado, cantidad: this.form.controls['cantidad'].value }
     productoLista.valor_descuento = this.calcularDescuento(productoSeleccionado, cantidad);
     this.listadoProductos.push(productoLista);
 
@@ -110,26 +121,26 @@ export class VentasComponent implements OnInit, OnDestroy {
 
   }
 
-  calcularPrecioVenta(){
+  calcularPrecioVenta() {
     let productoSeleccionado = this.form.controls['producto'].value;
     let cantidad = this.form.controls['cantidad'].value;
-    if(productoSeleccionado.id && cantidad > 0){
-      
+    if (productoSeleccionado.id && cantidad > 0) {
+
 
 
     }
   }
 
-  calcularDescuento(producto:any, cantidad:any){
-    let descuento = producto.descuentos.filter( (x:any) => cantidad >= x.cantidad_min && cantidad <= x.cantidad_max);
-    if(descuento && descuento.length > 0){
+  calcularDescuento(producto: any, cantidad: any) {
+    let descuento = producto.descuentos.filter((x: any) => cantidad >= x.cantidad_min && cantidad <= x.cantidad_max);
+    if (descuento && descuento.length > 0) {
       return (producto.precio_venta * descuento[0].descuento) / 100
     }
     return 0;
   }
 
 
-  formatDate(date:Date) {
+  formatDate(date: Date) {
     return [
       this.padTo2Digits(date.getDate()),
       this.padTo2Digits(date.getMonth() + 1),
@@ -137,20 +148,20 @@ export class VentasComponent implements OnInit, OnDestroy {
     ].join('/');
   }
 
-  padTo2Digits(num:any) {
+  padTo2Digits(num: any) {
     return num.toString().padStart(2, '0');
   }
 
-  abrirModalCliente(){
+  abrirModalCliente() {
     this.modalCliente = true;
   }
 
-  closeEventModal(){
+  closeEventModal() {
     this.modalCliente = false;
     this.refresh();
   }
 
-  quitarProducto(item:any){
+  quitarProducto(item: any) {
     this.listadoProductos = this.listadoProductos.filter(x => x.id != item.id);
   }
 
@@ -161,52 +172,124 @@ export class VentasComponent implements OnInit, OnDestroy {
 
   }
 
-  guardarInformacion(){
-    let timerInterval:any;
+  guardarInformacion() {
 
+    if (this.listadoProductos.length == 0) {
+      this.mensajeErrorValidacion("Debe agregar productos");
+      return;
+    }
+
+    if (!this.form.controls['cliente'].value.id) {
+      this.mensajeErrorValidacion("Debe seleccionar un cliente");
+      return;
+    }
+
+    if (!this.form.controls['metodoPago'].value.id) {
+      this.mensajeErrorValidacion("Debe seleccionar un método de pago");
+      return;
+    }
+
+    if (!this.form.controls['condicionPago'].value.id) {
+      this.mensajeErrorValidacion("Debe seleccionar una condición de pago");
+      return;
+    }
 
     Swal.fire({
       title: 'Registrando Venta...',
-      timer: 4000,
+      timer: 10000,
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading()
-        
-        timerInterval = setInterval(() => {
-          
-        }, 100)
-      },
-      willClose: () => {
-        clearInterval(timerInterval)
       }
     }).then((result) => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
-        console.log('I was closed by the timer')
-        Swal.fire({ 
-          title: 'Información guardada correctamente',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        });
+        this.mensajeError();
       }
     })
 
     let objOrden = {
-      id_usuario : this.authService.getInfoUsuario().idUsuario,
-      consecutivo : this.form.controls['consecutivo'].value,
-      id_cliente : this.form.controls['cliente'].value.id,
-      id_metodo_pago : this.form.controls['metodoPago'].value.id,
-      id_condicion_pago : this.form.controls['condicionPago'].value.id,
-      id_tipo_venta : this.form.controls['condicionPago'].value.id,
+      id_usuario: this.authService.getInfoUsuario().idUsuario,
+      consecutivo: this.form.controls['consecutivo'].value,
+      id_cliente: this.form.controls['cliente'].value.id,
+      id_metodo_pago: this.form.controls['metodoPago'].value.id,
+      id_condicion_pago: this.form.controls['condicionPago'].value.id,
+      id_tipo_venta: this.form.controls['condicionPago'].value.id,
     }
-    this.ventasService.crearOrden({}).subscribe(res =>{
 
+    let objDetalleOrden: any[] = [];
+
+
+    this.ventasService.crearOrden(objOrden).subscribe({
+      next: (resOrden: any) => {
+        let id = resOrden.data.insert_ordenes_one.id;
+        this.llenarListaProductos(objDetalleOrden, id);
+        console.log("objDetalleOrden: ", objDetalleOrden);
+        this.ventasService.crearDetalleOrden(objDetalleOrden).subscribe({
+          next: (resDetalleOrden: any) => {
+            let ids = resDetalleOrden.data.insert_detalle_ordenes.returning;
+            console.log("resDetalleOrden: ", ids);
+
+            this.ventasService.crearVenta(id).subscribe({
+              next: (resVenta: any) => {
+                let id = resVenta.data.insert_ventas_one.id;
+                console.log("resVenta: ", resVenta);
+                this.mensajeOk();
+              },
+              error: (e) => this.mensajeError()
+            })
+          },
+          error: (e) => this.mensajeError()
+        })
+      },
+      error: (e) => this.mensajeError(),
+    });
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
     });
   }
 
 
+  private llenarListaProductos(objDetalleOrden: any[], id: any) {
+    this.listadoProductos.forEach(item => {
+      let producto = {
+        id_venta: id,
+        id_producto: item.id,
+        cantidad: item.cantidad,
+        total: item.cantidad * item.precio_venta
+      }
+      objDetalleOrden.push(producto);
+    });
+
+  }
+
+  keyPress(event: KeyboardEvent) {
+    console.log("event: ", event);
+  }
+
   ngOnDestroy() {
-    
+
 
     this.queryClientesSubscription.unsubscribe();
     this.queryProductosSubscription.unsubscribe();
