@@ -91,6 +91,11 @@ const routes: Routes = [
         import('./views/transformacion/transformacion.module').then((m) => m.TransformacionModule)
       },
       {
+        path: 'empaques-dotaciones',
+        loadChildren: () =>
+        import('./views/empaques-dotaciones/empaques-dotaciones.module').then((m) => m.EmpaquesDotacionesModule)
+      },
+      {
         path: 'devoluciones',
         loadChildren: () =>
         import('./views/devoluciones/devoluciones.module').then((m) => m.DevolucionesModule)

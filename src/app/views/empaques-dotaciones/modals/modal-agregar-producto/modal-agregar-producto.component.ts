@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { ProductService } from '../../services/product-service/product.service';
+import { ProductService } from '../../services/product.service';
 import Swal from 'sweetalert2';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { AppService } from '../../../../app.service';
@@ -10,12 +10,11 @@ import { Subscription } from 'rxjs';
 declare var $: any;
 
 @Component({
-  selector: 'app-modal-add-product',
-  templateUrl: './modal-add-product.component.html',
-  styleUrls: ['./modal-add-product.component.scss']
+  selector: 'app-modal-agregar-producto',
+  templateUrl: './modal-agregar-producto.component.html',
+  styleUrls: ['./modal-agregar-producto.component.scss']
 })
-
-export class ModalAddProductComponent implements OnInit, OnDestroy {
+export class ModalAgregarProductoComponent implements OnInit {
 
   @Input()
   public data: any;
@@ -25,6 +24,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   modalProveedores: boolean = false;
   modal: string = "";
+  loading: boolean = false;
 
   public tiposProveedores!: any;
   public tiposCantidades!: any;
@@ -62,22 +62,8 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.form.reset();
     this.closeEvent.emit(true);
     $("#modalProveedor").modal('hide');
-  }
-
-  openModal(data?: any) {
-    switch (this.modal) {
-      case 'addSuplier':
-        this.modalProveedores = true;
-        break;
-    }
-    if (data) {
-      this.data = data;
-    } else {
-      this.data = {};
-    }
   }
 
   handleUpload(event: any) {
@@ -145,7 +131,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
       this.tiposLineas = data.lineas_producto;
     });
 
-    if (this.data && this.data.id != null) {
+    if (this.data.id != null) {
       console.log(this.data);
       this.form.setValue({
         nombre: this.data.nombre,

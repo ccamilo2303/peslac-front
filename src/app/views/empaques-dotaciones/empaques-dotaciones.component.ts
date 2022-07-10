@@ -1,17 +1,19 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 
-import { UserService } from './services/user.service';
-import { ContextMenuComponent } from '../../../components/context-menu/context-menu.component';
+import { ProductService } from './services/product.service';
+import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
 
-
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: 'app-empaques-dotaciones',
+  templateUrl: './empaques-dotaciones.component.html',
+  styleUrls: ['./empaques-dotaciones.component.scss']
 })
-export class UserComponent implements OnInit, OnDestroy  {
+export class EmpaquesDotacionesComponent implements OnInit, OnDestroy {
+
+  modalAgregarProducto: boolean = false;
 
   dataModal!: any;
 
@@ -23,34 +25,24 @@ export class UserComponent implements OnInit, OnDestroy  {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
-
-  modalAgregarUsuario: boolean = false;
-
   private querySubscription!: Subscription;
-
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
+  constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
-
-  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) {
-    
-   }
-
-  
-  
   ngOnInit(): void {
-   
-    this.querySubscription = this.userService.getUsers()
+
+    this.querySubscription = this.productService.getProducts()
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.listado = data.usuarios;
+        this.listado = data.productos;
       });
 
   }
 
   refresh() {
-    this.userService.refreshUsers();
+    this.productService.refreshProducts();
 
   }
 
@@ -58,12 +50,10 @@ export class UserComponent implements OnInit, OnDestroy  {
     this.querySubscription.unsubscribe();
   }
 
-
-  
-  openModal(data?:any) {
+  openModal(data?: any) {
     switch (this.modal) {
-      case 'modalAgregarUsuario':
-        this.modalAgregarUsuario = true;
+      case 'modalAgregarProducto':
+        this.modalAgregarProducto = true;
         break;
     }
     if (data) {
@@ -75,14 +65,14 @@ export class UserComponent implements OnInit, OnDestroy  {
 
   closeEventModal() {
     switch (this.modal) {
-      case 'modalAgregarUsuario':
-        this.modalAgregarUsuario = false;
+      case 'modalAgregarProducto':
+        this.modalAgregarProducto = false;
         break;
     }
     this.refresh();
   }
 
-  onTableClick(event: any, data:any) {
+  onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
@@ -99,8 +89,8 @@ export class UserComponent implements OnInit, OnDestroy  {
       },
     ];
     this.createContextMenuComponent();
-    
   }
+
 
 
   createContextMenuComponent() {
@@ -116,4 +106,3 @@ export class UserComponent implements OnInit, OnDestroy  {
 
 
 }
-

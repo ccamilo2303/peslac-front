@@ -1,0 +1,111 @@
+<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Agregar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+            aria-label="Close"></button>
+        </div>
+        <form [formGroup]="form">
+          <div class="modal-body">
+  
+            <div class="row">
+  
+              <div class="col">
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
+                  <div class="col-sm-9 input-group">
+                    <input type="text" class="form-control" formControlName="nombre" id="nombre">
+                    <input type="number" class="form-control" formControlName="cantidad" id="cantidad">
+                    <select class="form-select" aria-label="Default select example" formControlName="id_tipo_cantidad">
+                      <option *ngFor="let item of tiposCantidades" value="{{item.id}}">{{item.nombre}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-4 col-form-label">Precio + IVA</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" (input)="precioVenta()" formControlName="precio_costo" id="precio_costo">
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">Proveedor</label>
+                  <div class="col-sm-9">
+                    <select class="form-select" aria-label="Default select example" formControlName="id_proveedor">
+                      <option *ngFor="let item of tiposProveedores" value="{{item.id}}">{{item.nombre}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">Descripción</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" id="descripcion" formControlName="descripcion" rows="3"></textarea>
+                  </div>
+                </div>
+              </div>
+  
+  
+              <div class="col">
+                <div class="row mb-3">
+                  <div class="row">
+                    <div class="col">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Imagen</label>
+                      <div class="col-sm-9">
+                        <img
+                          src="{{form.controls['imagen'].value}}"
+                          class="img-thumbnail" alt="{{form.controls['nombre'].value}}" id="imagen_url">
+                      </div>
+                    </div>
+                    <div class="col mt-5">
+                      <div class="form-check">
+                        <input class="form-check-input" type="number" value="0" formControlName="habilitado"
+                          id="habilitado">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Deshabilitar
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="number" value="0" formControlName="inventario_min"
+                          id="inventario_min">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Inventario min
+                        </label>
+                      </div>
+                      <div class="input-group">
+                        <input type="file" class="form-control" (change)="handleUpload($event)"
+                          aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                        <input type="text" hidden id="imagen" formControlName="imagen">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">Código</label>
+                  <div class="col-sm-9">
+                    <input type="text" readonly class="form-control-plaintext" id="id" value="" disabled>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="input-group mt-3">
+                    <span class="input-group-text" id="basic-addon1">|||||</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                      aria-describedby="basic-addon1" formControlName="codigo_barras">
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Aceptar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

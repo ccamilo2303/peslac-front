@@ -44,23 +44,23 @@
 
 <!-- Modal -->
 
-<div *ngIf="displayStyleAddProduct == 'block'">
-  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [dataProduct]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
+<div *ngIf="modalAgregarProducto">
+  <app-modal-add-product (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-add-product>
 </div>
 
-<div *ngIf="displayStyleLine == 'block'">
-  <app-modal-line [displayStyle]="displayStyleLine" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-line>
+<div *ngIf="modalLinea">
+  <app-modal-line (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-line>
 </div>
 
-<div *ngIf="displayStyleAddPackage == 'block'">
-  <app-modal-add-package [displayStyle]="displayStyleAddPackage" [dataPackage]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-package>
+<div *ngIf="modalAgregarPaquete">
+  <app-modal-add-package (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-add-package>
 </div>
 
-<div *ngIf="displayStylePackage == 'block'">
-  <app-modal-package [displayStyle]="displayStylePackage" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-package>
+<div *ngIf="modalPaquete">
+  <app-modal-package (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-package>
 </div>
 
-<div *ngIf="displayStylePriceList == 'block'">
-  <app-modal-price-list [displayStyle]="displayStylePriceList" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-price-list>
+<div *ngIf="modalListaPrecios">
+  <app-modal-price-list (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-price-list>
 </div>
 

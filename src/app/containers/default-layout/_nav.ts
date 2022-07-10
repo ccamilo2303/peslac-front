@@ -68,7 +68,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Empaques y dotaciones',
-    url: '/product',
+    url: '/empaques-dotaciones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {

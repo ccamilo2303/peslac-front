@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     <div class="p-2">
-      <button type="button" class="btn btn-outline-secondary me-5" (click)="openModal()">Agregar Usuarios</button>
+      <button type="button" class="btn btn-outline-secondary me-5" (click)="modal = 'modalAgregarUsuario'; openModal()">Agregar Usuarios</button>
       <button type="button" class="btn btn-outline-secondary" (click)="refresh()">Recargar Pantalla</button>
     </div>
   </div>
@@ -18,7 +18,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of listado" (contextmenu)="onTableClick($event, usuario)">
+        <tr *ngFor="let usuario of listado" (contextmenu)="onTableClick($event, usuario)"
+        [attr.modal]="'modalAgregarUsuario'">
           <th>{{usuario.nit}}</th>
           <td>{{usuario.nombres}}</td>
           <td>{{usuario.apellidos}}</td>
@@ -33,7 +34,7 @@
 </div>
 
 <!-- Modal -->
-<div *ngIf="displayStyle == 'block'">
-  <app-modal-add-user [displayStyle]="displayStyle" [dataUser]="dataUser" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-user>
+<div *ngIf="modalAgregarUsuario">
+  <app-modal-add-user (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-add-user>
 </div>
 

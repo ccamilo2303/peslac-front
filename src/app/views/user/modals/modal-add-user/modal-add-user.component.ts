@@ -6,8 +6,7 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 
-
-
+declare var $: any;
 
 @Component({
   selector: 'app-modal-add-user',
@@ -18,13 +17,10 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
 
   @Input()
-  public displayStyle: string = '';
-
-  @Input()
-  public dataUser!:any;
+  public data: any;
 
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
   
   public tiposUsuarios!:any;
   private querySubscription!: Subscription;
@@ -52,6 +48,7 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
       this.initForm();
+      $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   ngOnDestroy() {
@@ -59,14 +56,14 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
-    this.displayStyle = "none";
     this.form.reset();
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.closeEvent.emit(true);
+    $("#modalProveedor").modal('hide');
   }
 
   submit() {
 
-    if(!this.dataUser.id){
+    if(!this.data.id){
       this.userService.createUser(this.form.value).subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
@@ -75,7 +72,7 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
     }else{
      
-      this.userService.editUser(this.form.value, this.dataUser.id)
+      this.userService.editUser(this.form.value, this.data.id)
       .subscribe(({ data }) => {
         console.log('got data', data);
       },(error) => {
@@ -94,19 +91,19 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
       this.tiposUsuarios = data.tipos_usuarios;
     });
 
-    if(this.dataUser.id != null){
+    if(this.data && this.data.id != null){
       this.form.setValue({
-        nombres: this.dataUser.nombres,
-        apellidos: this.dataUser.apellidos,
-        nit: this.dataUser.nit,
-        ciudad: this.dataUser.ciudad,
-        estacion: this.dataUser.estacion,
-        correo: this.dataUser.correo,
-        direccion: this.dataUser.direccion,
-        telefono: this.dataUser.telefono,
-        usuario: this.dataUser.usuario,
-        clave: this.dataUser.clave,
-        id_tipo_usuario: this.dataUser.id_tipo_usuario,
+        nombres: this.data.nombres,
+        apellidos: this.data.apellidos,
+        nit: this.data.nit,
+        ciudad: this.data.ciudad,
+        estacion: this.data.estacion,
+        correo: this.data.correo,
+        direccion: this.data.direccion,
+        telefono: this.data.telefono,
+        usuario: this.data.usuario,
+        clave: this.data.clave,
+        id_tipo_usuario: this.data.id_tipo_usuario,
       });
     }
       

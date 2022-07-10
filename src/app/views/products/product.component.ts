@@ -13,13 +13,13 @@ import Swal from 'sweetalert2';
 })
 export class ProductComponent implements OnInit, OnDestroy {
 
-  displayStyleAddProduct = "none";
-  displayStyleLine = "none";
-  displayStyleAddPackage = "none";
-  displayStylePackage = "none";
-  displayStylePriceList = "none";
+  modalAgregarProducto = false;
+  modalLinea = false;
+  modalAgrgarPaquete = false;
+  modalPaquete = false;
+  modalListaPrecios = false;
 
-  dataProduct: any;
+  dataModal!: any;
 
   rightClickMenuItems: any = [];
   parentElem: any;
@@ -56,48 +56,48 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   openModal(data?: any) {
     switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = "block";
+      case 'modalAgregarProducto':
+        this.modalAgregarProducto = true;
         break;
-      case 'line':
-        this.displayStyleLine = "block";
+      case 'modalLinea':
+        this.modalLinea = true;
         break;
-      case 'addPackage':
-        this.displayStyleAddPackage = "block";
+      case 'modalAgrgarPaquete':
+        this.modalAgrgarPaquete = true;
         break;
-      case 'package':
-        this.displayStylePackage = "block";
+      case 'modalPaquete':
+        this.modalPaquete = true;
         break;
-      case 'priceList':
-        this.displayStylePriceList = "block";
+      case 'modalListaPrecios':
+        this.modalListaPrecios = true;
         break;
     }
     if (data) {
-      this.dataProduct = data;
+      this.dataModal = data;
     } else {
-      this.dataProduct = {};
+      this.dataModal = {};
     }
   }
 
-  displayStyleEvent(e: string) {
+  closeEventModal() {
     switch (this.modal) {
-      case 'addProduct':
-        this.displayStyleAddProduct = e;
+      case 'modalAgregarProducto':
+        this.modalAgregarProducto = false;
         break;
-      case 'line':
-        this.displayStyleLine = e;
+      case 'modalLinea':
+        this.modalLinea = false;
         break;
-      case 'addPackage':
-        this.displayStyleAddPackage = e;
+      case 'modalAgrgarPaquete':
+        this.modalAgrgarPaquete = false;
         break;
-      case 'package':
-        this.displayStylePackage = e;
+      case 'modalPaquete':
+        this.modalPaquete = false;
         break;
-      case 'priceList':
-        this.displayStylePriceList = e;
+      case 'modalListaPrecios':
+        this.modalListaPrecios = false;
         break;
     }
-    this.dataProduct = {};
+    this.refresh();
   }
 
   onTableClick(event: any, data: any) {
@@ -128,7 +128,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.productService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 

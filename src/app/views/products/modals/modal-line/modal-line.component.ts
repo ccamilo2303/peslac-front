@@ -7,6 +7,8 @@ import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-modal-line',
   templateUrl: './modal-line.component.html',
@@ -14,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class ModalLineComponent implements OnInit, OnDestroy {
 
-  displayStyleAddGroup = "none";
+  modalAgregarLinea:boolean = false;
   dataLine: any;
 
   rightClickMenuItems: any = [];
@@ -26,11 +28,8 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   private querySubscription!: Subscription;
 
-  @Input()
-  public displayStyle: string = '';
-
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
@@ -48,7 +47,7 @@ export class ModalLineComponent implements OnInit, OnDestroy {
         this.loading = loading;
         this.listado = data.lineas_producto;
       });
-
+      $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
@@ -71,15 +70,16 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.displayStyle = "none";
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.form.reset();
+    this.closeEvent.emit(true);
+    $("#modalProveedor").modal('hide');
   }
 
 
   openModal(data?: number) {
     switch (this.modal) {
-      case 'addGroup':
-        this.displayStyleAddGroup = "block";
+      case 'modalAgregarLinea':
+        this.modalAgregarLinea = true;
         break;
     }
     if (data) {
@@ -89,13 +89,13 @@ export class ModalLineComponent implements OnInit, OnDestroy {
     }
   }
 
-  displayStyleEvent2(e: string) {
+  closeEventModal() {
     switch (this.modal) {
-      case 'addGroup':
-        this.displayStyleAddGroup = e;
+      case 'modalAgregarLinea':
+        this.modalAgregarLinea = false;
         break;
     }
-    this.dataLine = {};
+    this.refresh();
   }
 
   onTableClick(event: any, data: any) {
@@ -126,7 +126,6 @@ export class ModalLineComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.lineService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
