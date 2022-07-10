@@ -3,37 +3,45 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
 
-const GET_CLIENTES = gql`
-query ConsultarClientes {
-  clientes(order_by: {id: asc}) {
-    id
-    nombres
-    apellidos
-    cedula
-    celular
-    ciudad
-    direccion
-    id_lista_precios
+const PUT_ORDEN = gql`
+mutation InsertarOrden($object: ordenes_insert_input!) {
+  insert_ordenes_one(object: $object) {
+      id
   }
 }
 `;
 
-const POST_CLIENTES = gql`
-mutation InsertarCliente($object: clientes_insert_input!) {
-  insert_clientes_one(object: $object) {
-    id
+const PUT_DETALLE_ORDEN = gql`
+mutation InsertarDetalleOrden($object: [detalle_ordenes_insert_input!]!) {
+  insert_detalle_ordenes(objects: $object) {
+    returning{
+     id 
+    }
   }
-}  
+}
 `;
 
-const PUT_CLIENTES = gql`
-mutation ActualizarCliente($object: clientes_set_input!, $id: Int) {
-  update_clientes(where: {id: {_eq: $id}}, _set: $object) {
+
+const PUT_VENTA = gql`
+mutation InsertarVenta($id_orden: Int) {
+  insert_ventas_one(object: {id_orden: $id_orden}) {
+    id
+  }
+}
+`;
+
+const PUT_INVENTARIO = gql`
+mutation ActualizarProductoInsertaHistorial($id_producto: Int, $cantidad: Int) {
+  update_productos(where: {id: {_eq: $id_producto}}, _inc: {cantidad: $cantidad}) {
     returning {
       id
     }
   }
-} 
+  insert_historial_devoluciones_salidas_productos_one(object: {id_producto: $id_producto, id_tipo_operacion: 1, comentario: "Salida de producto por venta", cantidad: $cantidad}) {
+    id
+  }
+}
+
 `;
 
 @Injectable({
@@ -47,41 +55,44 @@ export class VentasService {
 
   constructor(private apollo: Apollo) { }
 
-  getClientes(): Observable<any> {
+ 
 
-    this.postsQuery = this.apollo.watchQuery<any>({
-      query: GET_CLIENTES
-    });
-
-    return this.postsQuery.valueChanges;
-  }
-
-  refreshClientes() {
-    this.postsQuery.refetch();
-  }
-
-
-  createClientes(data: any) {
+  crearOrden(data: any) {
     return this.apollo.mutate({
-      mutation: POST_CLIENTES,
+      mutation: PUT_ORDEN,
       variables: {
         object: data
       }
     });
   }
 
-  editClientes(data: any, id: any) {
+  crearDetalleOrden(data: any) {
     return this.apollo.mutate({
-      mutation: PUT_CLIENTES,
+      mutation: PUT_DETALLE_ORDEN,
       variables: {
-        object: data,
-        id: id
+        object: data
       }
     });
   }
 
-  delete(data: any) {
-
+  crearVenta(data: any) {
+    return this.apollo.mutate({
+      mutation: PUT_VENTA,
+      variables: {
+        object: data
+      }
+    });
   }
+
+  
+  crearInventario(data: any) {
+    return this.apollo.mutate({
+      mutation: PUT_INVENTARIO,
+      variables: {
+        object: data
+      }
+    });
+  }
+
 
 }

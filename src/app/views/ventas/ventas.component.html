@@ -3,94 +3,95 @@
   <div class="card-body">
 
 
-    <form>
+    <form [formGroup]="form">
 
       <div class="row mb-3">
         <div class="col-md-3">
           <label class="form-label">Fecha</label>
-          <input type="text" class="form-control" disabled>
+          <input type="text" class="form-control" formControlName="fecha" id="fecha">
         </div>
 
         <div class="col-md-3">
           <label class="form-label">Vendedor</label>
-          <input type="text" class="form-control" disabled>
+          <input type="text" class="form-control" formControlName="vendedor" id="vendedor">
         </div>
 
         <div class="col-md-3">
           <label class="form-label">NIT</label>
-          <input type="text" class="form-control" disabled>
+          <input type="text" class="form-control" formControlName="nit" id="nit">
         </div>
 
         <div class="col-md-3">
           <label class="form-label">Consecutivo</label>
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" formControlName="consecutivo" id="consecutivo">
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Cliente</label>
-          <select class="form-select">
-            <option>Prueba</option>
+          <select class="form-select" formControlName="cliente" id="cliente">
+            <option *ngFor="let item of clientes" [ngValue]="item">{{item.nombres}} {{item.apellidos}}</option>
           </select>
         </div>
         <div class="col-md-2">
           <label class="form-label">&nbsp;</label>
-          <button type="button" class="form-control btn btn-light">Crear</button>
+          <button type="button" class="form-control btn btn-outline-dark" (click)="abrirModalCliente()">Crear</button>
         </div>
 
         <div class="col-md-3">
           <label class="form-label">Estación</label>
-          <input type="text" class="form-control" disabled>
+          <input type="text" class="form-control" formControlName="estacion" id="estacion">
         </div>
         <div class="col-md-3">
           <label class="form-label">No. Venta</label>
-          <input type="text" class="form-control" disabled>
+          <input type="text" class="form-control" formControlName="noVenta" id="noVenta">
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Producto</label>
-          <select class="form-select">
-            <option>Prueba</option>
+          <select class="form-select" formControlName="producto" id="producto" (change)="calcularPrecioVenta()">
+            <option *ngFor="let item of productos" [ngValue]="item" >{{item.nombre}}</option>
           </select>
         </div>
 
         <div class="col-md-2">
           <label class="form-label">Cantidad</label>
-          <input type="text" class="form-control">
+          <input type="number" class="form-control" formControlName="cantidad" id="cantidad" (keyup)="calcularPrecioVenta()">
         </div>
 
         <div class="col-md-3">
           <label class="form-label">Método de pago</label>
-          <select class="form-select">
-            <option>Prueba</option>
+          <select class="form-select" formControlName="metodoPago" id="metodoPago">
+            <option *ngFor="let item of metodosPago" [ngValue]="item">{{item.nombre}}</option>
           </select>
         </div>
 
         <div class="col-md-3">
           <label class="form-label">Condición de pago</label>
-          <select class="form-select">
-            <option>Prueba</option>
+          <select class="form-select" formControlName="condicionPago" id="condicionPago">
+            <option *ngFor="let item of condicionesPago" [value]="item">{{item.nombre}}</option>
           </select>
         </div>
 
       </div>
 
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label class="form-label">Precio de venta</label>
-          <input type="text" class="form-control">
+          <!--value="{{|currency:'CAD':'symbol-narrow'}}"-->
+          <input type="text" class="form-control" formControlName="precioVenta" id="precioVenta">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label class="form-label">&nbsp;</label>
-          <button type="button" class="form-control btn btn-light">Agregar Producto</button>
+          <button type="button" class="form-control btn btn-outline-dark" (click)="addProducto()">Agregar Producto</button>
         </div>
         <div class="col-md-3">
           <label class="form-label">Tipo de Orden</label>
-          <select class="form-select">
-            <option>Prueba</option>
+          <select class="form-select" formControlName="tipoOrden" id="tipoOrden">
+            <option>Salida</option>
           </select>
         </div>
       </div>
@@ -111,26 +112,19 @@
                   <th scope="col">IVA</th>
                   <th scope="col">Descuento</th>
                   <th scope="col">Precio Venta</th>
+                  <th scope="col">Acción</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
+                <tr *ngFor="let item of listadoProductos">
+                  <th scope="row">{{item.id}}</th>
+                  <td>{{item.nombre}}</td>
+                  <td>{{item.lineas_producto.nombre}}</td>
+                  <td>{{item.cantidad}}</td>
+                  <td>{{item.valor_impuesto}}</td>
+                  <td>{{item.valor_descuento}}</td>
+                  <td>{{item.precio_venta}}</td>
+                  <td><button type="button" class="btn btn-outline-danger" title="Quitar Producto" (click)="quitarProducto(item)">x</button></td>
                 </tr>
               </tbody>
               <tfoot>
@@ -160,21 +154,20 @@
 
       <div class="row mb-3">
         <div class="col-md-2">
-          <button type="button" class="form-control btn btn-light">Imprimir</button>
+          <button type="button" class="form-control btn btn-outline-info">Imprimir</button>
         </div>
         <div class="col-md-6">
 
         </div>
         
+        
         <div class="col-md-2">
-          <button type="button" class="form-control btn btn-light">Cancelar</button>
+          <button type="button" class="form-control btn btn-outline-success" [disabled]="form.invalid" (click)="guardarInformacion()">Guardar</button>
         </div>
         <div class="col-md-2">
-          <button type="button" class="form-control btn btn-light">Finalizar</button>
+          <button type="button" class="form-control btn btn-outline-danger">Cancelar</button>
         </div>
       </div>
-
-
 
     </form>
 
@@ -183,13 +176,6 @@
   </div>
 </div>
 
-
-<!-- Modal -->
-<!--
-<div *ngIf="displayStyleAddProduct == 'block'">
-  <app-modal-add-product [displayStyle]="displayStyleAddProduct" [data]="dataProduct" (displayStyleEvent)="displayStyleEvent($event)"></app-modal-add-product>
-</div>
--->
-<!--<div *ngIf="modalProveedores">
+<div *ngIf="modalCliente">
   <app-modal-agregar-clientes (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-clientes>
-</div>-->
+</div>

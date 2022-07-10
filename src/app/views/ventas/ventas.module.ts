@@ -5,7 +5,7 @@ import { VentasComponent } from './ventas.component';
 import { VentasRoutingModule } from './ventas-routing.module';
 
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { ClientesModule } from '../clientes/clientes.module';
 
 
 @NgModule({
@@ -13,7 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     VentasRoutingModule,  
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ClientesModule
+    
   ]
 })
 export class VentasModule {

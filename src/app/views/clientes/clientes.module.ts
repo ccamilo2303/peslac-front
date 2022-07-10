@@ -15,6 +15,9 @@ import { ModalAgregarClientesComponent } from './modals/modal-agregar-clientes/m
     CommonModule,
     ClientesRoutingModule,  
     ReactiveFormsModule
+  ],
+  exports: [
+    ModalAgregarClientesComponent
   ]
 })
 export class ClientesModule {

@@ -25,6 +25,48 @@ query ConsultaProductos {
 }
 `;
 
+
+const GET_PRODUCTOS_VENTA = gql`
+query ConsultaProductos {
+  productos(order_by: {id: asc}) {
+    nombre
+    cantidad
+    id_tipo_cantidad
+    precio_costo
+    id_tipo_impuesto
+    valor_impuesto
+    precio_venta
+    id_proveedor
+    descripcion
+    id_linea
+    imagen
+    habilitado
+    inventario_min
+    id
+    codigo_barras
+    tipos_impuesto {
+      id
+      nombre
+      cobra_iva
+    }
+    tipos_cantidad {
+      id
+      nombre
+    }
+    descuentos {
+      id
+      cantidad_max
+      cantidad_min
+      descuento
+    }
+    lineas_producto {
+      nombre
+    }
+  }
+}
+
+`;
+
 const POST_PRODUCTOS = gql`
 mutation InsertarProducto($object: productos_insert_input!) {
   insert_productos_one(object: $object) {
@@ -62,6 +104,15 @@ export class ProductService {
 
     return this.postsQuery.valueChanges;
   }
+
+  getProductsVenta(){
+    this.postsQuery = this.apollo.watchQuery<any>({
+      query: GET_PRODUCTOS_VENTA
+    });
+
+    return this.postsQuery.valueChanges;
+  }
+
 
   refreshProducts() {
     this.postsQuery.refetch();

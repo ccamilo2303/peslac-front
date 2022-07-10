@@ -50,7 +50,6 @@ query ConsultarLineasProducto {
    
 `;
 
-
 const GET_LIST_PRODUCTOS = gql`
 query ConsultarListadoProductos {
     productos(order_by: {id: asc}) {
@@ -59,60 +58,106 @@ query ConsultarListadoProductos {
       codigo_barras
     }
   }
-  
 `;
 
+const GET_LIST_METODOS_PAGO = gql`
+query ConsultarMetodosDePago {
+  metodos_pago(order_by: {id: asc}) {
+    id
+    nombre
+  }
+}
+
+`;
+
+const GET_LIST_CONDICION_DE_PAGO = gql`
+query ConsultarProveedores {
+  condiciones_pago(order_by: {id: asc}) {
+    id
+    nombre
+  }
+}
+
+`;
+
+const GET_LIST_TIPO_ORDEN = gql`
+query ConsultarListadoProductos {
+    productos(order_by: {id: asc}) {
+      id
+      nombre
+      codigo_barras
+    }
+  }
+`;
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AppService {
 
-    constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo) { }
 
 
-    getTiposUsuarios() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_TIPOS_USUARIOS
-            }).valueChanges;
-    }
+  getTiposUsuarios() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_TIPOS_USUARIOS
+      }).valueChanges;
+  }
 
-    getTiposCantidad() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_TIPOS_CANTIDAD
-            }).valueChanges;
-    }
-
-
-    getTiposImpuesto() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_TIPOS_IMPUESTO
-            }).valueChanges;
-    }
+  getTiposCantidad() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_TIPOS_CANTIDAD
+      }).valueChanges;
+  }
 
 
-    getListadoProveedores() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_PROVEEDORES
-            }).valueChanges;
-    }
+  getTiposImpuesto() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_TIPOS_IMPUESTO
+      }).valueChanges;
+  }
 
-    getLineasProducto() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_LINEAS_PRODUCTO
-            }).valueChanges;
-    }
 
-    getListadoProductos() {
-        return this.apollo
-            .watchQuery<any>({
-                query: GET_LIST_PRODUCTOS
-            }).valueChanges;
-    }
+  getListadoProveedores() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_PROVEEDORES
+      }).valueChanges;
+  }
+
+  getLineasProducto() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_LINEAS_PRODUCTO
+      }).valueChanges;
+  }
+
+  getListadoProductos() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_PRODUCTOS
+      }).valueChanges;
+  }
+
+
+  getListadoMetodosPago() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_METODOS_PAGO
+      }).valueChanges;
+  }
+
+  getListadoCondicionPago() {
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_LIST_CONDICION_DE_PAGO
+      }).valueChanges;
+  }
+
+  
+
 
 }
