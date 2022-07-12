@@ -47,7 +47,7 @@ export class ModalLineComponent implements OnInit, OnDestroy {
         this.loading = loading;
         this.listado = data.lineas_producto;
       });
-      $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
+      $("#modalLinea").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
@@ -61,10 +61,10 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   submit() {
 
     this.lineService.createLine(this.form.value).subscribe(({ data }) => {
-      console.log('got data', data);
+      this.mensajeOk();
       this.refresh();
     }, (error) => {
-      console.log('there was an error sending the query', error);
+      this.mensajeError();
     });
 
   }
@@ -72,7 +72,7 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   closeModal() {
     this.form.reset();
     this.closeEvent.emit(true);
-    $("#modalProveedor").modal('hide');
+    $("#modalLinea").modal('hide');
   }
 
 
@@ -117,8 +117,6 @@ export class ModalLineComponent implements OnInit, OnDestroy {
     this.createContextMenuComponent();
   }
 
-
-
   createContextMenuComponent() {
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContextMenuComponent);
@@ -129,5 +127,21 @@ export class ModalLineComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    })
+    this.form.reset();
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
 
 }

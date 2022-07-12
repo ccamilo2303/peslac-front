@@ -3,6 +3,8 @@ import { ContextMenuComponent } from '@docs-components/context-menu/context-menu
 import { Subscription } from 'rxjs';
 import { InventarioService } from './services/inventario.service';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
@@ -31,19 +33,23 @@ export class InventarioComponent implements OnInit, OnDestroy {
   constructor(private inventarioService: InventarioService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-
-    this.querySubscription = this.inventarioService.getInventario()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.productos;
-        console.log("--> ", data);
-      });
-
+    this.initData();
   }
 
   refresh() {
     this.inventarioService.refreshInventario();
+  }
 
+  recargar(){
+    Swal.fire({
+      title: 'Actualizando...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    })
+    this.refresh();
   }
 
   ngOnDestroy() {
@@ -108,8 +114,6 @@ export class InventarioComponent implements OnInit, OnDestroy {
     this.createContextMenuComponent();
   }
 
-
-
   createContextMenuComponent() {
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContextMenuComponent);
@@ -119,6 +123,15 @@ export class InventarioComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
     //(<ContextMenuComponent>componentRef.instance).service = this.productService;
     (<ContextMenuComponent>componentRef.instance).component = this;
+  }
+
+  initData(){
+    this.querySubscription = this.inventarioService.getInventario()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.productos;
+        console.log("--> ", data);
+      });
   }
 
 }

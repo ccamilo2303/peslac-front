@@ -1,4 +1,4 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalListaPrecios" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
 aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -24,7 +24,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     </thead>
                     <tbody>
                         <tr *ngFor="let package of listado" (contextmenu)="onTableClick($event, package)"
-                            [attr.modal]="'addPriceList'">
+                            [attr.modal]="'modalAgregarListaPrecios'">
                             <th>{{package.producto.nombre}}</th>
                             <td>{{package.fecha_registro}}</td>
                         </tr>
@@ -35,7 +35,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
             </div>
             <div class="modal-footer">
 
-                <button type="submit" class="btn btn-primary" (click)="modal = 'addPriceList'; openModal()">Agregar nueva lista</button>
+                <button type="submit" class="btn btn-primary" (click)="modal = 'modalAgregarListaPrecios'; openModal()">Agregar nueva lista</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     (click)="closeModal()">Cancelar</button>
 
@@ -44,7 +44,6 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
     </div>
 </div>
 
-<div *ngIf="displayStyleAddPriceList == 'block'">
-    <app-modal-add-price-list [displayStyle]="displayStyleAddPriceList" [dataPriceList]="dataPriceList"
-        (displayStyleEvent)="displayStyleEvent2($event)"></app-modal-add-price-list>
+<div *ngIf="modalAgregarListaPrecios">
+    <app-modal-add-price-list (closeEvent)="closeEventModal()" [data]="dataPriceList"></app-modal-add-price-list>
 </div>

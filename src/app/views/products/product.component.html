@@ -2,11 +2,11 @@
   <div class="card-header">
     <div class="p-2">
       <div>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addProduct'; openModal()">Agregar Producto</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'line'; openModal()">Agregar Línea</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'addPackage'; openModal()">Crear Paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'package'; openModal()">Historial de paquetes</button>
-      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'priceList'; openModal()">Lista de precios</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalAgregarProducto'; openModal()">Agregar Producto</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalLinea'; openModal()">Agregar Línea</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalAgregarPaquete'; openModal()">Crear Paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalPaquete'; openModal()">Historial de paquetes</button>
+      <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalListaPrecios'; openModal()">Lista de precios</button>
       </div>
       <div class="pt-4">
         <div class="input-group mb-3">
@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let producto of listado" (contextmenu)="onTableClick($event, producto)" [attr.modal]="'addProduct'">
+        <tr *ngFor="let producto of listado" (contextmenu)="onTableClick($event, producto)" [attr.modal]="'modalAgregarProducto'">
           <th>{{producto.nombre}}</th>
           <td>{{producto.id_proveedor}}</td>
           <td>{{producto.precio_costo}}</td>
@@ -49,7 +49,7 @@
 </div>
 
 <div *ngIf="modalLinea">
-  <app-modal-line (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-line>
+  <app-modal-line (closeEvent)="closeEventModal()" ></app-modal-line>
 </div>
 
 <div *ngIf="modalAgregarPaquete">
@@ -57,10 +57,10 @@
 </div>
 
 <div *ngIf="modalPaquete">
-  <app-modal-package (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-package>
+  <app-modal-package (closeEvent)="closeEventModal()" ></app-modal-package>
 </div>
 
 <div *ngIf="modalListaPrecios">
-  <app-modal-price-list (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-price-list>
+  <app-modal-price-list (closeEvent)="closeEventModal()" ></app-modal-price-list>
 </div>
 

@@ -3,6 +3,7 @@ import { ContextMenuComponent } from '@docs-components/context-menu/context-menu
 import { Subscription } from 'rxjs';
 import { ClientesService } from './services/clientes.service';
 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -42,7 +43,18 @@ export class ClientesComponent implements OnInit, OnDestroy {
 
   refresh() {
     this.clientesService.refreshClientes();
+  }
 
+  recargar(){
+    Swal.fire({
+      title: 'Actualizando...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    })
+    this.refresh();
   }
 
   ngOnDestroy() {

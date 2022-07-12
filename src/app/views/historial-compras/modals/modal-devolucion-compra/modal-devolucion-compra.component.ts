@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { HistorialComprasService } from '../../services/historial-ventas.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -66,16 +69,43 @@ export class ModalDevolucionCompraComponent implements OnInit {
         this.form.controls["cantidad"].value,
         this.form.controls["comentario"].value
       ).subscribe(({ data }) => {
-        console.log('got data', data);
-        this.closeModal();
+        this.mensajeOk();
       }, (error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
     }else{
-      console.log("Error en la cantidad de devolución");
+      this.mensajeErrorValidacion("La cantidad para devolver debe ser mayor a cero");
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

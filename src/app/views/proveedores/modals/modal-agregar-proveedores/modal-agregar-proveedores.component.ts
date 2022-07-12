@@ -3,17 +3,17 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { ProveedoresService } from '../../services/proveedores.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
-
-
-
 
 @Component({
   selector: 'app-modal-agregar-proveedores',
   templateUrl: './modal-agregar-proveedores.component.html',
   styleUrls: ['./modal-agregar-proveedores.component.scss']
 })
-export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
+export class ModalAgregarProveedoresComponent implements OnInit {
 
   @Input()
   public data: any;
@@ -23,9 +23,6 @@ export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
 
   public tiposUsuarios!:any;
   
-  
-
-
   form: FormGroup = new FormGroup({
     razon_social: new FormControl('', [Validators.required]),
     nombre: new FormControl('', [Validators.required]),
@@ -44,7 +41,8 @@ export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.initForm();
-
+    $("#modalAgregarProducto").modal('hide');
+    $("#modalAgregarPaquete").modal('hide');
     $("#modalProveedor").modal({backdrop:'static',keyboard:false, show:true});
     
 
@@ -58,6 +56,8 @@ export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.closeEvent.emit(true);
     $("#modalProveedor").modal('hide');
+    $("#modalAgregarProducto").modal({backdrop:'static',keyboard:false, show:true});
+    $("#modalAgregarPaquete").modal({backdrop:'static',keyboard:false, show:true});
   }
 
 
@@ -65,20 +65,18 @@ export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
 
     if(!this.data){
       this.proveedoresService.createProveedores(this.form.value).subscribe(({ data }) => {
-        console.log('got data', data);
-        this.closeModal();
+        this.mensajeOk();
       },(error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
     }else{
      
       this.proveedoresService.editProveedores(this.form.value, this.data.id)
       .subscribe(({ data }) => {
-        console.log('got data', data);
-        this.closeModal();
+        this.mensajeOk();
       },(error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
   
     }
@@ -104,6 +102,26 @@ export class ModalAgregarProveedoresComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalLinea" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
 aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -28,7 +28,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let linea of listado" (contextmenu)="onTableClick($event, linea)" [attr.modal]="'addGroup'">
+                        <tr *ngFor="let linea of listado" (contextmenu)="onTableClick($event, linea)" [attr.modal]="'modalAgregarLinea'">
                             <th>{{linea.nombre}}</th>
                             <td>{{linea.fecha_registro}}</td>
                         </tr>
@@ -50,7 +50,6 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
     </div>
 </div>
 
-<div *ngIf="displayStyleAddGroup == 'block'">
-    <app-modal-add-line [displayStyle]="displayStyleAddGroup" [dataLine]="dataLine"
-        (displayStyleEvent)="displayStyleEvent2($event)"></app-modal-add-line>
+<div *ngIf="modalAgregarLinea">
+    <app-modal-add-line (closeEvent)="closeEventModal()" [data]="dataLine"></app-modal-add-line>
 </div>

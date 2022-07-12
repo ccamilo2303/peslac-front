@@ -32,7 +32,7 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
     nit: new FormControl('', [Validators.required]),
     ciudad: new FormControl('', [Validators.required]),
     estacion: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.required]),
+    correo: new FormControl('', [Validators.required, Validators.email]),
     direccion: new FormControl('', [Validators.required]),
     telefono: new FormControl('', [Validators.required]),
     usuario: new FormControl('', [Validators.required]),
@@ -41,14 +41,11 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
   });
 
-
-
   constructor(private userService: UserService, private appService: AppService) { }
-
 
   ngOnInit(): void {
       this.initForm();
-      $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
+      $("#modalAgregarUsuario").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   ngOnDestroy() {
@@ -58,31 +55,28 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
   closeModal() {
     this.form.reset();
     this.closeEvent.emit(true);
-    $("#modalProveedor").modal('hide');
+    $("#modalAgregarUsuario").modal('hide');
   }
 
   submit() {
 
     if(!this.data.id){
       this.userService.createUser(this.form.value).subscribe(({ data }) => {
-        console.log('got data', data);
+        this.mensajeOk();
       },(error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
     }else{
      
       this.userService.editUser(this.form.value, this.data.id)
       .subscribe(({ data }) => {
-        console.log('got data', data);
+        this.mensajeOk();
       },(error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
   
     }
-
-    
-    
   }
 
   initForm() {
@@ -107,8 +101,26 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
       });
     }
       
-  
-    
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

@@ -6,6 +6,8 @@ import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-modal-add-line',
   templateUrl: './modal-add-line.component.html',
@@ -17,13 +19,10 @@ export class ModalAddLineComponent implements OnInit, OnDestroy {
   private querySubscription!: Subscription;
 
   @Input()
-  public displayStyle: string = '';
-
-  @Input()
-  public dataLine: any;
+  public data: any;
 
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
 
   form: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required])
@@ -33,6 +32,8 @@ export class ModalAddLineComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    $("#modalLinea").modal('hide');
+    $("#modalAgregarLinea").modal({ backdrop: 'static', keyboard: false, show: true });
   }
   
   refresh() {
@@ -44,28 +45,49 @@ export class ModalAddLineComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.displayStyle = "none";
     this.form.reset();
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.closeEvent.emit(true);
+    $("#modalAgregarLinea").modal('hide');
+    $("#modalLinea").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   submit() {
    
-    this.lineService.editLine(this.form.value, this.dataLine.id).subscribe(({ data }) => {
-      console.log('got data', data);
+    this.lineService.editLine(this.form.value, this.data.id).subscribe(({ data }) => {
+      this.mensajeOk();
       this.refresh();
     }, (error) => {
-      console.log('there was an error sending the query', error);
+      this.mensajeError();
     });
 
   }
 
   initForm() {
 
-    if (this.dataLine.id != null) {
-      this.form.controls['nombre'].setValue(this.dataLine.nombre);  
+    if (this.data && this.data.id != null) {
+      this.form.controls['nombre'].setValue(this.data.nombre);  
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

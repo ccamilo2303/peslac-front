@@ -4,6 +4,8 @@ import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { TransformacionService } from '../../services/transformacion.service';
 
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -61,12 +63,8 @@ export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
   }  
 
   ngOnInit(): void {
-
     this.initForm();
-
     $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
-
-
   }
 
   ngOnDestroy() {
@@ -122,6 +120,35 @@ export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 

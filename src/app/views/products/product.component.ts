@@ -15,7 +15,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   modalAgregarProducto = false;
   modalLinea = false;
-  modalAgrgarPaquete = false;
+  modalAgregarPaquete = false;
   modalPaquete = false;
   modalListaPrecios = false;
 
@@ -42,12 +42,10 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.loading = loading;
         this.listado = data.productos;
       });
-
   }
 
   refresh() {
     this.productService.refreshProducts();
-
   }
 
   ngOnDestroy() {
@@ -62,8 +60,8 @@ export class ProductComponent implements OnInit, OnDestroy {
       case 'modalLinea':
         this.modalLinea = true;
         break;
-      case 'modalAgrgarPaquete':
-        this.modalAgrgarPaquete = true;
+      case 'modalAgregarPaquete':
+        this.modalAgregarPaquete = true;
         break;
       case 'modalPaquete':
         this.modalPaquete = true;
@@ -87,8 +85,8 @@ export class ProductComponent implements OnInit, OnDestroy {
       case 'modalLinea':
         this.modalLinea = false;
         break;
-      case 'modalAgrgarPaquete':
-        this.modalAgrgarPaquete = false;
+      case 'modalAgregarPaquete':
+        this.modalAgregarPaquete = false;
         break;
       case 'modalPaquete':
         this.modalPaquete = false;
@@ -119,8 +117,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.createContextMenuComponent();
   }
 
-
-
   createContextMenuComponent() {
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContextMenuComponent);
@@ -130,8 +126,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
-
-
 
 }
 

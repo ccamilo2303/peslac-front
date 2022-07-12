@@ -1,4 +1,4 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalAgregarCliente" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -36,7 +36,7 @@
                 <div class="row">
                   <label for="inputEmail3" class="col-4 col-form-label">C.C:</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="cedula" id="cedula">
+                    <input type="number" class="form-control" formControlName="cedula" id="cedula">
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
                 <div class="row">
                   <label for="inputEmail3" class="col-4 col-form-label">Celular</label>
                   <div class="col-8">
-                    <input type="text" class="form-control" formControlName="celular" id="celular">
+                    <input type="number" class="form-control" formControlName="celular" id="celular">
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
 
               <div class="col-6">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-              (click)="closeModal()">Agregar</button>
+              (click)="openModal()">Agregar</button>
               </div>
 
 
@@ -104,4 +104,10 @@
       </form>
     </div>
   </div>
+</div>
+
+<!-- MODAL -->
+
+<div *ngIf="modalAgregarListaPrecios">
+  <app-modal-add-price-list (closeEvent)="closeEventModal()"></app-modal-add-price-list>
 </div>

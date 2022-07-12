@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { ClientesService } from '../../services/clientes.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -17,6 +20,8 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   @Output()
   public closeEvent = new EventEmitter<boolean>();
+
+  modalAgregarListaPrecios:boolean = false;
 
   public listaPrecios!: any;
   private querySubscription!: Subscription;
@@ -37,40 +42,53 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
     this.initForm();
 
-    $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
-
+    $("#modalAgregarCliente").modal({ backdrop: 'static', keyboard: false, show: true });
 
   }
 
+  refresh() {
+    this.clientesService.refreshClientes();
+  }
+
   ngOnDestroy() {
-    //this.querySubscription.unsubscribe();
+    this.querySubscription.unsubscribe();
   }
 
   closeModal() {
     this.form.reset();
     this.closeEvent.emit(true);
-    $("#modalProveedor").modal('hide');
+    $("#modalAgregarCliente").modal('hide');
+  }
+
+  openModal(data?: any) {
+    this.modalAgregarListaPrecios = true;
+  }
+
+  closeEventModal(){
+    this.modalAgregarListaPrecios = false;
+    this.refresh();
   }
 
 
   submit() {
+    
+    this.form.controls["cedula"].setValue(this.form.controls["cedula"].value.toString())
+    this.form.controls["celular"].setValue(this.form.controls["celular"].value.toString())
 
     if (!this.data) {
       this.clientesService.createClientes(this.form.value).subscribe(({ data }) => {
-        console.log('got data', data);
-        this.closeModal();
+        this.mensajeOk();
       }, (error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
     } else {
 
       this.clientesService.editClientes(this.form.value, this.data.id)
         .subscribe(({ data }) => {
-          console.log('got data', data);
-          this.closeModal();
+          this.mensajeOk();
         }, (error) => {
-          console.log('there was an error sending the query', error);
+          this.mensajeError();
         });
 
     }
@@ -95,6 +113,26 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

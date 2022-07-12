@@ -7,14 +7,16 @@ import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-modal-price-list',
   templateUrl: './modal-price-list.component.html',
   styleUrls: ['./modal-price-list.component.scss']
 })
-export class ModalPriceListComponent implements OnInit {
+export class ModalPriceListComponent implements OnInit, OnDestroy {
 
-  displayStyleAddPriceList = "none";
+  modalAgregarListaPrecios:boolean = false  ;
 
   dataPriceList: any;
 
@@ -28,11 +30,8 @@ export class ModalPriceListComponent implements OnInit {
   loading: boolean = false;
   private querySubscription!: Subscription;
 
-  @Input()
-  public displayStyle: string = '';
-
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
@@ -50,7 +49,7 @@ export class ModalPriceListComponent implements OnInit {
         this.loading = loading;
         this.listado = data.paquetes;
       });
-
+      $("#modalListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
@@ -62,14 +61,15 @@ export class ModalPriceListComponent implements OnInit {
   }
 
   closeModal() {
-    this.displayStyle = "none";
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.form.reset();
+    this.closeEvent.emit(true);
+    $("#modalListaPrecios").modal('hide');
   }
 
   openModal(data?: number) {
     switch (this.modal) {
-      case 'addPriceList':
-        this.displayStyleAddPriceList = "block";
+      case 'modalAgregarListaPrecios':
+        this.modalAgregarListaPrecios = true;
         break;
     }
     if (data) {
@@ -79,13 +79,13 @@ export class ModalPriceListComponent implements OnInit {
     }
   }
 
-  displayStyleEvent2(e: string) {
+  closeEventModal() {
     switch (this.modal) {
-      case 'addPriceList':
-        this.displayStyleAddPriceList = e;
+      case 'modalAgregarListaPrecios':
+        this.modalAgregarListaPrecios = false;
         break;
     }
-    this.dataPriceList = {};
+    this.refresh();
   }
 
   onTableClick(event: any, data: any) {
@@ -116,7 +116,6 @@ export class ModalPriceListComponent implements OnInit {
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
     (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.packageService;
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 

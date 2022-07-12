@@ -17,6 +17,9 @@ import { ProveedoresModule } from '../proveedores/proveedores.module';
 
 @NgModule({
   declarations: [ProductComponent, ModalAddProductComponent, ModalLineComponent, ModalAddLineComponent, ModalAddPackageComponent, ModalPackageComponent, ModalPriceListComponent, ModalAddPriceListComponent],
+  exports: [
+    ModalAddPriceListComponent
+  ],
   imports: [
     CommonModule,
     ProductRoutingModule,  

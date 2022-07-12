@@ -8,6 +8,8 @@ import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-modal-add-price-list',
   templateUrl: './modal-add-price-list.component.html',
@@ -20,13 +22,10 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
   private querySubscription!: Subscription;
 
   @Input()
-  public displayStyle: string = '';
-
-  @Input()
-  public dataPriceList: any;
+  public data: any;
 
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
 
   form: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required])
@@ -36,6 +35,9 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    $("#modalListaPrecios").modal('hide');
+    $("#modalAgregarCliente").modal('hide');
+    $("#modalAgregarListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
   }
   
   refresh() {
@@ -47,28 +49,30 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.displayStyle = "none";
     this.form.reset();
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.closeEvent.emit(true);
+    $("#modalAgregarListaPrecios").modal('hide');
+    $("#modalListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
+    $("#modalAgregarCliente").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   submit() {
    
-    this.priceListService.editPackage(this.form.value, this.dataPriceList.id).subscribe(({ data }) => {
-      console.log('got data', data);
+    this.priceListService.editPackage(this.form.value, this.data.id).subscribe(({ data }) => {
+      this.mensajeOk();
       this.refresh();
     }, (error) => {
-      console.log('there was an error sending the query', error);
+      this.mensajeError();
     });
 
   }
 
   initForm() {
 
-    if (this.dataPriceList.id != null) {
-      console.log("Lista: " , this.dataPriceList);
-      this.form.controls['nombre'].setValue(this.dataPriceList.nombre); 
-      this.listado = [this.dataPriceList.producto];
+    if (this.data && this.data.id != null) {
+      console.log("Lista: " , this.data);
+      this.form.controls['nombre'].setValue(this.data.nombre); 
+      this.listado = [this.data.producto];
     }else{
       this.querySubscription = this.productService.getProducts()
       .subscribe(({ data, loading }) => {
@@ -80,6 +84,32 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
 
   }
 
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
 
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
 
 }

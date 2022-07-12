@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { InventarioService } from '../../services/inventario.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -33,12 +36,8 @@ export class ModalAgregarSalidaComponent implements OnInit {
   constructor(private inventarioService: InventarioService, private appService: AppService) { }
 
   ngOnInit(): void {
-
     this.initForm();
-
     $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
-
-
   }
 
   ngOnDestroy() {
@@ -62,16 +61,13 @@ export class ModalAgregarSalidaComponent implements OnInit {
         (this.form.controls["cantidad"].value * -1),
         this.form.controls["comentario"].value
       ).subscribe(({ data }) => {
-        console.log('got data', data);
-        this.closeModal();
+        this.mensajeOk();
       }, (error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
-    }else{
-
-      console.log("ERROR EN LA CANTIDAD DE SALIDA");
-      
+    }else{  
+      this.mensajeErrorValidacion("La cantidad de salida debe ser mayor a cero o no esta disponible");
     }
     
   }
@@ -87,6 +83,34 @@ export class ModalAgregarSalidaComponent implements OnInit {
       });
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

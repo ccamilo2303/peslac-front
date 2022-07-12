@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { HistorialComprasService } from '../../services/historial-ventas.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -32,7 +35,7 @@ export class ModalAnularCompraComponent implements OnInit {
     console.log("DATA ANU: ", this.data);
     $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
     this.form.setValue({
-      id_venta: this.data.id,
+      id_venta: this.data.ordene.id,
       comentario: '',
     });
   }
@@ -47,20 +50,37 @@ export class ModalAnularCompraComponent implements OnInit {
     $("#modalProveedor").modal('hide');
   }
 
-
   submit() {
 
-
-    this.historialComprasService.createAnularCompra(
+   this.historialComprasService.createAnularCompra(
       this.form.controls["id_venta"].value,
       this.form.controls["comentario"].value
     ).subscribe(({ data }) => {
-      console.log('got data', data);
-      this.closeModal();
+      this.mensajeOk();
     }, (error) => {
-      console.log('there was an error sending the query', error);
+      this.mensajeError();
     });
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Compra anulada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error anulando la compra',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

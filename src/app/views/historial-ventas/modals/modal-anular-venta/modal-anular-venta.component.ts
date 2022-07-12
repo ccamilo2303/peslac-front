@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 import { HistorialVentasService } from '../../services/historial-ventas.service';
+
+import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -50,17 +53,35 @@ export class ModalAnularVentaComponent implements OnInit {
 
   submit() {
 
-
     this.historialVentasService.createAnularVenta(
       this.form.controls["id_venta"].value,
       this.form.controls["comentario"].value
     ).subscribe(({ data }) => {
-      console.log('got data', data);
-      this.closeModal();
+      this.mensajeOk();
     }, (error) => {
-      console.log('there was an error sending the query', error);
+      this.mensajeError();
     });
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Venta anulada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error anulando la venta',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

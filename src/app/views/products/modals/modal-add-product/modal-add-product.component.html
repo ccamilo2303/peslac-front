@@ -1,4 +1,4 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalAgregarProducto" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
 aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -13,14 +13,26 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="row">
 
             <div class="col">
-              <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
-                <div class="col-sm-9 input-group">
-                  <input type="text" class="form-control" formControlName="nombre" id="nombre">
-                  <input type="number" class="form-control" formControlName="cantidad" id="cantidad">
-                  <select class="form-select" aria-label="Default select example" formControlName="id_tipo_cantidad">
-                    <option *ngFor="let item of tiposCantidades" value="{{item.id}}">{{item.nombre}}</option>
-                  </select>
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" formControlName="nombre" id="nombre">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
+                    <input type="number" class="form-control" formControlName="cantidad" id="cantidad">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Tipo</label>
+                    <select class="form-select" aria-label="Default select example" formControlName="id_tipo_cantidad">
+                      <option *ngFor="let item of tiposCantidades" value="{{item.id}}">{{item.nombre}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="row mb-3">
@@ -55,7 +67,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   </select>
                 </div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-primary col-12" (click)="modal = 'addSuplier'; openModal()">Crear</button>
+                  <button type="button" class="btn btn-primary col-12" (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
                 </div>
               </div>
               <div class="row mb-3">
@@ -143,6 +155,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
   </div>
 </div>
 
-<div *ngIf="modalProveedores">
-  <app-modal-agregar-proveedores (closeEvent)="closeModal()"></app-modal-agregar-proveedores>
+<!-- MODAL -->
+
+<div *ngIf="modalAgregarProveedor">
+  <app-modal-agregar-proveedores (closeEvent)="closeEventModal()"></app-modal-agregar-proveedores>
 </div>

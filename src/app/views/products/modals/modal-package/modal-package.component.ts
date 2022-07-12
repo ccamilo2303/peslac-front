@@ -7,6 +7,8 @@ import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+declare var $: any;
+
 @Component({
   selector: 'app-modal-package',
   templateUrl: './modal-package.component.html',
@@ -14,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class ModalPackageComponent implements OnInit {
 
-  displayStyleAddPackage = "none";
+  modalAgregarPaquete:boolean = false;
   dataPackage: any;
 
   rightClickMenuItems: any = [];
@@ -26,11 +28,8 @@ export class ModalPackageComponent implements OnInit {
   loading: boolean = false;
   private querySubscription!: Subscription;
 
-  @Input()
-  public displayStyle: string = '';
-
   @Output()
-  public displayStyleEvent = new EventEmitter<string>();
+  public closeEvent = new EventEmitter<boolean>();
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
@@ -48,7 +47,7 @@ export class ModalPackageComponent implements OnInit {
         this.loading = loading;
         this.listado = data.paquetes;
       });
-
+      $("#modalPaquete").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
@@ -60,14 +59,15 @@ export class ModalPackageComponent implements OnInit {
   }
 
   closeModal() {
-    this.displayStyle = "none";
-    this.displayStyleEvent.emit(this.displayStyle);
+    this.form.reset();
+    this.closeEvent.emit(true);
+    $("#modalPaquete").modal('hide');
   }
 
   openModal(data?: number) {
     switch (this.modal) {
-      case 'addPackage':
-        this.displayStyleAddPackage = "block";
+      case 'modalAgregarPaquete':
+        this.modalAgregarPaquete = true;
         break;
     }
     if (data) {
@@ -77,13 +77,13 @@ export class ModalPackageComponent implements OnInit {
     }
   }
 
-  displayStyleEvent2(e: string) {
+  closeEventModal() {
     switch (this.modal) {
-      case 'addPackage':
-        this.displayStyleAddPackage = e;
+      case 'modalAgregarPaquete':
+        this.modalAgregarPaquete = false;
         break;
     }
-    this.dataPackage = {};
+    this.refresh();
   }
 
   onTableClick(event: any, data: any) {
@@ -113,8 +113,7 @@ export class ModalPackageComponent implements OnInit {
     const componentRef = this.container.createComponent(componentFactory);
     (<ContextMenuComponent>componentRef.instance).contextMenuEvent = this.menuEvent;
     (<ContextMenuComponent>componentRef.instance).contextMenuSelector = this.contextMenuSelector;
-    (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;
-    (<ContextMenuComponent>componentRef.instance).service = this.packageService;
+    (<ContextMenuComponent>componentRef.instance).contextMenuItems = this.rightClickMenuItems;    
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 

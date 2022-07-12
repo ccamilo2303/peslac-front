@@ -4,6 +4,7 @@ import { UserService } from './services/user.service';
 import { ContextMenuComponent } from '../../../components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
 
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -51,15 +52,24 @@ export class UserComponent implements OnInit, OnDestroy  {
 
   refresh() {
     this.userService.refreshUsers();
+  }
 
+  recargar(){
+    Swal.fire({
+      title: 'Actualizando...',
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    })
+    this.refresh();
   }
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
   }
-
-
-  
+ 
   openModal(data?:any) {
     switch (this.modal) {
       case 'modalAgregarUsuario':
@@ -114,6 +124,13 @@ export class UserComponent implements OnInit, OnDestroy  {
   }
 
 
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
 
 }
 

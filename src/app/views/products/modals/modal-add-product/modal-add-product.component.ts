@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ProductService } from '../../services/product-service/product.service';
-import Swal from 'sweetalert2';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
+
+import Swal from 'sweetalert2';
 
 declare var $: any;
 
@@ -23,7 +24,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
-  modalProveedores: boolean = false;
+  modalAgregarProveedor: boolean = false;
   modal: string = "";
 
   public tiposProveedores!: any;
@@ -54,7 +55,11 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });
+    $("#modalAgregarProducto").modal({ backdrop: 'static', keyboard: false, show: true });
+  }
+
+  refresh() {
+    this.productService.refreshProducts();
   }
 
   ngOnDestroy() {
@@ -64,13 +69,13 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   closeModal() {
     this.form.reset();
     this.closeEvent.emit(true);
-    $("#modalProveedor").modal('hide');
+    $("#modalAgregarProducto").modal('hide');
   }
 
   openModal(data?: any) {
     switch (this.modal) {
-      case 'addSuplier':
-        this.modalProveedores = true;
+      case 'modalAgregarProveedor':
+        this.modalAgregarProveedor = true;
         break;
     }
     if (data) {
@@ -78,6 +83,15 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     } else {
       this.data = {};
     }
+  }
+
+  closeEventModal() {
+    switch (this.modal) {
+      case 'modalAgregarProveedor':
+        this.modalAgregarProveedor = false;
+        break;
+    }
+    this.refresh();
   }
 
   handleUpload(event: any) {
@@ -106,24 +120,36 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    
+    console.log(this.form.value);
+
+    if(this.form.controls['cantidad'].value <= 0){
+      this.mensajeErrorValidacion("La cantidad del producto tiene que ser superior a cero");
+      return;
+    }
+
+    if(this.form.controls['precio_costo'].value <= 0){
+      this.mensajeErrorValidacion("El precio de costo del producto tiene que ser superior a cero");
+      return;
+    }
+
     this.form.controls['valor_impuesto'].enable();
     this.form.controls['precio_venta'].enable();
-    console.log(this.form.value);
 
     if (!this.data.id) {
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
-        console.log('got data', data);
+        this.mensajeOk();
       }, (error) => {
-        console.log('there was an error sending the query', error);
+        this.mensajeError();
       });
 
     } else {
 
       this.productService.editProduct(this.form.value, this.data.id)
         .subscribe(({ data }) => {
-          console.log('got data', data);
+          this.mensajeOk();
         }, (error) => {
-          console.log('there was an error sending the query', error);
+          this.mensajeError();
         });
 
     }
@@ -166,6 +192,34 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
       });
     }
 
+  }
+
+  private mensajeOk() {
+    Swal.fire({
+      title: 'Información guardada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.closeModal();
+      }
+    });
+  }
+
+  private mensajeError() {
+    Swal.fire({
+      title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   }
 
 }

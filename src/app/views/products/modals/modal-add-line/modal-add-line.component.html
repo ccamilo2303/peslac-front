@@ -1,9 +1,9 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalAgregarLinea" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
 aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Editar Grupo</h5>
+                <h5 class="modal-title">Editar Línea</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
                     aria-label="Close"></button>
             </div>
@@ -11,7 +11,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
                 <form [formGroup]="form">
                     <div class="mb-3 row">
-                        <label for="inputPassword" class="col-sm-3 col-form-label">Nombre del grupo</label>
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Nombre de la línea</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="nombre" formControlName="nombre">
                         </div>

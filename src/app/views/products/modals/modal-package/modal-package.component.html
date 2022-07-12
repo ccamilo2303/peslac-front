@@ -1,4 +1,4 @@
-<div id="modalProveedor" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div id="modalPaquete" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
 aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -22,7 +22,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let package of listado" (contextmenu)="onTableClick($event, package)" [attr.modal]="'addPackage'">
+                        <tr *ngFor="let package of listado" (contextmenu)="onTableClick($event, package)" [attr.modal]="'modalAgregarPaquete'">
                             <th>{{package.producto.nombre}}</th>
                             <td>{{package.fecha_registro}}</td>
                         </tr>
@@ -44,7 +44,6 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
     </div>
 </div>
 
-<div *ngIf="displayStyleAddPackage == 'block'">
-    <app-modal-add-package [displayStyle]="displayStyleAddPackage" [dataPackage]="dataPackage"
-        (displayStyleEvent)="displayStyleEvent2($event)"></app-modal-add-package>
+<div *ngIf="modalAgregarPaquete">
+    <app-modal-add-package (closeEvent)="closeEventModal()" [data]="dataPackage"></app-modal-add-package>
 </div>
