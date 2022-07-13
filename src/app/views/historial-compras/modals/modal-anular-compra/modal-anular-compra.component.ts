@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
-import { HistorialComprasService } from '../../services/historial-ventas.service';
+import { HistorialComprasService } from '../../services/historial-compras.service';
 
 import Swal from 'sweetalert2';
 

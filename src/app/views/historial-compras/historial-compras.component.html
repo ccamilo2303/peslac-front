@@ -60,15 +60,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
-                    [attr.modal]="'modalDetalleVenta'">
-                    <th>{{venta.ordene.id}}</th>
-                    <td>{{venta.producto.nombre}}</td>
-                    <td>{{venta.cantidad}}</td>
-                    <td>{{venta.producto.precio_venta}}</td>
-                    <td>{{venta.producto.lineas_producto.nombre}}</td>
-                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                <tr *ngFor="let compra of listado" (contextmenu)="onTableClick($event, compra)"
+                    [attr.modal]="'modalDetalleCompra'">
+                    <th>{{compra.id_venta}}</th>
+                    <td>{{compra.producto}}</td>
+                    <td>{{compra.cantidad}}</td>
+                    <td>{{compra.precio_venta}}</td>
+                    <td>{{compra.linea_producto}}</td>
+                    <td>{{compra.proveedor}}</td>
+                    <td>{{compra.total}}</td>
                 </tr>
             </tbody>
         </table>
@@ -84,17 +84,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let venta of listado" (contextmenu)="onTableClick($event, venta)"
-                    [attr.modal]="'modalDetalleVenta'">
-                    <th>{{venta.id}}</th>
-                    <td>{{venta.fecha_registro}}</td>
-                    <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
-                    <td>{{venta.ordene.usuario.nombres}} {{venta.ordene.usuario.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                <tr *ngFor="let compra of listado" (contextmenu)="onTableClick($event, compra)"
+                    [attr.modal]="'modalDetalleCompra'">
+                    <th>{{compra.id}}</th>
+                    <td>{{compra.fecha_registro}}</td>
+                    <td>{{compra.proveedore.nombre}}</td>
+                    <td>{{compra.ordene.usuario.nombres}} {{compra.ordene.usuario.apellidos}}</td>
+                    <td>{{compra.ordene.detalle_ordenes[0].total}}</td>
                 </tr>
             </tbody>
         </table>
         <div #contextMenu></div>
+    </div>
+
+    <div class="card-footer" *ngIf="tipoVista == 3">
+        <div class="row">
+            <div class="col-4 offset-2">
+                <button type="button" class="btn btn-secondary col-12">Exportar CSV</button>
+            </div>
+            <div class="col-4">
+                <button type="button" class="btn btn-secondary col-12">Exportar CSV General</button>
+            </div>
+        </div>
     </div>
 </div>
 

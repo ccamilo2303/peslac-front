@@ -9,60 +9,59 @@
             </div>
 
             <div class="modal-body">
-                <form [formGroup]="form">
-                    <div class="m-1 ">
-                        <div class="row">
 
-                            <div class="col">
-                                <form [formGroup]="productForm">
-                                    <div formArrayName="productos">
-                                        <div class="row" *ngFor="let producto of productos().controls; let i=index"
-                                            [formGroupName]="i">
-                                            <div class="col">
-                                                <div class="mb-3">
-                                                    <label for="exampleFormControlInput1"
-                                                        class="form-label">Producto:</label>
-                                                    <select class="form-select" aria-label="Default select example"
-                                                        formControlName="id_producto">
-                                                        <option *ngFor="let item of listadoProductos"
-                                                            value="{{item.id}}">
-                                                            {{item.nombre}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="mb-3">
-                                                    <label for="exampleFormControlInput1"
-                                                        class="form-label">Cantidad</label>
-                                                    <input type="number" class="form-control"
-                                                        id="exampleFormControlInput1">
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <button class="btn btn-danger" style="margin-top: 2rem !important;"
-                                                    (click)="deleteProducto(i)">x</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="m-1 ">
+                    <div class="row">
 
-
-                                    <div class="row">
+                        <div class="col">
+                            <form [formGroup]="productForm">
+                                <div formArrayName="productos">
+                                    <div class="row" *ngFor="let producto of productos().controls; let i=index"
+                                        [formGroupName]="i">
                                         <div class="col">
-                                            <button class="btn btn-primary col-12" (click)="addProducto()">Añadir
-                                                Producto</button>
+                                            <div class="mb-3">
+                                                <label for="exampleFormControlInput1"
+                                                    class="form-label">Producto:</label>
+                                                <select class="form-select" aria-label="Default select example"
+                                                    formControlName="id_producto">
+                                                    <option *ngFor="let item of listadoProductos" value="{{item.id}}">
+                                                        {{item.nombre}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="exampleFormControlInput1"
+                                                    class="form-label">Cantidad</label>
+                                                <input type="number" class="form-control" formControlName="cantidad" id="exampleFormControlInput1">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-danger" style="margin-top: 2rem !important;"
+                                                (click)="deleteProducto(i)">x</button>
                                         </div>
                                     </div>
+                                </div>
 
-                                </form>
-                            </div>
 
-                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-primary col-12" (click)="addProducto()">Añadir
+                                            Producto</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="col">
+                            <form [formGroup]="form">
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label">Producto:</label>
                                             <select class="form-select" aria-label="Default select example"
-                                                formControlName="id_producto">
+                                                formControlName="id_producto_destino">
                                                 <option *ngFor="let item of listadoProductos" value="{{item.id}}">
                                                     {{item.nombre}}</option>
                                             </select>
@@ -71,7 +70,7 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
-                                            <input type="number" class="form-control" id="exampleFormControlInput1">
+                                            <input type="number" class="form-control" formControlName="cantidad" id="exampleFormControlInput1">
                                         </div>
                                     </div>
                                 </div>
@@ -92,13 +91,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </form>
                         </div>
+
                     </div>
+                </div>
 
 
-                </form>
+
 
             </div>
 

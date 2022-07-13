@@ -4,15 +4,14 @@ import { Observable } from 'rxjs';
 
 
 const GET_HISTORIAL_COMPRAS_GENERAL = gql`
-query InformeVentasGeneral($fechaInicio: date = "2022-01-01", $fechaFin: date = "2500-01-01") {
-  ventas(order_by: {id: asc}, where: {ordene: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}, anulado: {_eq: false}}) {
+query ConsultarHistoricoComprasGeneral {
+  compras(order_by: {id: asc}) {
     id
     fecha_registro
+    proveedore {
+      nombre
+    }
     ordene {
-      cliente {
-        nombres
-        apellidos
-      }
       usuario {
         nombres
         apellidos
@@ -26,32 +25,26 @@ query InformeVentasGeneral($fechaInicio: date = "2022-01-01", $fechaFin: date = 
 `;
 
 const GET_HISTORIAL_COMPRAS_DETALLADO = gql`
-query InformeVentasDetallado($fechaInicio: date = "2022-01-01", $fechaFin: date = "2500-01-01") {
-  detalle_ordenes(where: {ordene: {ventas: {fecha_registro: {_gte: $fechaInicio, _lte: $fechaFin}}}}) {
-    ordene {
-      id
-      cliente {
-        nombres
-        apellidos
-      }
-    }
-    producto {
-      nombre
-      precio_venta
-      lineas_producto {
-        nombre
-      }
-    }
+query ConsultarHistoricoComprasDetallado {
+  vis_detalle_compras {
+    id_venta
+    producto
     cantidad
+    precio_venta
+    linea_producto
+    proveedor
     total
   }
 }
 `;
 
 const GET_DETALLE_COMPRA = gql`
-query ConsultarDetalleVenta($idVenta: Int = 4) {
-  ventas(where: {id: {_eq: $idVenta}}) {
+query ConsultarDetalleCompra($idCompra: Int = 1) {
+  compras(where: {id: {_eq: $idCompra}}) {
     id
+    estados_compra{
+      nombre
+    }
     ordene{
       
     fecha_registro
@@ -151,12 +144,12 @@ export class HistorialComprasService {
     return this.postsQuery.valueChanges;
   }
 
-  getDetalleCompra(idVenta:any): Observable<any> {
+  getDetalleCompra(idCompra:any): Observable<any> {
 
     this.postsQuery = this.apollo.watchQuery<any>({
       query: GET_DETALLE_COMPRA,
       variables: {
-        idVenta: idVenta
+        idCompra: idCompra
       }
     });
 

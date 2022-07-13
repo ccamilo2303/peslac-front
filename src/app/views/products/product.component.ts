@@ -29,6 +29,8 @@ export class ProductComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
@@ -41,6 +43,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.productos;
+        this.listadoCopia = data.productos;
       });
   }
 
@@ -96,6 +99,17 @@ export class ProductComponent implements OnInit, OnDestroy {
         break;
     }
     this.refresh();
+  }
+
+  buscarProducto(event:any){
+    //console.log("Consulta: " + event.target.value);
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras == event.target.value);
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
+    
   }
 
   onTableClick(event: any, data: any) {

@@ -17,7 +17,7 @@
                         <label for="exampleFormControlInput1" class="form-label"><strong>Fecha:</strong> {{listado[0].ordene.fecha_registro}}</label>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlInput1" class="form-label"><strong>Proveedor:</strong> {{listado[0].ordene.usuario.estacion}}</label>
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Proveedor:</strong> {{listado[0].ordene.usuario.nombres}} {{listado[0].ordene.usuario.apellidos}}</label>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlInput1" class="form-label"><strong>No. Compra:</strong> {{listado[0].id}}</label>
@@ -35,7 +35,7 @@
                         <label for="exampleFormControlInput1" class="form-label"><strong>Forma de pago:</strong> {{listado[0].ordene.metodos_pago.nombre}}</label>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlInput1" class="form-label"><strong>Estado:</strong> {{listado[0].ordene.consecutivo}}</label>
+                        <label for="exampleFormControlInput1" class="form-label"><strong>Estado:</strong> {{listado[0].estados_compra.nombre}}</label>
                     </div>
                 </div>
     

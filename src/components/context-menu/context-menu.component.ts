@@ -110,6 +110,11 @@ export class ContextMenuComponent implements OnInit {
       this.component.modal = "modalAnularVenta";
       this.component.openModal(id);
     }
+
+    if(this.contextMenuItems[1].modalAnularCompra){
+      this.component.modal = "modalAnularCompra";
+      this.component.openModal(id);
+    }
     
   }
 

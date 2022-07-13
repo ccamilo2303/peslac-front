@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ComponentFac
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
-import { HistorialComprasService } from '../../services/historial-ventas.service';
+import { HistorialComprasService } from '../../services/historial-compras.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 
 declare var $: any;
@@ -47,7 +47,7 @@ export class ModalDetalleCompraComponent implements OnInit {
     this.querySubscription = this.historialComprasService.getDetalleCompra(this.data.id)
     .subscribe(({ data, loading }) => {
       this.loading = loading;
-      this.listado = data.ventas;
+      this.listado = data.compras;
       console.log("--> ", data);
     });
 

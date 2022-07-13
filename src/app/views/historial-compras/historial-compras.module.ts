@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HistorialComprasComponent } from './historial-compras.component';
 
-import { HistorialComprasRoutingModule } from './historial-ventas-routing.module';
+import { HistorialComprasRoutingModule } from './historial-compras-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ModalAnularCompraComponent } from './modals/modal-anular-compra/modal-anular-compra.component';

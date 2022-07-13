@@ -25,13 +25,8 @@ export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
   private querySubscription!: Subscription;
 
   form: FormGroup = new FormGroup({
-    nombres: new FormControl('', [Validators.required]),
-    apellidos: new FormControl('', [Validators.required]),
-    cedula: new FormControl('', [Validators.required]),
-    celular: new FormControl('', [Validators.required]),
-    ciudad: new FormControl('', [Validators.required]),
-    direccion: new FormControl('', [Validators.required]),
-    id_lista_precios: new FormControl('', [Validators.required]),
+    id_producto_destino: new FormControl('', [Validators.required]),
+    cantidad: new FormControl('', [Validators.required]),
   });
 
   productForm: FormGroup;
@@ -49,7 +44,7 @@ export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
   nuevoProducto(): FormGroup {  
     return this.fb.group({  
       id_producto: new FormControl('', [Validators.required]),
-      id_paquete: new FormControl('0', [Validators.required]),
+      id_transformacion: new FormControl('0', [Validators.required]),
       cantidad: new FormControl('', [Validators.required]),
     })  
   }  
@@ -68,7 +63,7 @@ export class ModalAgregarTransformacionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.querySubscription.unsubscribe();
+    this.querySubscription.unsubscribe();
   }
 
   closeModal() {
