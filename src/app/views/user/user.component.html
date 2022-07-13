@@ -35,6 +35,6 @@
 
 <!-- Modal -->
 <div *ngIf="modalAgregarUsuario">
-  <app-modal-add-user (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-add-user>
+  <app-modal-add-user (closeEvent)="closeEventModal()" [data]="dataModal" [listadoUsuarios]="listado"></app-modal-add-user>
 </div>
 

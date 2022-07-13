@@ -12,7 +12,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
           <div class="row">
 
-            <div class="col">
+            <div class="col-6">
               <div class="row">
                 <div class="col">
                   <div class="mb-3">
@@ -42,10 +42,10 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Impuesto</label>
-                <div class="col-sm-5">
-                  <select class="form-select" (ngModelChange)="inputImpuesto($event)" aria-label="Default select example" formControlName="id_tipo_impuesto">
-                    <option *ngFor="let item of tiposImpuestos" value="{{item.id}}">{{item.nombre}}</option>
+                <label for="inputEmail3" class="col-sm-4 col-form-label">Impuesto</label>
+                <div class="col-sm-4">
+                  <select class="form-select" (change)="inputImpuesto($event)" aria-label="Default select example" formControlName="id_tipo_impuesto">
+                    <option *ngFor="let item of tiposImpuestos" [attr.iva]="item.cobra_iva" value="{{item.id}}">{{item.nombre}}</option>
                   </select>
                 </div>
                 <label for="inputEmail3" class="col-sm-1 col-form-label">IVA:</label>
@@ -60,40 +60,40 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Proveedor</label>
-                <div class="col-sm-6">
+                <label for="inputEmail3" class="col-sm-4 col-form-label">Proveedor</label>
+                <div class="col-sm-5">
                   <select class="form-select" aria-label="Default select example" formControlName="id_proveedor">
                     <option *ngFor="let item of tiposProveedores" value="{{item.id}}">{{item.nombre}}</option>
                   </select>
                 </div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-primary col-12" (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
+                  <button type="button" class="btn btn-outline-dark col-12" (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Descripción</label>
-                <div class="col-sm-9">
+                <label for="inputEmail3" class="col-sm-4 col-form-label">Descripción</label>
+                <div class="col-sm-8">
                   <textarea class="form-control" id="descripcion" formControlName="descripcion" rows="3"></textarea>
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Línea</label>
-                <div class="col-sm-9">
+                <label for="inputEmail3" class="col-sm-4 col-form-label">Línea</label>
+                <div class="col-sm-8">
                   <select class="form-select" aria-label="Default select example" formControlName="id_linea">
                     <option *ngFor="let item of tiposLineas" value="{{item.id}}">{{item.nombre}}</option>
                   </select>
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label"></label>
-                <div class="col-9">
-                  <button type="button" class="btn btn-primary col-12">Agregar Descuento</button>
+                <label for="inputEmail3" class="col-sm-4 col-form-label"></label>
+                <div class="col-8">
+                  <button type="button" class="btn btn-outline-dark col-12" (click)="modal = 'modalAgregarDescuentos'; openModal()">Agregar Descuento</button>
                 </div>
               </div>
             </div>
 
 
-            <div class="col">
+            <div class="col-6">
               <div class="row mb-3">
                 <div class="row">
                   <div class="col">
@@ -105,19 +105,25 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     </div>
                   </div>
                   <div class="col mt-5">
-                    <div class="form-check">
-                      <input class="form-check-input" type="number" value="0" formControlName="habilitado"
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" formControlName="habilitado"
                         id="habilitado">
                       <label class="form-check-label" for="flexCheckDefault">
                         Deshabilitar
                       </label>
                     </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="number" value="0" formControlName="inventario_min"
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <input class="form-control col" type="number" value="0" formControlName="inventario_min"
                         id="inventario_min">
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Inventario min
-                      </label>
+                      
+                      </div>
+                      <div class="col-6">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Inventario min
+                        </label>
+                      </div>
+                      
                     </div>
                     <div class="input-group">
                       <input type="file" class="form-control" (change)="handleUpload($event)"
@@ -128,12 +134,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 </div>
               </div>
               <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-3 col-form-label">Código</label>
-                <div class="col-sm-9">
-                  <input type="text" readonly class="form-control-plaintext" id="id" value="" disabled>
-                </div>
-              </div>
-              <div class="row mb-3">
+                <label for="inputEmail3" class="col col-form-label">Código De Barras</label>
                 <div class="input-group mt-3">
                   <span class="input-group-text" id="basic-addon1">|||||</span>
                   <input type="text" class="form-control" placeholder="Username" aria-label="Username"
@@ -159,4 +160,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
 <div *ngIf="modalAgregarProveedor">
   <app-modal-agregar-proveedores (closeEvent)="closeEventModal()"></app-modal-agregar-proveedores>
+</div>
+
+<div *ngIf="modalAgregarDescuentos">
+  <app-modal-add-discount (closeEvent)="closeEventModal()" [dataDescuentos]="dataDescuentos" (descuentos)="descuentos($event)"></app-modal-add-discount>
 </div>

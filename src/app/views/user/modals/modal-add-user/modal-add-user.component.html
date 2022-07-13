@@ -15,37 +15,37 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="nombres" id="nombres">
+                    <input type="text" class="form-control" tabindex="1" formControlName="nombres" id="nombres">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">NIT</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="nit" id="nit">
+                    <input type="text" class="form-control" tabindex="3" formControlName="nit" id="nit">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Estación</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="estacion" id="estacion">
+                    <input type="text" class="form-control" tabindex="5" formControlName="estacion" id="estacion">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Dirección</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="direccion" id="direccion">
+                    <input type="text" class="form-control" tabindex="7" formControlName="direccion" id="direccion">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Usuario</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="usuario" id="usuario">
+                    <input type="text" class="form-control" tabindex="9" formControlName="usuario" id="usuario">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Tipo Usuario</label>
                   <div class="col-sm-9">
-                    <select class="form-select" aria-label="Default select example" formControlName="id_tipo_usuario">
+                    <select class="form-select" tabindex="11" aria-label="Default select example" formControlName="id_tipo_usuario">
                       <option *ngFor="let item of tiposUsuarios" value="{{item.id}}">{{item.nombre}}</option>
                     </select>
                   </div>
@@ -57,31 +57,31 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Apellido</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="apellidos" id="apellidos">
+                    <input type="text" class="form-control" tabindex="2" formControlName="apellidos" id="apellidos">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Ciudad</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="ciudad" id="ciudad">
+                    <input type="text" class="form-control" tabindex="4" formControlName="ciudad" id="ciudad">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="correo" id="correo">
+                    <input type="text" class="form-control" tabindex="6" formControlName="correo" id="correo">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Télefono</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="telefono" id="telefono">
+                    <input type="number" class="form-control" tabindex="8" formControlName="telefono" id="telefono">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputEmail3" class="col-sm-3 col-form-label">Contraseña</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" formControlName="clave" id="clave">
+                    <input type="password" class="form-control" tabindex="10" formControlName="clave" id="clave">
                   </div>
                 </div>
               </div>

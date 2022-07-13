@@ -25,12 +25,15 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   public closeEvent = new EventEmitter<boolean>();
 
   modalAgregarProveedor: boolean = false;
+  modalAgregarDescuentos: boolean = false;
   modal: string = "";
+  dataDescuentos: any[] = [];
 
   public tiposProveedores!: any;
   public tiposCantidades!: any;
   public tiposImpuestos!: any;
   public tiposLineas!: any;
+
   private querySubscription!: Subscription;
 
   form: FormGroup = new FormGroup({
@@ -46,7 +49,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     imagen: new FormControl('', [Validators.required]),
     codigo_barras: new FormControl('', [Validators.required]),
     inventario_min: new FormControl('0'),
-    habilitado: new FormControl('0'),
+    habilitado: new FormControl(''),
     //id_usuario_registro: new FormControl('', [Validators.required]),
     id_tipo_cantidad: new FormControl('', [Validators.required]),
   });
@@ -55,11 +58,20 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
+      this.tiposProveedores = data.proveedores;
+      console.log("Proveedores --> ", data);
+    });
     $("#modalAgregarProducto").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
     this.productService.refreshProducts();
+  }
+
+  refreshProveedores() {
+    this.appService.refreshAppService();
+    this.form.controls["id_proveedor"].setValue(this.tiposProveedores[0].id)
   }
 
   ngOnDestroy() {
@@ -77,6 +89,9 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
       case 'modalAgregarProveedor':
         this.modalAgregarProveedor = true;
         break;
+      case 'modalAgregarDescuentos':
+        this.modalAgregarDescuentos = true;
+        break
     }
     if (data) {
       this.data = data;
@@ -90,8 +105,11 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
       case 'modalAgregarProveedor':
         this.modalAgregarProveedor = false;
         break;
+      case 'modalAgregarDescuentos':
+        this.modalAgregarDescuentos = false;
+        break;
     }
-    this.refresh();
+    this.refreshProveedores();
   }
 
   handleUpload(event: any) {
@@ -109,28 +127,39 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   }
 
   inputImpuesto(event: any) {
-
-    if (event == 5) {
+    if (event.path[0][event.target.value - 1].attributes[3].nodeValue == 'true') {
       this.form.controls['valor_impuesto'].enable();
     } else {
       this.form.controls['valor_impuesto'].setValue(0);
       this.form.controls['valor_impuesto'].disable();
       this.precioVenta();
     }
+    console.log(this.form.controls['valor_impuesto'].status);
+  }
+
+  descuentos(data:any){
+    this.dataDescuentos = data;
   }
 
   submit() {
-    
+
     console.log(this.form.value);
 
-    if(this.form.controls['cantidad'].value <= 0){
+    if (this.form.controls['cantidad'].value <= 0) {
       this.mensajeErrorValidacion("La cantidad del producto tiene que ser superior a cero");
       return;
     }
 
-    if(this.form.controls['precio_costo'].value <= 0){
+    if (this.form.controls['precio_costo'].value <= 0) {
       this.mensajeErrorValidacion("El precio de costo del producto tiene que ser superior a cero");
       return;
+    }
+
+    if (this.form.controls['valor_impuesto'].status == 'VALID') {
+      if (this.form.controls['valor_impuesto'].value <= 0) {
+        this.mensajeErrorValidacion("El IVA del producto tiene que ser superior a cero");
+        return;
+      }
     }
 
     this.form.controls['valor_impuesto'].enable();
@@ -158,9 +187,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.tiposProveedores = data.proveedores;
-    });
+
     this.querySubscription = this.appService.getTiposCantidad().subscribe(({ data, loading }) => {
       this.tiposCantidades = data.tipos_cantidad;
     });

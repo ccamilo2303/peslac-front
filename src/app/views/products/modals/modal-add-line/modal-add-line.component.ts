@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './modal-add-line.component.html',
   styleUrls: ['./modal-add-line.component.scss']
 })
-export class ModalAddLineComponent implements OnInit, OnDestroy {
+export class ModalAddLineComponent implements OnInit {
 
   loading: boolean = false;
   private querySubscription!: Subscription;
@@ -41,7 +41,7 @@ export class ModalAddLineComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    //this.querySubscription.unsubscribe();
   }
 
   closeModal() {

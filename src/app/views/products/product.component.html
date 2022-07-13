@@ -32,7 +32,7 @@
         <tr *ngFor="let producto of listado" (contextmenu)="onTableClick($event, producto)" [attr.modal]="'modalAgregarProducto'">
           <th>{{producto.nombre}}</th>
           <td>{{producto.id_proveedor}}</td>
-          <td>{{producto.precio_costo}}</td>
+          <td>{{producto.precio_costo | currency:'':'symbol':'1.0-2'}}</td>
           <td>{{producto.id_linea}}</td>
           <td>{{producto.codigo_barras}}</td>
         </tr>

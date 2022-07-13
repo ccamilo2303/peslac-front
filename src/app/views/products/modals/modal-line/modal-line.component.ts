@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class ModalLineComponent implements OnInit, OnDestroy {
 
-  modalAgregarLinea:boolean = false;
+  modalAgregarLinea: boolean = false;
   dataLine: any;
 
   rightClickMenuItems: any = [];
@@ -46,8 +46,9 @@ export class ModalLineComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.lineas_producto;
+        console.log("Lineas --> ",this.listado);
       });
-      $("#modalLinea").modal({ backdrop: 'static', keyboard: false, show: true });
+    $("#modalLinea").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
@@ -59,6 +60,13 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+
+    let validacionLinea: any[] = this.listado.filter((linea: any) => linea.nombre == this.form.controls["nombre"].value);
+
+    if (validacionLinea.length > 0) {
+      this.mensajeErrorValidacion("El nombre ingresado para crear la línea ya existe");
+      return;
+    }
 
     this.lineService.createLine(this.form.value).subscribe(({ data }) => {
       this.mensajeOk();
@@ -139,6 +147,14 @@ export class ModalLineComponent implements OnInit, OnDestroy {
   private mensajeError() {
     Swal.fire({
       title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
       icon: 'error',
       confirmButtonText: 'Ok'
     });

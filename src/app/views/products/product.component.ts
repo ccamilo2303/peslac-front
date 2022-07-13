@@ -44,7 +44,9 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.loading = loading;
         this.listado = data.productos;
         this.listadoCopia = data.productos;
+        console.log("Productos --> ", data);
       });
+
   }
 
   refresh() {

@@ -1,0 +1,58 @@
+<div id="modalAgregarDescuentos" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Descuentos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form [formGroup]="form">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="exampleFormControlInput1" class="form-label">Cantidad mínima</label>
+                            <input type="number" class="form-control" formControlName="cantidad_minima" id="exampleFormControlInput1">
+                        </div>
+                        <div class="col">
+                            <label for="exampleFormControlInput1" class="form-label">Cantidad máxima</label>
+                            <input type="number" class="form-control" formControlName="cantidad_maxima" id="exampleFormControlInput1">
+                        </div>
+                        <div class="col">
+                            <label for="exampleFormControlInput1" class="form-label">Descuento  %</label>
+                            <input type="number" class="form-control" formControlName="descuento" id="exampleFormControlInput1">
+                        </div>
+                        <div class="col">
+                            <label for="exampleFormControlInput1" class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary form-control" (click)="agregarDescuento()" [disabled]="form.invalid">Agregar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table mt-5">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cantidad Mínima</th>
+                        <th scope="col">Cantidad Máxima</th>
+                        <th scope="col">Descuento</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let descuento of dataDescuentos">
+                        <td>{{descuento.cantidad_minima}}</td>
+                        <td>{{descuento.cantidad_maxima}}</td>
+                        <td>{{descuento.descuento}} %</td>
+                        <td><button (click)="eliminarDescuento(descuento)" type="button" class="btn-close" aria-label="Close"></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

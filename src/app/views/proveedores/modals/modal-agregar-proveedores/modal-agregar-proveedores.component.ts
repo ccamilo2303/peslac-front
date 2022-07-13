@@ -45,7 +45,6 @@ export class ModalAgregarProveedoresComponent implements OnInit {
     $("#modalAgregarPaquete").modal('hide');
     $("#modalProveedor").modal({backdrop:'static',keyboard:false, show:true});
     
-
   }
   
   ngOnDestroy() {

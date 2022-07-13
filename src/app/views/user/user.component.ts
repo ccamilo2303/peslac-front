@@ -124,13 +124,5 @@ export class UserComponent implements OnInit, OnDestroy  {
   }
 
 
-  private mensajeError() {
-    Swal.fire({
-      title: 'Error guardando la información',
-      icon: 'error',
-      confirmButtonText: 'Ok'
-    });
-  }
-
 }
 

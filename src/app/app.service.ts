@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 const GET_LIST_TIPOS_USUARIOS = gql`
 query ConsultarTiposUsuarios {
@@ -26,6 +25,7 @@ query ConsultarTiposImpuesto {
     tipos_impuesto(order_by: {id: asc}) {
       id
       nombre
+      cobra_iva
     }
   }  
 `;
@@ -95,69 +95,78 @@ query ConsultarListadoProductos {
 })
 export class AppService {
 
+  postsQuery!: QueryRef<any>;
+
   constructor(private apollo: Apollo) { }
-
-
-  getTiposUsuarios() {
-    return this.apollo
+ 
+  getTiposUsuarios(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_TIPOS_USUARIOS
-      }).valueChanges;
+      });
+
+    return this.postsQuery.valueChanges;
   }
 
-  getTiposCantidad() {
-    return this.apollo
+  getTiposCantidad(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_TIPOS_CANTIDAD
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-
-  getTiposImpuesto() {
-    return this.apollo
+  getTiposImpuesto(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_TIPOS_IMPUESTO
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-
-  getListadoProveedores() {
-    return this.apollo
+  getListadoProveedores(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_PROVEEDORES
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-  getLineasProducto() {
-    return this.apollo
+  getLineasProducto(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_LINEAS_PRODUCTO
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-  getListadoProductos() {
-    return this.apollo
+  getListadoProductos(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_PRODUCTOS
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-
-  getListadoMetodosPago() {
-    return this.apollo
+  getListadoMetodosPago(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_METODOS_PAGO
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-  getListadoCondicionPago() {
-    return this.apollo
+  getListadoCondicionPago(): Observable<any> {
+    this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_CONDICION_DE_PAGO
-      }).valueChanges;
+      });
+    return this.postsQuery.valueChanges;
   }
 
-  
+  refreshAppService() {
+    this.postsQuery.refetch();
+  }
 
 
 }

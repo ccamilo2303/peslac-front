@@ -14,9 +14,10 @@ import { ModalPriceListComponent } from './modals/modal-price-list/modal-price-l
 import { ModalAddPriceListComponent } from './modals/modal-add-price-list/modal-add-price-list.component';
 
 import { ProveedoresModule } from '../proveedores/proveedores.module';
+import { ModalAddDiscountComponent } from './modals/modal-add-discount/modal-add-discount.component';
 
 @NgModule({
-  declarations: [ProductComponent, ModalAddProductComponent, ModalLineComponent, ModalAddLineComponent, ModalAddPackageComponent, ModalPackageComponent, ModalPriceListComponent, ModalAddPriceListComponent],
+  declarations: [ProductComponent, ModalAddProductComponent, ModalLineComponent, ModalAddLineComponent, ModalAddPackageComponent, ModalPackageComponent, ModalPriceListComponent, ModalAddPriceListComponent, ModalAddDiscountComponent],
   exports: [
     ModalAddPriceListComponent
   ],

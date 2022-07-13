@@ -13,16 +13,19 @@ declare var $: any;
   templateUrl: './modal-add-user.component.html',
   styleUrls: ['./modal-add-user.component.scss']
 })
-export class ModalAddUserComponent implements OnInit, OnDestroy  {
+export class ModalAddUserComponent implements OnInit, OnDestroy {
 
 
   @Input()
   public data: any;
 
+  @Input()
+  public listadoUsuarios: any;
+
   @Output()
   public closeEvent = new EventEmitter<boolean>();
-  
-  public tiposUsuarios!:any;
+
+  public tiposUsuarios!: any;
   private querySubscription!: Subscription;
 
 
@@ -44,8 +47,8 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
   constructor(private userService: UserService, private appService: AppService) { }
 
   ngOnInit(): void {
-      this.initForm();
-      $("#modalAgregarUsuario").modal({ backdrop: 'static', keyboard: false, show: true });
+    this.initForm();
+    $("#modalAgregarUsuario").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   ngOnDestroy() {
@@ -60,23 +63,46 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
 
   submit() {
 
-    if(!this.data.id){
+    this.form.controls["telefono"].setValue(this.form.controls["telefono"].value.toString())
+
+    if (!this.data.id) {
+
+      let validacionUsuario: any[] = this.listadoUsuarios.filter((usuario: any) => usuario.usuario == this.form.controls["usuario"].value);
+      let validacionNit: any[] = this.listadoUsuarios.filter((usuario: any) => usuario.nit == this.form.controls["nit"].value);
+      let validacionCorreo: any[] = this.listadoUsuarios.filter((usuario: any) => usuario.correo == this.form.controls["correo"].value);
+
+      if (validacionNit.length > 0) {
+        this.mensajeErrorValidacion("El NIT ingresado ya existe");
+        return;
+      }
+
+      if (validacionCorreo.length > 0) {
+        this.mensajeErrorValidacion("El correo ingresado ya existe");
+        return;
+      }
+
+      if (validacionUsuario.length > 0) {
+        this.mensajeErrorValidacion("El usuario ingresado ya existe");
+        return;
+      }
+
       this.userService.createUser(this.form.value).subscribe(({ data }) => {
         this.mensajeOk();
-      },(error) => {
+      }, (error) => {
         this.mensajeError();
       });
 
-    }else{
-     
+    } else {
+
       this.userService.editUser(this.form.value, this.data.id)
-      .subscribe(({ data }) => {
-        this.mensajeOk();
-      },(error) => {
-        this.mensajeError();
-      });
-  
+        .subscribe(({ data }) => {
+          this.mensajeOk();
+        }, (error) => {
+          this.mensajeError();
+        });
+
     }
+
   }
 
   initForm() {
@@ -84,8 +110,8 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
     this.querySubscription = this.appService.getTiposUsuarios().subscribe(({ data, loading }) => {
       this.tiposUsuarios = data.tipos_usuarios;
     });
-
-    if(this.data && this.data.id != null){
+    
+    if (this.data && this.data.id != null) {
       this.form.setValue({
         nombres: this.data.nombres,
         apellidos: this.data.apellidos,
@@ -100,7 +126,7 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
         id_tipo_usuario: this.data.id_tipo_usuario,
       });
     }
-      
+
   }
 
   private mensajeOk() {
@@ -118,6 +144,14 @@ export class ModalAddUserComponent implements OnInit, OnDestroy  {
   private mensajeError() {
     Swal.fire({
       title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
       icon: 'error',
       confirmButtonText: 'Ok'
     });
