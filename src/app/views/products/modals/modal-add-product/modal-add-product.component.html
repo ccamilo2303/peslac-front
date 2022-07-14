@@ -1,5 +1,5 @@
 <div id="modalAgregarProducto" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -38,19 +38,23 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-4 col-form-label">Precio Costo</label>
                 <div class="col-sm-8">
-                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="precio_costo" id="precio_costo">
+                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="precio_costo"
+                    id="precio_costo">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-4 col-form-label">Impuesto</label>
                 <div class="col-sm-4">
-                  <select class="form-select" (change)="inputImpuesto($event)" aria-label="Default select example" formControlName="id_tipo_impuesto">
-                    <option *ngFor="let item of tiposImpuestos" [attr.iva]="item.cobra_iva" value="{{item.id}}">{{item.nombre}}</option>
+                  <select class="form-select" (change)="inputImpuesto($event)" aria-label="Default select example"
+                    formControlName="id_tipo_impuesto">
+                    <option *ngFor="let item of tiposImpuestos" [attr.iva]="item.cobra_iva" value="{{item.id}}">
+                      {{item.nombre}}</option>
                   </select>
                 </div>
                 <label for="inputEmail3" class="col-sm-1 col-form-label">IVA:</label>
                 <div class="col-3">
-                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="valor_impuesto" id="valor_impuesto" value="0">
+                  <input type="number" class="form-control" (input)="precioVenta()" formControlName="valor_impuesto"
+                    id="valor_impuesto" value="0">
                 </div>
               </div>
               <div class="row mb-3">
@@ -67,7 +71,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   </select>
                 </div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-outline-dark col-12" (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
+                  <button type="button" class="btn btn-outline-dark col-12"
+                    (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
                 </div>
               </div>
               <div class="row mb-3">
@@ -87,7 +92,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-4 col-form-label"></label>
                 <div class="col-8">
-                  <button type="button" class="btn btn-outline-dark col-12" (click)="modal = 'modalAgregarDescuentos'; openModal()">Agregar Descuento</button>
+                  <button type="button" class="btn btn-outline-dark col-12"
+                    (click)="modal = 'modalAgregarDescuentos'; openModal()">Agregar Descuento</button>
                 </div>
               </div>
             </div>
@@ -99,15 +105,13 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   <div class="col">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Imagen</label>
                     <div class="col-sm-9">
-                      <img
-                        src="{{form.controls['imagen'].value}}"
-                        class="img-thumbnail" alt="{{form.controls['nombre'].value}}" id="imagen_url">
+                      <img src="{{form.controls['imagen'].value}}" class="img-thumbnail"
+                        alt="{{form.controls['nombre'].value}}" id="imagen_url">
                     </div>
                   </div>
                   <div class="col mt-5">
                     <div class="form-check mb-3">
-                      <input class="form-check-input" type="checkbox" formControlName="habilitado"
-                        id="habilitado">
+                      <input class="form-check-input" type="checkbox" formControlName="habilitado" id="habilitado">
                       <label class="form-check-label" for="flexCheckDefault">
                         Deshabilitar
                       </label>
@@ -115,19 +119,22 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="row mb-3">
                       <div class="col-6">
                         <input class="form-control col" type="number" value="0" formControlName="inventario_min"
-                        id="inventario_min">
-                      
+                          id="inventario_min">
+
                       </div>
                       <div class="col-6">
                         <label class="form-check-label" for="flexCheckDefault">
                           Inventario min
                         </label>
                       </div>
-                      
+
                     </div>
                     <div class="input-group">
                       <input type="file" class="form-control" (change)="handleUpload($event)"
-                        aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                        aria-describedby="inputGroupFileAddon04" [ngClass]="{
+                          'is-invalid':f('imagen')?.invalid,
+                          'is-valid': f('imagen')?.valid
+                        }" aria-label="Upload">
                       <input type="text" hidden id="imagen" formControlName="imagen">
                     </div>
                   </div>
@@ -163,5 +170,6 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 </div>
 
 <div *ngIf="modalAgregarDescuentos">
-  <app-modal-add-discount (closeEvent)="closeEventModal()" [dataDescuentos]="dataDescuentos" (descuentos)="descuentos($event)"></app-modal-add-discount>
+  <app-modal-add-discount (closeEvent)="closeEventModal()" [dataDescuentos]="dataDescuentos"
+    (descuentos)="descuentos($event)"></app-modal-add-discount>
 </div>

@@ -24,18 +24,16 @@ export class ModalPackageComponent implements OnInit {
   contextMenuSelector: string = '';
   menuEvent: any;
   listado: any = [];
+  listadoCopia: any = [];
   modal: string = '';
   loading: boolean = false;
+
   private querySubscription!: Subscription;
 
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
-
-  form: FormGroup = new FormGroup({
-    nombre: new FormControl('', [Validators.required])
-  });
 
   constructor(private packageService: PackageService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -46,6 +44,7 @@ export class ModalPackageComponent implements OnInit {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.paquetes;
+        this.listadoCopia = data.paquetes;
       });
       $("#modalPaquete").modal({ backdrop: 'static', keyboard: false, show: true });
   }
@@ -59,7 +58,6 @@ export class ModalPackageComponent implements OnInit {
   }
 
   closeModal() {
-    this.form.reset();
     this.closeEvent.emit(true);
     $("#modalPaquete").modal('hide');
   }
@@ -84,6 +82,15 @@ export class ModalPackageComponent implements OnInit {
         break;
     }
     this.refresh();
+  }
+
+  buscarPaquete(event:any){
+    let listadoTemp:any[] = this.listadoCopia.filter((paquete:any) => paquete.producto.codigo_barras.includes(event.target.value) || paquete.producto.nombre.includes(event.target.value));
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
   }
 
   onTableClick(event: any, data: any) {

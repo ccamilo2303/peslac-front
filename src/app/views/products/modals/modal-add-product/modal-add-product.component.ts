@@ -104,12 +104,12 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     switch (this.modal) {
       case 'modalAgregarProveedor':
         this.modalAgregarProveedor = false;
+        this.refreshProveedores();
         break;
       case 'modalAgregarDescuentos':
         this.modalAgregarDescuentos = false;
         break;
     }
-    this.refreshProveedores();
   }
 
   handleUpload(event: any) {
@@ -119,6 +119,10 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.form.controls['imagen'].setValue(reader.result);
     };
+  }
+
+  f(campo:string){
+    return this.form.get(campo);
   }
 
   precioVenta() {

@@ -105,13 +105,12 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   buscarProducto(event:any){
     //console.log("Consulta: " + event.target.value);
-    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras == event.target.value);
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(event.target.value) || producto.nombre.includes(event.target.value));
     if(listadoTemp.length > 0){
       this.listado = listadoTemp;  
     }else{
       this.listado = this.listadoCopia;
     }
-    
   }
 
   onTableClick(event: any, data: any) {

@@ -1,6 +1,6 @@
 <div id="modalAgregarPaquete" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Agregar Paquete</h5>
@@ -16,26 +16,29 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="col">
                             <div class="row">
                                 <div class="col">
-                                  <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" formControlName="nombre" id="nombre">
-                                  </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" formControlName="nombre" id="nombre">
+                                    </div>
                                 </div>
                                 <div class="col">
-                                  <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
-                                    <input type="number" class="form-control" formControlName="cantidad" id="cantidad">
-                                  </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
+                                        <input type="number" class="form-control" formControlName="cantidad"
+                                            id="cantidad">
+                                    </div>
                                 </div>
                                 <div class="col">
-                                  <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Tipo</label>
-                                    <select class="form-select" aria-label="Default select example" formControlName="id_tipo_cantidad">
-                                      <option *ngFor="let item of tiposCantidades" value="{{item.id}}">{{item.nombre}}</option>
-                                    </select>
-                                  </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Tipo</label>
+                                        <select class="form-select" aria-label="Default select example"
+                                            formControlName="id_tipo_cantidad">
+                                            <option *ngFor="let item of tiposCantidades" value="{{item.id}}">
+                                                {{item.nombre}}</option>
+                                        </select>
+                                    </div>
                                 </div>
-                              </div>
+                            </div>
                             <div class="row mb-3">
                                 <label for="inputEmail3" class="col-sm-4 col-form-label">Precio Costo</label>
                                 <div class="col-sm-8">
@@ -44,8 +47,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label">Impuesto</label>
-                                <div class="col-sm-5">
+                                <label for="inputEmail3" class="col-sm-4 col-form-label">Impuesto</label>
+                                <div class="col-sm-4">
                                     <select class="form-select" (ngModelChange)="inputImpuesto($event)"
                                         aria-label="Default select example" formControlName="id_tipo_impuesto">
                                         <option *ngFor="let item of tiposImpuestos" value="{{item.id}}">{{item.nombre}}
@@ -66,8 +69,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label">Proveedor</label>
-                                <div class="col-sm-6">
+                                <label for="inputEmail3" class="col-sm-4 col-form-label">Proveedor</label>
+                                <div class="col-sm-5">
                                     <select class="form-select" aria-label="Default select example"
                                         formControlName="id_proveedor">
                                         <option *ngFor="let item of tiposProveedores" value="{{item.id}}">
@@ -75,19 +78,20 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     </select>
                                 </div>
                                 <div class="col-3">
-                                    <button type="button" class="btn btn-primary col-12" (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
+                                    <button type="button" class="btn btn-outline-dark col-12"
+                                        (click)="modal = 'modalAgregarProveedor'; openModal()">Crear</button>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label">Descripción</label>
-                                <div class="col-sm-9">
+                                <label for="inputEmail3" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
                                     <textarea class="form-control" id="descripcion" formControlName="descripcion"
                                         rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label">Línea</label>
-                                <div class="col-sm-9">
+                                <label for="inputEmail3" class="col-sm-4 col-form-label">Línea</label>
+                                <div class="col-sm-8">
                                     <select class="form-select" aria-label="Default select example"
                                         formControlName="id_linea">
                                         <option *ngFor="let item of tiposLineas" value="{{item.id}}">{{item.nombre}}
@@ -96,9 +100,11 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label"></label>
-                                <div class="col-9">
-                                    <button type="button" class="btn btn-primary col-12">Agregar Descuento</button>
+                                <label for="inputEmail3" class="col-sm-4 col-form-label"></label>
+                                <div class="col-8">
+                                    <button type="button" class="btn btn-outline-dark col-12"
+                                        (click)="modal = 'modalAgregarDescuentos'; openModal()">Agregar
+                                        Descuento</button>
                                 </div>
                             </div>
                         </div>
@@ -115,36 +121,39 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         </div>
                                     </div>
                                     <div class="col mt-5">
-                                        <div class="form-check">
+                                        <div class="form-check mb-3">
                                             <input class="form-check-input" type="number" value="0"
                                                 formControlName="habilitado" id="habilitado">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 Deshabilitar
                                             </label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="number" value="0"
-                                                formControlName="inventario_min" id="inventario_min">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                Inventario min
-                                            </label>
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <input class="form-control col" type="number" value="0"
+                                                    formControlName="inventario_min" id="inventario_min">
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    Inventario min
+                                                </label>
+                                            </div>
+
                                         </div>
                                         <div class="input-group">
                                             <input type="file" class="form-control" (change)="handleUpload($event)"
-                                                aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                                aria-describedby="inputGroupFileAddon04" [ngClass]="{
+                                                    'is-invalid':f('imagen')?.invalid,
+                                                    'is-valid': f('imagen')?.valid
+                                                  }" aria-label="Upload">
                                             <input type="text" hidden id="imagen" formControlName="imagen">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label">Código</label>
-                                <div class="col-sm-9">
-                                    <input type="text" readonly class="form-control-plaintext" id="id" value=""
-                                        disabled>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
+                                <label for="inputEmail3" class="col col-form-label">Código de barras</label>
                                 <div class="input-group mt-3">
                                     <span class="input-group-text" id="basic-addon1">|||||</span>
                                     <input type="text" class="form-control" placeholder="Username" aria-label="Username"
@@ -175,8 +184,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="row mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">|||||</span>
-                                        <input type="text" class="form-control" placeholder="Código producto" aria-label="Username"
-                                            aria-describedby="basic-addon1">
+                                        <input type="text" class="form-control" placeholder="Código producto"
+                                            aria-label="Username" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
                             </div>
@@ -190,15 +199,17 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 </div>
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-danger" (click)="deleteProducto(i)">x</button>
+                                <label for="inputEmail3" class="col col-form-label">&nbsp;</label>
+                                <button (click)="deleteProducto(i)" type="button" class="btn-close"
+                                    aria-label="Close"></button>
                             </div>
                         </div>
                     </div>
-                  
+
 
                     <div class="row">
                         <div class="col-4">
-                            <button class="btn btn-primary col-12" (click)="addProducto()">Añadir Producto</button>
+                            <button class="btn btn-outline-dark col-12" (click)="addProducto()">Añadir Producto</button>
                         </div>
                     </div>
 
@@ -209,7 +220,8 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     (click)="closeModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary" [disabled]="form.invalid == false && productForm.invalid == false ? false:true"
+                <button type="submit" class="btn btn-primary"
+                    [disabled]="form.invalid == false && productForm.invalid == false ? false:true"
                     (click)="submit()">Aceptar</button>
 
             </div>
@@ -221,4 +233,9 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
 <div *ngIf="modalAgregarProveedor">
     <app-modal-agregar-proveedores (closeEvent)="closeEventModal()"></app-modal-agregar-proveedores>
+</div>
+
+<div *ngIf="modalAgregarDescuentos">
+    <app-modal-add-discount (closeEvent)="closeEventModal()" [dataDescuentos]="dataDescuentos"
+        (descuentos)="descuentos($event)"></app-modal-add-discount>
 </div>

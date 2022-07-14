@@ -49,12 +49,38 @@ export class ModalAddDiscountComponent implements OnInit {
   }
 
   agregarDescuento() {
+    
+    if(this.form.controls["cantidad_minima"].value == 0 || this.form.controls["cantidad_maxima"].value == 0 || this.form.controls["descuento"].value == 0 ){
+      this.mensajeErrorValidacion("No puede existir un campo con valor cero");
+      return;
+    }
+
+    if(this.form.controls["cantidad_minima"].value > this.form.controls["cantidad_maxima"].value){
+      this.mensajeErrorValidacion("La cantidad mínima no puede ser superior a la máxima");
+      return;
+    }
+
     let validacionDescuento: any[] = this.dataDescuentos.filter((descuento: any) => JSON.stringify(descuento) === JSON.stringify(this.form.value));
-    console.log(validacionDescuento);
+
     if (validacionDescuento.length > 0) {
       this.mensajeErrorValidacion("El descuento ya existe");
       return;
     }
+
+    for(let x:number = 0; x < this.dataDescuentos.length; x++){
+
+      if (this.form.controls["cantidad_minima"].value >= this.dataDescuentos[x].cantidad_minima && this.form.controls["cantidad_minima"].value <= this.dataDescuentos[x].cantidad_maxima) {
+        this.mensajeErrorValidacion("La cantidad mínima no esta disponible");
+        return;
+      }
+
+      if (this.form.controls["cantidad_maxima"].value >= this.dataDescuentos[x].cantidad_minima && this.form.controls["cantidad_maxima"].value <= this.dataDescuentos[x].cantidad_maxima) {
+        this.mensajeErrorValidacion("La cantidad máxima no esta disponible");
+        return;
+      }
+
+    }
+
     this.dataDescuentos.push(this.form.value);
     this.form.reset();
     this.mensajeOk();

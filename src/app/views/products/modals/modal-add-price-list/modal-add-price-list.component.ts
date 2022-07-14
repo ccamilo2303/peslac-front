@@ -19,6 +19,7 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
 
   listado: any = [];
   loading: boolean = false;
+
   private querySubscription!: Subscription;
 
   @Input()
@@ -34,6 +35,11 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
   constructor(private priceListService: PriceListService, private productService: ProductService) { }
 
   ngOnInit(): void {
+    this.querySubscription = this.productService.getProducts()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.productos;
+      });
     this.initForm();
     $("#modalListaPrecios").modal('hide');
     $("#modalAgregarCliente").modal('hide');
@@ -73,13 +79,6 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
       console.log("Lista: " , this.data);
       this.form.controls['nombre'].setValue(this.data.nombre); 
       this.listado = [this.data.producto];
-    }else{
-      this.querySubscription = this.productService.getProducts()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.productos;
-      });
-      
     }
 
   }

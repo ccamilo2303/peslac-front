@@ -24,7 +24,9 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
   public closeEvent = new EventEmitter<boolean>();
 
   modalAgregarProveedor: boolean = false;
+  modalAgregarDescuentos: boolean = false;
   modal: string = "";
+  dataDescuentos: any[] = [];
 
   public tiposProveedores!: any;
   public tiposCantidades!: any;
@@ -52,43 +54,43 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
   });
 
 
-  productForm: FormGroup;  
+  productForm: FormGroup;
 
 
-  constructor(private productService: ProductService, private packageService: PackageService, private appService: AppService, private fb:FormBuilder) {
-    this.productForm = this.fb.group({  
-      productos: this.fb.array([]) ,  
-    });  
+  constructor(private productService: ProductService, private packageService: PackageService, private appService: AppService, private fb: FormBuilder) {
+    this.productForm = this.fb.group({
+      productos: this.fb.array([]),
+    });
   }
 
-  productos() : FormArray {  
-    return this.productForm.get("productos") as FormArray  
-  }  
-     
-  nuevoProducto(): FormGroup {  
-    return this.fb.group({  
+  productos(): FormArray {
+    return this.productForm.get("productos") as FormArray
+  }
+
+  nuevoProducto(): FormGroup {
+    return this.fb.group({
       id_producto: new FormControl('', [Validators.required]),
       id_paquete: new FormControl('0', [Validators.required]),
       cantidad: new FormControl('', [Validators.required]),
-    })  
-  }  
-     
-  addProducto() {  
-    this.productos().push(this.nuevoProducto());  
-  }  
-     
-  deleteProducto(i:number) {  
-    this.productos().removeAt(i);  
-  }  
-     
-  submitProduct(id?:any) {  
+    })
+  }
+
+  addProducto() {
+    this.productos().push(this.nuevoProducto());
+  }
+
+  deleteProducto(i: number) {
+    this.productos().removeAt(i);
+  }
+
+  submitProduct(id?: any) {
 
     if (!this.data.id) {
 
-      this.productForm.value.productos.forEach((product:any) => {
+      this.productForm.value.productos.forEach((product: any) => {
         product.id_paquete = id;
       });
-  
+
       this.packageService.createPackageConfiguration(this.productForm.value.productos).subscribe(({ data }) => {
         this.mensajeOk();
       }, (error) => {
@@ -110,17 +112,25 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
 
     }
 
-  }  
+  }
 
 
   ngOnInit(): void {
     this.initForm();
+    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
+      this.tiposProveedores = data.proveedores;
+    });
     $("#modalPaquete").modal('hide');
     $("#modalAgregarPaquete").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
     this.productService.refreshProducts();
+  }
+
+  refreshProveedores() {
+    this.appService.refreshAppService();
+    this.form.controls["id_proveedor"].setValue(this.tiposProveedores[0].id)
   }
 
   ngOnDestroy() {
@@ -139,6 +149,9 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
       case 'modalAgregarProveedor':
         this.modalAgregarProveedor = true;
         break;
+      case 'modalAgregarDescuentos':
+        this.modalAgregarDescuentos = true;
+        break
     }
     if (data) {
       this.data = data;
@@ -151,9 +164,12 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     switch (this.modal) {
       case 'modalAgregarProveedor':
         this.modalAgregarProveedor = false;
+        this.refreshProveedores();
+        break;
+      case 'modalAgregarDescuentos':
+        this.modalAgregarDescuentos = false;
         break;
     }
-    this.refresh();
   }
 
   handleUpload(event: any) {
@@ -163,6 +179,10 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       this.form.controls['imagen'].setValue(reader.result);
     };
+  }
+
+  f(campo:string){
+    return this.form.get(campo);
   }
 
   precioVenta() {
@@ -181,20 +201,24 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     }
   }
 
+  descuentos(data: any) {
+    this.dataDescuentos = data;
+  }
+
   submit() {
 
-    if(this.form.controls['cantidad'].value <= 0){
+    if (this.form.controls['cantidad'].value <= 0) {
       this.mensajeErrorValidacion("La cantidad del paquete tiene que ser superior a cero");
       return;
     }
 
-    if(this.form.controls['precio_costo'].value <= 0){
+    if (this.form.controls['precio_costo'].value <= 0) {
       this.mensajeErrorValidacion("El precio de costo del paquete tiene que ser superior a cero");
       return;
     }
 
-    for(let x:number = 0; x < this.productForm.value.productos.length; x++){
-      if(this.productForm.value.productos[x].cantidad <= 0){
+    for (let x: number = 0; x < this.productForm.value.productos.length; x++) {
+      if (this.productForm.value.productos[x].cantidad <= 0) {
         this.mensajeErrorValidacion("La cantidad del producto del paquete tiene que ser superior a cero");
         return;
       }
@@ -206,8 +230,8 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
 
     if (!this.data.id) {
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
-        let res:any = data;
-        this.packageService.createPackage({id_producto: res.insert_productos_one.id}).subscribe(({ data }) => {
+        let res: any = data;
+        this.packageService.createPackage({ id_producto: res.insert_productos_one.id }).subscribe(({ data }) => {
           res = data;
           this.submitProduct(res.insert_paquetes_one.id);
         }, (error) => {
@@ -237,9 +261,6 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.tiposProveedores = data.proveedores;
-    });
     this.querySubscription = this.appService.getTiposCantidad().subscribe(({ data, loading }) => {
       this.tiposCantidades = data.tipos_cantidad;
     });
@@ -273,15 +294,15 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
         id_tipo_cantidad: this.data.producto.id_tipo_cantidad,
       });
 
-      for(let i:number = 0; i < this.data.configuracion_paquetes.length; i++){
+      for (let i: number = 0; i < this.data.configuracion_paquetes.length; i++) {
         this.addProducto();
-        let productosTemp:any = this.productForm.controls['productos'];
+        let productosTemp: any = this.productForm.controls['productos'];
         productosTemp.controls[i].controls.id_paquete.setValue(this.data.id);
         productosTemp.controls[i].controls.id_producto.setValue(this.data.configuracion_paquetes[i].producto.id);
         productosTemp.controls[i].controls.cantidad.setValue(this.data.configuracion_paquetes[i].cantidad);
       }
 
-    }else{
+    } else {
       this.addProducto();
     }
 
