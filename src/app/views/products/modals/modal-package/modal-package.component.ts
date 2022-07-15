@@ -45,6 +45,7 @@ export class ModalPackageComponent implements OnInit {
         this.loading = loading;
         this.listado = data.paquetes;
         this.listadoCopia = data.paquetes;
+        console.log("Paquetes --> ", this.listadoCopia);
       });
       $("#modalPaquete").modal({ backdrop: 'static', keyboard: false, show: true });
   }

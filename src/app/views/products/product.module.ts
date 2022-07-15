@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product-routing.module';
@@ -26,7 +27,8 @@ import { ModalAddDiscountComponent } from './modals/modal-add-discount/modal-add
     ProductRoutingModule,  
     ReactiveFormsModule,
     DocsComponentsModule,
-    ProveedoresModule
+    ProveedoresModule,
+    FormsModule
   ]
 })
 export class ProductModule {

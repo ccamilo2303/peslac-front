@@ -8,9 +8,12 @@ query ConsultarInventario {
   productos(order_by: {id: asc}) {
     id
     nombre
-    id_linea
     cantidad
     precio_costo 
+    codigo_barras
+    lineas_producto {
+      nombre
+    }
   }
 }
 `;

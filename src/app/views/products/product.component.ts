@@ -1,5 +1,5 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProductService } from './services/product-service/product.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
@@ -32,6 +32,10 @@ export class ProductComponent implements OnInit, OnDestroy {
   listadoCopia: any = [];
 
   private querySubscription!: Subscription;
+
+  form: FormGroup = new FormGroup({
+    consulta: new FormControl('', [Validators.required]),
+  });
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
@@ -103,15 +107,34 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
-  buscarProducto(event:any){
-    //console.log("Consulta: " + event.target.value);
-    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(event.target.value) || producto.nombre.includes(event.target.value));
+  buscarProducto(){
+    console.log("Consulta: " + this.consulta);
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(this.consulta) || producto.nombre.includes(this.consulta));
     if(listadoTemp.length > 0){
       this.listado = listadoTemp;  
     }else{
       this.listado = this.listadoCopia;
     }
   }
+
+  consulta:string = '';
+  values: string[] = [];
+
+  onKey(event: any) {
+    
+    if((event.which >= 65 && event.which <= 90) || (event.which >= 48 && event.which <= 57) || (event.which >= 96 && event.which <= 105)){
+      this.values.push(event.key)
+      this.consulta.concat();
+    }
+    let x = this.values.join('');
+    this.consulta = this.values.join('');
+    console.log(x);
+    console.log(this.values);
+    console.log(this.consulta);
+    this.buscarProducto();
+
+  } 
+
 
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;

@@ -22,6 +22,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalProveedores:boolean = false;
@@ -36,6 +38,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.listado = data.clientes;
+      this.listadoCopia = data.clientes;
       console.log("--> ", data);
     });
 
@@ -70,6 +73,16 @@ export class ClientesComponent implements OnInit, OnDestroy {
   closeEventModal(){
     this.modalProveedores = false;
     this.refresh();
+  }
+
+  buscarCliente(event:any){
+    //console.log("Consulta: " + event.target.value);
+    let listadoTemp:any[] = this.listadoCopia.filter((cliente:any) => cliente.cedula.includes(event.target.value));
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
   }
 
   onTableClick(event: any, data:any) {

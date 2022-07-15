@@ -22,6 +22,8 @@ export class InventarioComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalHistorial: boolean = false;
@@ -33,7 +35,15 @@ export class InventarioComponent implements OnInit, OnDestroy {
   constructor(private inventarioService: InventarioService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    this.initData();
+
+    this.querySubscription = this.inventarioService.getInventario()
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.listado = data.productos;
+        this.listadoCopia = data.productos;
+        console.log("--> ", data);
+      });
+
   }
 
   refresh() {
@@ -93,6 +103,16 @@ export class InventarioComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
+  buscarProducto(event:any){
+    //console.log("Consulta: " + event.target.value);
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(event.target.value) || producto.nombre.includes(event.target.value));
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
+  }
+
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
@@ -125,13 +145,5 @@ export class InventarioComponent implements OnInit, OnDestroy {
     (<ContextMenuComponent>componentRef.instance).component = this;
   }
 
-  initData(){
-    this.querySubscription = this.inventarioService.getInventario()
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.listado = data.productos;
-        console.log("--> ", data);
-      });
-  }
 
 }

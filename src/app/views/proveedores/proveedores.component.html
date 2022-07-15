@@ -10,7 +10,7 @@
         
         <div class="col-5">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar Razón social" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" (keyup)="buscarProveedor($event)" placeholder="Buscar Proveedor" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <span class="input-group-text" id="basic-addon2">Buscador</span>
           </div>
         </div>
@@ -26,7 +26,6 @@
         <tr>
           <th scope="col">Razón Social</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Apellido</th>
           <th scope="col">N.I.T</th>
           <th scope="col">Celular</th>
         </tr>
@@ -35,7 +34,6 @@
         <tr *ngFor="let proveedores of listado" (contextmenu)="onTableClick($event, proveedores)" [attr.modal]="'addProduct'">
           <th>{{proveedores.razon_social}}</th>
           <td>{{proveedores.nombre}}</td>
-          <td>{{proveedores.apellido}}</td>
           <td>{{proveedores.nit}}</td>
           <td>{{proveedores.celular}}</td>
         </tr>
@@ -52,5 +50,5 @@
 </div>
 -->
 <div *ngIf="modalProveedores">
-  <app-modal-agregar-proveedores (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-proveedores>
+  <app-modal-agregar-proveedores (closeEvent)="closeEventModal()" [data]="dataModal" [listadoProveedores]="listadoCopia"></app-modal-agregar-proveedores>
 </div> 

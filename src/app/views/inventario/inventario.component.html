@@ -10,7 +10,7 @@
           
           <div class="col-5">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Buscar Razón social" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <input type="text" class="form-control" (keyup)="buscarProducto($event)" placeholder="Buscar producto" aria-label="Recipient's username" aria-describedby="basic-addon2">
               <span class="input-group-text" id="basic-addon2">Buscador</span>
             </div>
           </div>
@@ -36,10 +36,10 @@
           <tr *ngFor="let producto of listado" (contextmenu)="onTableClick($event, producto)" [attr.modal]="'addProduct'">
             <th>{{producto.id}}</th>
             <td>{{producto.nombre}}</td>
-            <td>{{producto.id_linea}}</td>
-            <td>{{producto.precio_costo}}</td>
+            <td>{{producto.lineas_producto.nombre}}</td>
+            <td>{{producto.precio_costo | currency:'':'symbol':'1.0-2'}}</td>
             <td>{{producto.cantidad}}</td>
-            <td>{{producto.precio_costo * producto.cantidad}}</td>
+            <td>{{producto.precio_costo * producto.cantidad | currency:'':'symbol':'1.0-2'}}</td>
           </tr>
         </tbody>
       </table>

@@ -22,6 +22,8 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalProveedores:boolean = false;
@@ -36,6 +38,7 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.listado = data.proveedores;
+      this.listadoCopia = data.proveedores;
       console.log("--> ", data);
     });
 
@@ -70,6 +73,16 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
   closeEventModal(){
     this.modalProveedores = false;
     this.refresh();
+  }
+
+  buscarProveedor(event:any){
+    //console.log("Consulta: " + event.target.value);
+    let listadoTemp:any[] = this.listadoCopia.filter((proveedor:any) => proveedor.nit.includes(event.target.value) || proveedor.razon_social.includes(event.target.value));
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
   }
 
   onTableClick(event: any, data:any) {

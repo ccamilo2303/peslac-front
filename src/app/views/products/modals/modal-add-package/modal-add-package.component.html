@@ -49,9 +49,10 @@
                             <div class="row mb-3">
                                 <label for="inputEmail3" class="col-sm-4 col-form-label">Impuesto</label>
                                 <div class="col-sm-4">
-                                    <select class="form-select" (ngModelChange)="inputImpuesto($event)"
+                                    <select class="form-select" (change)="inputImpuesto($event)"
                                         aria-label="Default select example" formControlName="id_tipo_impuesto">
-                                        <option *ngFor="let item of tiposImpuestos" value="{{item.id}}">{{item.nombre}}
+                                        <option *ngFor="let item of tiposImpuestos" [attr.iva]="item.cobra_iva"
+                                            value="{{item.id}}">{{item.nombre}}
                                         </option>
                                     </select>
                                 </div>
@@ -170,11 +171,12 @@
                         <div class="row" *ngFor="let producto of productos().controls; let i=index" [formGroupName]="i">
                             <div class="col">
                                 <div class="row mb-3">
-                                    <label for="inputEmail3" class="col-4 col-form-label">Producto:</label>
+                                    <label for="inputEmail3" class="col-4 col-form-label">Producto {{i + 1}}:</label>
                                     <div class="col">
                                         <select class="form-select" aria-label="Default select example"
-                                            formControlName="id_producto">
-                                            <option *ngFor="let item of listadoProductos" value="{{item.id}}">
+                                            formControlName="id_producto" (change)="inputCodigoBarras($event, 'cod_barras_'+i)">
+                                            <option *ngFor="let item of listadoProductos"
+                                                [attr.codigo_barras]="item.codigo_barras" value="{{item.id}}">
                                                 {{item.nombre}}</option>
                                         </select>
                                     </div>
@@ -184,14 +186,14 @@
                                 <div class="row mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">|||||</span>
-                                        <input type="text" class="form-control" placeholder="Código producto"
-                                            aria-label="Username" aria-describedby="basic-addon1">
+                                        <input type="text" class="form-control" placeholder="Código producto" 
+                                            aria-label="Username" id="cod_barras_{{i}}" aria-describedby="basic-addon1" disabled>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="row mb-3">
-                                    <label for="inputEmail3" class="col col-form-label">Cantidad:</label>
+                                    <label for="inputEmail3" class="col-4 col-form-label">Cantidad:</label>
                                     <div class="col">
                                         <input type="number" class="form-control" formControlName="cantidad"
                                             id="cantidad">

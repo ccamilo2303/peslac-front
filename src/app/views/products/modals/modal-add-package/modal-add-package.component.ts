@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray, AnyForUntypedForms } from '@angular/forms';
 
 import { ProductService } from '../../services/product-service/product.service';
 import { PackageService } from '../../services/package-service/package.service';
@@ -27,6 +27,7 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
   modalAgregarDescuentos: boolean = false;
   modal: string = "";
   dataDescuentos: any[] = [];
+  listadoPaquetes: any;
 
   public tiposProveedores!: any;
   public tiposCantidades!: any;
@@ -114,7 +115,6 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
 
   }
 
-
   ngOnInit(): void {
     this.initForm();
     this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
@@ -191,14 +191,19 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
   }
 
   inputImpuesto(event: any) {
-
-    if (event == 5) {
+    
+    if (event.path[0][event.target.value - 1].attributes[3].nodeValue == 'true') {
       this.form.controls['valor_impuesto'].enable();
     } else {
       this.form.controls['valor_impuesto'].setValue(0);
       this.form.controls['valor_impuesto'].disable();
       this.precioVenta();
     }
+  }
+
+  inputCodigoBarras(event: any, producto: string) {
+    let codigoBarras = event.path[0][event.target.value - 1].attributes[3].nodeValue;
+    modificarValorCodigoBarras(producto, codigoBarras);
   }
 
   descuentos(data: any) {
@@ -229,6 +234,20 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     console.log(this.form.value);
 
     if (!this.data.id) {
+      
+      let validacionNombre: any[] = this.listadoPaquetes.filter((paquete: any) => paquete.producto.nombre == this.form.controls["nombre"].value);
+      let validacionCod_Barras: any[] = this.listadoPaquetes.filter((paquete: any) => paquete.producto.codigo_barras == this.form.controls["codigo_barras"].value);
+
+      if (validacionNombre.length > 0) {
+        this.mensajeErrorValidacion("El nombre del paquete ingresado ya existe");
+        return;
+      }
+
+      if (validacionCod_Barras.length > 0) {
+        this.mensajeErrorValidacion("El código de barras ya ha sido asociado a un paquete");
+        return;
+      }
+
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
         let res: any = data;
         this.packageService.createPackage({ id_producto: res.insert_productos_one.id }).subscribe(({ data }) => {
@@ -272,6 +291,11 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     });
     this.querySubscription = this.appService.getListadoProductos().subscribe(({ data, loading }) => {
       this.listadoProductos = data.productos;
+      console.log("Listado Productos --> ",this.listadoProductos);
+    });
+
+    this.querySubscription = this.packageService.getPackagesValidation().subscribe(({ data, loading }) => {
+      this.listadoPaquetes = data.paquetes;
     });
 
     if (this.data && this.data.id != null) {
@@ -336,4 +360,11 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
     });
   }
 
+}
+
+function modificarValorCodigoBarras(id:any, valor:any){
+  let command = 'document.getElementById('+"'"+id+"'"+').value = '+"'"+valor+"'";
+  console.log(command)
+  eval(command);
+  
 }

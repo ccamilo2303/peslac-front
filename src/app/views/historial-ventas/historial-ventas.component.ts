@@ -21,6 +21,8 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalDetalleVenta: boolean = false;
@@ -88,6 +90,17 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
+  buscarVenta(event:any){
+    //console.log("Consulta: " + event.target.value);
+    console.log(this.listadoCopia);
+    let listadoTemp:any[] = this.listadoCopia.filter((venta:any) => venta.ordene.id.includes(event.target.value) || venta.ordene.cliente.nombres.includes(event.target.value) || venta.ordene.cliente.apellidos.includes(event.target.value));
+    if(listadoTemp.length > 0){
+      this.listado = listadoTemp;  
+    }else{
+      this.listado = this.listadoCopia;
+    }
+  }
+
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
@@ -119,8 +132,6 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
     this.createContextMenuComponent();
   }
 
-
-
   createContextMenuComponent() {
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContextMenuComponent);
@@ -138,6 +149,7 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
         .subscribe(({ data, loading }) => {
           this.loading = loading;
           this.listado = data.detalle_ordenes;
+          this.listadoCopia = data.detalle_ordenes;
           console.log("--> ", data);
         });
     } else {
@@ -157,6 +169,7 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
           });
 
           this.listado = ventas;
+          this.listadoCopia = ventas;
           this.tipoVista = 3;
         });
 

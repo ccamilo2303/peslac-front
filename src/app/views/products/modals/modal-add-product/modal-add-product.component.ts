@@ -21,6 +21,9 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
   @Input()
   public data: any;
 
+  @Input()
+  public listadoProductos: any;
+
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
@@ -170,10 +173,26 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     this.form.controls['precio_venta'].enable();
 
     if (!this.data.id) {
+
+      let validacionNombre: any[] = this.listadoProductos.filter((producto: any) => producto.nombre == this.form.controls["nombre"].value);
+      let validacionCod_Barras: any[] = this.listadoProductos.filter((producto: any) => producto.codigo_barras == this.form.controls["codigo_barras"].value);
+
+      if (validacionNombre.length > 0) {
+        this.mensajeErrorValidacion("El nombre del producto ingresado ya existe");
+        return;
+      }
+
+      if (validacionCod_Barras.length > 0) {
+        this.mensajeErrorValidacion("El código de barras ya ha sido asociado a un producto");
+        return;
+      }
+
       this.productService.createProduct(this.form.value).subscribe(({ data }) => {
         this.mensajeOk();
       }, (error) => {
         this.mensajeError();
+        this.form.controls['valor_impuesto'].disable();
+        this.form.controls['precio_venta'].disable();
       });
 
     } else {
@@ -183,6 +202,8 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
           this.mensajeOk();
         }, (error) => {
           this.mensajeError();
+          this.form.controls['valor_impuesto'].disable();
+          this.form.controls['precio_venta'].disable();
         });
 
     }

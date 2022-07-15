@@ -18,6 +18,9 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   @Input()
   public data: any;
 
+  @Input()
+  public listadoClientes: any;
+
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
@@ -39,7 +42,7 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   constructor(private clientesService: ClientesService, private appService: AppService) { }
 
   ngOnInit(): void {
-
+    
     this.initForm();
 
     $("#modalAgregarCliente").modal({ backdrop: 'static', keyboard: false, show: true });
@@ -76,6 +79,14 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
     this.form.controls["celular"].setValue(this.form.controls["celular"].value.toString())
 
     if (!this.data) {
+
+      let validacionCedula: any[] = this.listadoClientes.filter((cliente: any) => cliente.cedula == this.form.controls["cedula"].value);
+
+      if (validacionCedula.length > 0) {
+        this.mensajeErrorValidacion("La cédula ingresada ya existe");
+        return;
+      }
+
       this.clientesService.createClientes(this.form.value).subscribe(({ data }) => {
         this.mensajeOk();
       }, (error) => {
@@ -130,6 +141,14 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   private mensajeError() {
     Swal.fire({
       title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
       icon: 'error',
       confirmButtonText: 'Ok'
     });

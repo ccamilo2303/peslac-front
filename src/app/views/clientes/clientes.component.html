@@ -10,7 +10,7 @@
         
         <div class="col-5">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar Razón social" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" (keyup)="buscarCliente($event)" placeholder="Buscar Cliente" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <span class="input-group-text" id="basic-addon2">Buscador</span>
           </div>
         </div>
@@ -54,5 +54,5 @@
 </div>
 -->
 <div *ngIf="modalProveedores">
-  <app-modal-agregar-clientes (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-clientes>
+  <app-modal-agregar-clientes (closeEvent)="closeEventModal()" [data]="dataModal" [listadoClientes]="listadoCopia"></app-modal-agregar-clientes>
 </div>

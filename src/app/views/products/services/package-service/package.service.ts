@@ -3,6 +3,17 @@ import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 
 
+const GET_PACKAGES_VALIDACION = gql`
+query ConsultarPaquete {
+  paquetes(order_by: {id: asc}) {
+    producto {
+      nombre
+      codigo_barras
+    }
+  }
+}
+`;
+
 const GET_PACKAGES = gql`
 query ConsultarPaquete {
   paquetes(order_by: {id: asc}) {
@@ -77,6 +88,15 @@ export class PackageService {
 
     this.postsQuery = this.apollo.watchQuery<any>({
       query: GET_PACKAGES
+    });
+
+    return this.postsQuery.valueChanges;
+  }
+
+  getPackagesValidation(): Observable<any> {
+
+    this.postsQuery = this.apollo.watchQuery<any>({
+      query: GET_PACKAGES_VALIDACION
     });
 
     return this.postsQuery.valueChanges;

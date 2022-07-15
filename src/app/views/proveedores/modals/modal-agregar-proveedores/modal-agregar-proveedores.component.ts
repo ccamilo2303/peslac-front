@@ -18,6 +18,9 @@ export class ModalAgregarProveedoresComponent implements OnInit {
   @Input()
   public data: any;
 
+  @Input()
+  public listadoProveedores: any;
+
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
@@ -32,14 +35,14 @@ export class ModalAgregarProveedoresComponent implements OnInit {
     banco: new FormControl('', [Validators.required]),
     tipo_cuenta: new FormControl('', [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.required]),
+    correo: new FormControl('', [Validators.required, Validators.email]),
     telefono: new FormControl('', [Validators.required]),
   });
 
   constructor(private proveedoresService:ProveedoresService, private appService: AppService) { }
 
   ngOnInit(): void {
-
+    console.log(this.listadoProveedores);
     this.initForm();
     $("#modalAgregarProducto").modal('hide');
     $("#modalAgregarPaquete").modal('hide');
@@ -62,7 +65,26 @@ export class ModalAgregarProveedoresComponent implements OnInit {
 
   submit() {
 
+    this.form.controls["nit"].setValue(this.form.controls["nit"].value.toString());
+    this.form.controls["celular"].setValue(this.form.controls["celular"].value.toString());
+    this.form.controls["cuenta"].setValue(this.form.controls["cuenta"].value.toString());
+    this.form.controls["telefono"].setValue(this.form.controls["telefono"].value.toString());
+
     if(!this.data){
+
+      let validacionNit: any[] = this.listadoProveedores.filter((proveedor: any) => proveedor.nit == this.form.controls["nit"].value);
+      let validacionCorreo: any[] = this.listadoProveedores.filter((proveedor: any) => proveedor.correo == this.form.controls["correo"].value);
+
+      if (validacionNit.length > 0) {
+        this.mensajeErrorValidacion("El NIT ingresado ya existe");
+        return;
+      }
+
+      if (validacionCorreo.length > 0) {
+        this.mensajeErrorValidacion("El correo ingresado ya existe");
+        return;
+      }
+
       this.proveedoresService.createProveedores(this.form.value).subscribe(({ data }) => {
         this.mensajeOk();
       },(error) => {
@@ -118,6 +140,14 @@ export class ModalAgregarProveedoresComponent implements OnInit {
   private mensajeError() {
     Swal.fire({
       title: 'Error guardando la información',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  private mensajeErrorValidacion(mensaje: string) {
+    Swal.fire({
+      title: mensaje,
       icon: 'error',
       confirmButtonText: 'Ok'
     });

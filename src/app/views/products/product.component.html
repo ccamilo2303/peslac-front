@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <div class="p-2">
+    <div class="p-2"> 
       <div>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalAgregarProducto'; openModal()">Agregar Producto</button>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalLinea'; openModal()">Agregar Línea</button>
@@ -8,12 +8,15 @@
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalPaquete'; openModal()">Historial de paquetes</button>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalListaPrecios'; openModal()">Lista de precios</button>
       </div>
-      <div class="pt-4">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" (keyup)="buscarProducto($event)" placeholder="Buscador" aria-label="Recipient's username" aria-describedby="basic-addon2">
-          <span class="input-group-text" id="basic-addon2">Buscador</span>
+      <form [formGroup]="form">
+        <div class="pt-4">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" (window:keyup)="onKey($event)" value="{{consulta}}" placeholder="Buscador">
+            <span class="input-group-text" id="basic-addon2">Buscador</span>
+          </div>
         </div>
-      </div>
+      </form>
+      
       
     </div>
   </div>
@@ -33,7 +36,7 @@
           <th>{{producto.nombre}}</th>
           <td>{{producto.id_proveedor}}</td>
           <td>{{producto.precio_costo | currency:'':'symbol':'1.0-2'}}</td>
-          <td>{{producto.id_linea}}</td>
+          <td>{{producto.lineas_producto.nombre}}</td>
           <td>{{producto.codigo_barras}}</td>
         </tr>
       </tbody>
@@ -45,7 +48,7 @@
 <!-- Modal -->
 
 <div *ngIf="modalAgregarProducto">
-  <app-modal-add-product (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-add-product>
+  <app-modal-add-product (closeEvent)="closeEventModal()" [data]="dataModal" [listadoProductos]="listadoCopia"></app-modal-add-product>
 </div>
 
 <div *ngIf="modalLinea">

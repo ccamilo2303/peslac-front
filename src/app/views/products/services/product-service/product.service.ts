@@ -21,6 +21,9 @@ query ConsultaProductos {
     inventario_min
     id
     codigo_barras
+    lineas_producto {
+      nombre
+    }
   }
 }
 `;
