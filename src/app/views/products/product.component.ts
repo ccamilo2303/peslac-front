@@ -1,17 +1,19 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { ProductService } from './services/product-service/product.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
+
+declare var $: any;
+declare var onScan: any;
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit, OnDestroy {
+export class ProductComponent implements OnInit, OnDestroy{
 
   modalAgregarProducto = false;
   modalLinea = false;
@@ -33,10 +35,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   private querySubscription!: Subscription;
 
-  form: FormGroup = new FormGroup({
-    consulta: new FormControl('', [Validators.required]),
-  });
-
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
   constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
@@ -50,6 +48,9 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.listadoCopia = data.productos;
         console.log("Productos --> ", data);
       });
+
+
+      
 
   }
 
@@ -107,33 +108,15 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
-  buscarProducto(){
-    console.log("Consulta: " + this.consulta);
-    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(this.consulta) || producto.nombre.includes(this.consulta));
+  buscarProducto(consulta:any){
+    console.log("Consulta: " + consulta);
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(consulta) || producto.nombre.includes(consulta));
     if(listadoTemp.length > 0){
       this.listado = listadoTemp;  
     }else{
       this.listado = this.listadoCopia;
     }
   }
-
-  consulta:string = '';
-  values: string[] = [];
-
-  onKey(event: any) {
-    
-    if((event.which >= 65 && event.which <= 90) || (event.which >= 48 && event.which <= 57) || (event.which >= 96 && event.which <= 105)){
-      this.values.push(event.key)
-      this.consulta.concat();
-    }
-    let x = this.values.join('');
-    this.consulta = this.values.join('');
-    console.log(x);
-    console.log(this.values);
-    console.log(this.consulta);
-    this.buscarProducto();
-
-  } 
 
 
   onTableClick(event: any, data: any) {

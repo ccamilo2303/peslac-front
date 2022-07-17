@@ -1,8 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { environment } from 'src/environments/environment';
 import { Product } from '../../response-types/product';
+import { Apollo, gql, QueryRef } from 'apollo-angular';
+import { Observable } from 'rxjs';
+
+
+const GET_DESCUENTO = gql`
+query ConsultarDescuentos($id_producto: Int ) {
+  config_descuentos(where: {id_producto: {_eq: $id_producto}}) {
+    cantidad_min
+    cantidad_max
+    descuento
+  }
+}`;
+
+
+const POST_DESCUENTO = gql`
+mutation InsertarDescuento($cantidad_min: Int , $cantidad_max: Int , $descuento: Int , $id_producto: Int ) {
+  insert_config_descuentos(objects: {cantidad_min: $cantidad_min, cantidad_max: $cantidad_max, descuento: $descuento, id_producto: $id_producto}) {
+    affected_rows
+  }
+}`;
+
+const DELETE_DESCUENTO = gql`
+mutation EliminarDescuentos($id_producto: Int) {
+  delete_config_descuentos(where: {id_producto: {_eq: $id_producto}}) {
+    affected_rows
+  }
+}`
+
 
 
 @Injectable({
@@ -10,34 +36,41 @@ import { Product } from '../../response-types/product';
 })
 export class DiscountService {
 
-  constructor(private http: HttpClient) { }
+  postsQuery!: QueryRef<any>;
 
-  getDiscounts() {
-    return this.http.get(environment.baseUrl + "user");
-  }
 
-  getDiscount(idDiscount: string) {
-    return this.http.get(environment.baseUrl + "user/" + idDiscount);
-  }
+  constructor(private apollo: Apollo) { }
 
-  createDiscount(data: Product) {
-    var headers = new HttpHeaders({
-      'Accept': 'application/json'
+
+  getDiscounts() : Observable<any> {
+
+    this.postsQuery = this.apollo.watchQuery<any>({
+      query: GET_DESCUENTO
     });
 
-    return this.http.post(environment.baseUrl + "user", data, { headers });
+    return this.postsQuery.valueChanges;
   }
 
-  editDiscount(data: Product) {
-    var headers = new HttpHeaders({
-      'Accept': 'application/json'
+
+  createDiscount(cantidadMin: any, cantidadMax: any, descuento:any, idProducto:any) {
+    return this.apollo.mutate({
+      mutation: POST_DESCUENTO,
+      variables: {
+        cantidad_min: cantidadMin,
+        cantidad_max: cantidadMax,
+        descuento: descuento,
+        id_producto: idProducto
+      }
     });
-
-    return this.http.put(environment.baseUrl + "user", data, { headers });
   }
 
-  delete(idDiscount: string) {
-    return this.http.delete(environment.baseUrl + "user/" + idDiscount);
+  deleteDiscount(idProducto:any){
+    return this.apollo.mutate({
+      mutation: DELETE_DESCUENTO,
+      variables: {
+        id_producto: idProducto
+      }
+    });
   }
 
 }

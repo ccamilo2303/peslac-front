@@ -8,14 +8,12 @@
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalPaquete'; openModal()">Historial de paquetes</button>
       <button type="button" class="btn btn-outline-secondary me-3" (click)="modal = 'modalListaPrecios'; openModal()">Lista de precios</button>
       </div>
-      <form [formGroup]="form">
         <div class="pt-4">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" (window:keyup)="onKey($event)" value="{{consulta}}" placeholder="Buscador">
+            <input type="text" class="form-control" placeholder="Buscador">
             <span class="input-group-text" id="basic-addon2">Buscador</span>
           </div>
         </div>
-      </form>
       
       
     </div>

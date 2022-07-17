@@ -17,6 +17,9 @@ query ConsultarUsarios {
     usuario
     clave
     id_tipo_usuario
+    tipos_usuario {
+      nombre
+    }
   }
 }
 `;

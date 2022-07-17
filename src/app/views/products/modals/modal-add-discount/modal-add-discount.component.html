@@ -13,11 +13,11 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="exampleFormControlInput1" class="form-label">Cantidad mínima</label>
-                            <input type="number" class="form-control" formControlName="cantidad_minima" id="exampleFormControlInput1">
+                            <input type="number" class="form-control" formControlName="cantidad_min" id="exampleFormControlInput1">
                         </div>
                         <div class="col">
                             <label for="exampleFormControlInput1" class="form-label">Cantidad máxima</label>
-                            <input type="number" class="form-control" formControlName="cantidad_maxima" id="exampleFormControlInput1">
+                            <input type="number" class="form-control" formControlName="cantidad_max" id="exampleFormControlInput1">
                         </div>
                         <div class="col">
                             <label for="exampleFormControlInput1" class="form-label">Descuento  %</label>
@@ -41,8 +41,8 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let descuento of dataDescuentos">
-                        <td>{{descuento.cantidad_minima}}</td>
-                        <td>{{descuento.cantidad_maxima}}</td>
+                        <td>{{descuento.cantidad_min}}</td>
+                        <td>{{descuento.cantidad_max}}</td>
                         <td>{{descuento.descuento}} %</td>
                         <td><button (click)="eliminarDescuento(descuento)" type="button" class="btn-close" aria-label="Close"></button></td>
                       </tr>

@@ -24,6 +24,13 @@ query ConsultaProductos {
     lineas_producto {
       nombre
     }
+    config_descuentos {
+      id
+      cantidad_min
+      cantidad_max
+      descuento
+      id_producto
+    }
   }
 }
 `;

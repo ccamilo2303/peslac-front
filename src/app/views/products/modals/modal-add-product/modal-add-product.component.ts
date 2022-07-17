@@ -7,8 +7,10 @@ import { AppService } from '../../../../app.service';
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
+import { DiscountService } from '../../services/discount-service/discount.service';
 
 declare var $: any;
+declare var onScan: any;
 
 @Component({
   selector: 'app-modal-add-product',
@@ -39,6 +41,9 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
   private querySubscription!: Subscription;
 
+  private idProducto:any = '';
+
+
   form: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     cantidad: new FormControl(0, [Validators.required]),
@@ -52,12 +57,12 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     imagen: new FormControl('', [Validators.required]),
     codigo_barras: new FormControl('', [Validators.required]),
     inventario_min: new FormControl('0'),
-    habilitado: new FormControl(''),
+    habilitado: new FormControl(false),
     //id_usuario_registro: new FormControl('', [Validators.required]),
     id_tipo_cantidad: new FormControl('', [Validators.required]),
   });
 
-  constructor(private productService: ProductService, private appService: AppService) { }
+  constructor(private productService: ProductService, private appService: AppService, private discountService: DiscountService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -66,6 +71,18 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
       console.log("Proveedores --> ", data);
     });
     $("#modalAgregarProducto").modal({ backdrop: 'static', keyboard: false, show: true });
+
+
+    onScan.attachTo(document, {
+      reactToPaste: true, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
+          
+      onScan: (sCode: any, iQty: any)=>{
+        
+        this.form.controls["codigo_barras"].setValue(sCode);
+      }
+    });
+
+
   }
 
   refresh() {
@@ -124,7 +141,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     };
   }
 
-  f(campo:string){
+  f(campo: string) {
     return this.form.get(campo);
   }
 
@@ -144,7 +161,7 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     console.log(this.form.controls['valor_impuesto'].status);
   }
 
-  descuentos(data:any){
+  descuentos(data: any) {
     this.dataDescuentos = data;
   }
 
@@ -171,6 +188,16 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
 
     this.form.controls['valor_impuesto'].enable();
     this.form.controls['precio_venta'].enable();
+    
+    
+    if (!this.data.id && this.idProducto) {
+      this.data.id = this.idProducto
+    }
+
+    
+    console.log("ID DE PRODUCTO AL GUARDAR: ", this.data.id);
+    console.log("ID DE PRODUCTO(idProducto) AL GUARDAR: ", this.idProducto);
+
 
     if (!this.data.id) {
 
@@ -187,24 +214,74 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.productService.createProduct(this.form.value).subscribe(({ data }) => {
-        this.mensajeOk();
-      }, (error) => {
-        this.mensajeError();
-        this.form.controls['valor_impuesto'].disable();
-        this.form.controls['precio_venta'].disable();
+      this.productService.createProduct(this.form.value).subscribe({
+
+        next: (value: any) => {
+          console.log("data: ", value);
+          this.dataDescuentos.forEach(des => {
+            let cantidadMin: any = des.cantidad_minima;
+            let cantidadMax: any = des.cantidad_maxima;
+            let descuento: any = des.descuento;
+            let idProducto: any = value.data.insert_productos_one.id;
+            this.discountService.createDiscount(cantidadMin, cantidadMax, descuento, idProducto).subscribe({
+              next: (value: any) => {
+                console.log("value: ", value);
+              }, error(err) {
+                //this.mensajeError();
+              },
+            }
+            )
+          });
+
+
+          this.mensajeOk();
+        },
+        error: (value: any) => {
+          this.mensajeError();
+          this.form.controls['valor_impuesto'].disable();
+          this.form.controls['precio_venta'].disable();
+        }
       });
 
     } else {
 
-      this.productService.editProduct(this.form.value, this.data.id)
-        .subscribe(({ data }) => {
-          this.mensajeOk();
-        }, (error) => {
+      this.productService.editProduct(this.form.value, this.data.id).subscribe({
+
+        next: (value: any) => {
+            
+
+
+
+          this.discountService.deleteDiscount(this.data.id).subscribe({
+            next: (value: any) => {
+              
+            this.dataDescuentos.forEach(des => {
+              let cantidadMin: any = des.cantidad_min;
+              let cantidadMax: any = des.cantidad_max;
+              let descuento: any = des.descuento;
+              let idProducto: any = this.data.id;
+              this.discountService.createDiscount(cantidadMin, cantidadMax, descuento, idProducto).subscribe({
+                next: (value: any) => {
+                  console.log("value: ", value);
+                }
+              });
+            });
+
+            this.mensajeOk();
+
+          },error:  (value: any) => {
+            this.mensajeError();    
+          },});
+
+        },error:  (value: any) => {
           this.mensajeError();
           this.form.controls['valor_impuesto'].disable();
           this.form.controls['precio_venta'].disable();
-        });
+        },
+
+      });
+
+     
 
     }
 
@@ -224,7 +301,8 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     });
 
     if (this.data && this.data.id != null) {
-      console.log(this.data);
+      console.log("Información init: ",this.data);
+      this.idProducto = this.data.id;
       this.form.setValue({
         nombre: this.data.nombre,
         cantidad: this.data.cantidad,
@@ -242,6 +320,9 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
         //id_usuario_registro: this.data.id_usuario_registro,
         id_tipo_cantidad: this.data.id_tipo_cantidad,
       });
+      if(this.data.config_descuentos){
+        this.dataDescuentos = this.data.config_descuentos;
+      }
     }
 
   }

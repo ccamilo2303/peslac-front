@@ -30,16 +30,16 @@ export class ModalAddUserComponent implements OnInit, OnDestroy {
 
 
   form: FormGroup = new FormGroup({
-    nombres: new FormControl('', [Validators.required]),
-    apellidos: new FormControl('', [Validators.required]),
-    nit: new FormControl('', [Validators.required]),
-    ciudad: new FormControl('', [Validators.required]),
-    estacion: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.required, Validators.email]),
-    direccion: new FormControl('', [Validators.required]),
-    telefono: new FormControl('', [Validators.required]),
-    usuario: new FormControl('', [Validators.required]),
-    clave: new FormControl('', [Validators.required]),
+    nombres: new FormControl('', [Validators.required, Validators.maxLength(40)]),
+    apellidos: new FormControl('', [Validators.required, Validators.maxLength(40)]),
+    nit: new FormControl('', [Validators.required, Validators.maxLength(11)]),
+    ciudad: new FormControl('', [Validators.required, Validators.maxLength(40)]),
+    estacion: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+    correo: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(40)]),
+    direccion: new FormControl('', [Validators.required, Validators.maxLength(40)]),
+    telefono: new FormControl('', [Validators.required, Validators.maxLength(15)]),
+    usuario: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    clave: new FormControl('', [Validators.required, Validators.maxLength(40)]),
     id_tipo_usuario: new FormControl('', [Validators.required]),
 
   });

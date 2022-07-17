@@ -28,7 +28,7 @@ import { ModalAddDiscountComponent } from './modals/modal-add-discount/modal-add
     ReactiveFormsModule,
     DocsComponentsModule,
     ProveedoresModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class ProductModule {

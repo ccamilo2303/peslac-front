@@ -57,16 +57,18 @@ mutation InsertarPaquete($object: paquetes_insert_input!) {
 `;
 
 const POST_PACKAGES_CONFIGURATION = gql`
-mutation InsertarConfiguracionPaquete($object: configuracion_paquetes_insert_input!) {
-  insert_configuracion_paquetes_one(object: $object) {
+mutation InsertarConfiguracionPaquete($object: [configuracion_paquetes_insert_input!]!) {
+  insert_configuracion_paquetes(objects: $object) {
+    returning {
       id
+    }
   }
 }
 `;
 
-const PUT_PACKAGES = gql`
-mutation ActualizarProducto($object: productos_set_input!, $id: Int) {
-  update_productos(where: {id: {_eq: $id}}, _set: $object) {
+const DELETE_PACKAGES = gql`
+mutation EliminarConfiguracionPaquete( $id: Int) {
+  delete_configuracion_paquetes(where: {id_paquete: {_eq: $id}}) {
     returning {
       id
     }
@@ -127,21 +129,12 @@ export class PackageService {
     });
   }
 
-  editPackage(data: any, id: any) {
-    return this.apollo.mutate({
-      mutation: PUT_PACKAGES,
-      variables: {
-        object: data,
-        id: id
-      }
-    });
-  }
+ 
 
-  editPackageConfiguration(data: any, id: any) {
+  deletePackageConfiguration(id: any) {
     return this.apollo.mutate({
-      mutation: PUT_PACKAGES,
+      mutation: DELETE_PACKAGES,
       variables: {
-        object: data,
         id: id
       }
     });

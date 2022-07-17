@@ -92,6 +92,8 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
         product.id_paquete = id;
       });
 
+      console.log("this.productForm.value.productos: ", this.productForm.value.productos);
+
       this.packageService.createPackageConfiguration(this.productForm.value.productos).subscribe(({ data }) => {
         this.mensajeOk();
       }, (error) => {
@@ -101,15 +103,36 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
       });
 
     } else {
+      this.productForm.value.productos.forEach((product: any) => {
+        product.id_paquete = this.data.id;
+      });
 
-      this.packageService.editPackageConfiguration(this.productForm.value.productos, this.data.id)
+      console.log("this.productForm.value.productos: ",this.productForm.value.productos, " - ",this.data.id);
+      this.packageService.deletePackageConfiguration(this.data.id).subscribe({
+        next: (value)=> {
+          this.packageService.createPackageConfiguration(this.productForm.value.productos).subscribe({
+            next: (value)=> {
+            this.mensajeOk();
+          }, error: (err)=> {
+            this.mensajeError();
+            this.form.controls['valor_impuesto'].disable();
+            this.form.controls['precio_venta'].disable();
+          }});
+        },
+        error: (err)=> {
+          this.mensajeError();
+        }
+
+      })
+
+      /*this.packageService.editPackageConfiguration(this.productForm.value.productos, this.data.id)
         .subscribe(({ data }) => {
           this.mensajeOk();
         }, (error) => {
           this.mensajeError();
           this.form.controls['valor_impuesto'].disable();
           this.form.controls['precio_venta'].disable();
-        });
+        });*/
 
     }
 
