@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 const GET_PRODUCTOS = gql`
 query ConsultaProductos {
-  productos(order_by: {id: asc}) {
+  productos(order_by: {id: asc}, where: {_not: {transformacion: {}}, _and: {_not: {paquetes: {}}}}) {
     nombre
     cantidad
     id_tipo_cantidad
@@ -16,7 +16,6 @@ query ConsultaProductos {
     id_proveedor
     descripcion
     id_linea
-    imagen
     habilitado
     inventario_min
     id
@@ -31,8 +30,20 @@ query ConsultaProductos {
       descuento
       id_producto
     }
+    transformacion {
+      id
+      id_producto_destino
+    }
+    paquetes {
+      id
+    }
+    proveedor {
+      nombre
+    }
   }
 }
+
+
 `;
 
 
