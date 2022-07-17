@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { DiscountService } from '../../services/discount-service/discount.service';
+import { EventInterface } from '../../../../event.interface';
 
 declare var $: any;
 declare var onScan: any;
@@ -18,7 +19,7 @@ declare var onScan: any;
   styleUrls: ['./modal-add-product.component.scss']
 })
 
-export class ModalAddProductComponent implements OnInit, OnDestroy {
+export class ModalAddProductComponent implements OnInit, OnDestroy, EventInterface {
 
   @Input()
   public data: any;
@@ -72,18 +73,15 @@ export class ModalAddProductComponent implements OnInit, OnDestroy {
     });
     $("#modalAgregarProducto").modal({ backdrop: 'static', keyboard: false, show: true });
 
-
-    onScan.attachTo(document, {
-      reactToPaste: true, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
-          
-      onScan: (sCode: any, iQty: any)=>{
-        
-        this.form.controls["codigo_barras"].setValue(sCode);
-      }
-    });
-
+    this.appService.eventInterface = this;
 
   }
+
+
+  busquedaEventBarCode(sCode:any) {
+   this.form.controls["codigo_barras"].setValue(sCode);
+  }
+
 
   refresh() {
     this.productService.refreshProducts();

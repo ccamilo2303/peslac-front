@@ -43,7 +43,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Compras',
-    url: '/product',
+    url: '/compras',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
@@ -53,7 +53,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Remisiones',
-    url: '/product',
+    url: '/remisiones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
@@ -73,7 +73,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Estadística',
-    url: '/product',
+    url: '/estadistica',
     iconComponent: { name: 'cil-puzzle' },
   },
   /*{

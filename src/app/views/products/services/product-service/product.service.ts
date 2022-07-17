@@ -19,6 +19,7 @@ query ConsultaProductos {
     habilitado
     inventario_min
     id
+    imagen
     codigo_barras
     lineas_producto {
       nombre

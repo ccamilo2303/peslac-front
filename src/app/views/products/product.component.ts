@@ -3,6 +3,8 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRe
 import { ProductService } from './services/product-service/product.service';
 import { ContextMenuComponent } from '@docs-components/context-menu/context-menu.component';
 import { Subscription } from 'rxjs';
+import { AppService } from '../../app.service';
+import { EventInterface } from '../../event.interface';
 
 
 declare var $: any;
@@ -13,7 +15,7 @@ declare var onScan: any;
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit, OnDestroy{
+export class ProductComponent implements OnInit, OnDestroy, EventInterface{
 
   modalAgregarProducto = false;
   modalLinea = false;
@@ -34,10 +36,11 @@ export class ProductComponent implements OnInit, OnDestroy{
   listadoCopia: any = [];
 
   private querySubscription!: Subscription;
+  public busqueda:string = '';
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private appService:AppService, private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
 
@@ -49,9 +52,17 @@ export class ProductComponent implements OnInit, OnDestroy{
         console.log("Productos --> ", data);
       });
 
+      this.appService.eventInterface = this;
+  }
 
-      
-
+  busquedaEventBarCode(sCode:any) {
+    this.busqueda = sCode;
+    let obj = {
+      target : {
+        value : sCode
+      }
+    }
+    this.buscarProducto(obj);
   }
 
   refresh() {
@@ -106,15 +117,16 @@ export class ProductComponent implements OnInit, OnDestroy{
         break;
     }
     this.refresh();
+    this.appService.eventInterface = this;
   }
 
-  buscarProducto(consulta:any){
-    console.log("Consulta: " + consulta);
-    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(consulta) || producto.nombre.includes(consulta));
-    if(listadoTemp.length > 0){
-      this.listado = listadoTemp;  
-    }else{
+  buscarProducto(event:any){
+
+    let listadoTemp:any[] = this.listadoCopia.filter((producto:any) => producto.codigo_barras.includes(event.target.value) || producto.nombre.includes(event.target.value));
+    if(event.target.value == ''){
       this.listado = this.listadoCopia;
+    }else{
+      this.listado = listadoTemp;
     }
   }
 

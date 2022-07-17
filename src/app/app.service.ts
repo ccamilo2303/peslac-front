@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
+import { EventInterface } from './event.interface';
 
 const GET_LIST_TIPOS_USUARIOS = gql`
 query ConsultarTiposUsuarios {
@@ -97,6 +98,8 @@ export class AppService {
 
   postsQuery!: QueryRef<any>;
 
+  public eventInterface!:EventInterface;
+
   constructor(private apollo: Apollo) { }
  
   getTiposUsuarios(): Observable<any> {
@@ -166,6 +169,10 @@ export class AppService {
 
   refreshAppService() {
     this.postsQuery.refetch();
+  }
+
+  ejecutarEventoBusqueda(sCode:any){
+    this.eventInterface.busquedaEventBarCode(sCode);
   }
 
 
