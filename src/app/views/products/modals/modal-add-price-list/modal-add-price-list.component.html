@@ -35,10 +35,10 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <tbody>
                         <tr *ngFor="let producto of listado">
                             <th>{{producto.nombre}}</th>
-                            <td>{{producto.id_proveedor}}</td>
-                            <th><input type="number" class="form-control" value="{{producto.precio_costo}}"></th>
-                            <th>{{producto.id_linea}}</th>
-                            <th>{{producto.codigo_barras}}</th>
+                            <td>{{producto.proveedor.nombre}}</td>
+                            <td><input type="number" class="form-control" [(ngModel)]=" producto.valor_nuevo" ></td>
+                            <td>{{producto.lineas_producto.nombre}}</td>
+                            <td>{{producto.codigo_barras}}</td>
                         </tr>
                     </tbody>
                 </table>

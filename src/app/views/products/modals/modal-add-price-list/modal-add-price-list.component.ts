@@ -17,7 +17,7 @@ declare var $: any;
 })
 export class ModalAddPriceListComponent implements OnInit, OnDestroy {
 
-  listado: any = [];
+  public listado: any = [];
   loading: boolean = false;
 
   private querySubscription!: Subscription;
@@ -35,23 +35,32 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
   constructor(private priceListService: PriceListService, private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.querySubscription = this.productService.getProducts()
+    
+    this.querySubscription = this.priceListService.getDetailProductList(this.data.id ? this.data.id : -1)
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.listado = data.productos;
+        
+
+        this.listado = data.productos.map( (x:any) => {
+          let obj = {...x, valor_nuevo : (x.detalle_lista_precios.length > 0 && x.detalle_lista_precios[0].precio_lista != null ? x.detalle_lista_precios[0].precio_lista : 0) }
+          
+          return obj;
+        });
+
+        this.initForm();
       });
-    this.initForm();
+
     $("#modalListaPrecios").modal('hide');
     $("#modalAgregarCliente").modal('hide');
     $("#modalAgregarListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
   }
-  
+
   refresh() {
-    this.priceListService.refreshPackages();
+    //this.priceListService.refreshPackages();
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    //this.querySubscription.unsubscribe();
   }
 
   closeModal() {
@@ -63,24 +72,60 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-   
-    this.priceListService.editPackage(this.form.value, this.data.id).subscribe(({ data }) => {
-      this.mensajeOk();
-      this.refresh();
-    }, (error) => {
-      this.mensajeError();
+    
+    if(this.data.id){
+      this.actualizarLista();
+    }else{
+      this.crearLista();
+    }
+
+  }
+
+  crearLista(){
+    this.priceListService.postProductList(this.form.controls['nombre'].value).subscribe({
+      next: (value:any)=>{
+        this.data.id = value.data.insert_lista_precios.returning[0].id;
+        this.actualizarLista();
+      }
+    })
+  }
+
+  actualizarLista(){
+    let informacion = this.listado.map( (x:any) => {
+      let obj = { id_lista_precio: this.data.id, id_producto: x.id, precio_lista: x.valor_nuevo }
+      return obj;
     });
 
+
+    this.priceListService.deleteDetailProductListConfiguration(this.data.id).subscribe({
+      next: (value) => {
+        this.priceListService.insertDetailProductListConfiguration(informacion).subscribe({
+          next: (value) => {
+
+            this.priceListService.updateProductListConfiguration(this.data.id, this.form.controls['nombre'].value).subscribe({
+              next: (value) => {
+                this.mensajeOk();
+              }
+            });
+          },
+          error: (err) => {
+            this.mensajeError();
+          }
+        })
+      },
+      error: (err) => {
+        this.mensajeError();
+      }
+    });
   }
 
   initForm() {
 
     if (this.data && this.data.id != null) {
-      console.log("Lista: " , this.data);
-      this.form.controls['nombre'].setValue(this.data.nombre); 
-      this.listado = [this.data.producto];
+      this.form.controls['nombre'].setValue(this.data.nombre);
+      
+      //this.listado = [this.data.producto];
     }
-
   }
 
   private mensajeOk() {

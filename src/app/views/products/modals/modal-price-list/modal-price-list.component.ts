@@ -6,6 +6,7 @@ import { PackageService } from '../../services/package-service/package.service';
 import { Product } from '../../response-types/product';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { PriceListService } from '../../services/price-list-service/price-list.service';
 
 declare var $: any;
 
@@ -39,21 +40,23 @@ export class ModalPriceListComponent implements OnInit, OnDestroy {
     nombre: new FormControl('', [Validators.required])
   });
 
-  constructor(private packageService: PackageService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private priceListService: PriceListService, private packageService: PackageService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
 
   ngOnInit(): void {
+    
 
-    this.querySubscription = this.packageService.getPackages()
+    
+    this.querySubscription = this.priceListService.getProductList()
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.listado = data.paquetes;
+        this.listado = data.lista_precios;
       });
       $("#modalListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
   }
 
   refresh() {
-    this.packageService.refreshPackages();
+    this.priceListService.refreshProductList();
   }
 
   ngOnDestroy() {

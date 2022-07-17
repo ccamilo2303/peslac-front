@@ -25,7 +25,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <tbody>
                         <tr *ngFor="let package of listado" (contextmenu)="onTableClick($event, package)"
                             [attr.modal]="'modalAgregarListaPrecios'">
-                            <th>{{package.producto.nombre}}</th>
+                            <th>{{package.nombre}}</th>
                             <td>{{package.fecha_registro}}</td>
                         </tr>
                     </tbody>
