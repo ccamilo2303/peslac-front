@@ -19,8 +19,8 @@ query ConsultarInventario {
 `;
 
 const GET_HISTORIAL = gql`
-query ConsultarHistorialInventario {
-  historial_devoluciones_salidas_productos(order_by: {id: asc}) {
+query ConsultarHistorialInventario($_eq: Int = 2) {
+  historial_devoluciones_salidas_productos(order_by: {id: asc}, where: {id_tipo_operacion: {_eq: $_eq}}) {
     id
     fecha_registro
     producto {
@@ -30,6 +30,7 @@ query ConsultarHistorialInventario {
     comentario
   }
 }
+
 `;
 
 const POST_SALIDA_INVENTARIO = gql`

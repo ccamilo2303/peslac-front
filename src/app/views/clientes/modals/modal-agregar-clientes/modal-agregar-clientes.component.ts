@@ -32,8 +32,8 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     nombres: new FormControl('', [Validators.required]),
     apellidos: new FormControl('', [Validators.required]),
-    cedula: new FormControl('', [Validators.required]),
-    celular: new FormControl('', [Validators.required]),
+    cedula: new FormControl('', [Validators.required, Validators.max(999999999999999)]),
+    celular: new FormControl('', [Validators.required, Validators.max(999999999999999)]),
     ciudad: new FormControl('', [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
     id_lista_precios: new FormControl('', [Validators.required]),
@@ -108,8 +108,8 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   initForm() {
 
-    this.querySubscription = this.appService.getListadoProveedores().subscribe(({ data, loading }) => {
-      this.listaPrecios = data.proveedores;
+    this.querySubscription = this.appService.getListadoPrecios().subscribe(({ data, loading }) => {
+      this.listaPrecios = data.lista_precios;
     });
 
     if (this.data && this.data.id != null) {

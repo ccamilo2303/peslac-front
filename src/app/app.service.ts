@@ -91,6 +91,17 @@ query ConsultarListadoProductos {
   }
 `;
 
+const GET_PRODUCT_LIST = gql`
+query ConsultaProductos {
+  lista_precios(order_by: {id: asc}) {
+    id
+    nombre
+    fecha_registro
+  }
+}`;
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -163,6 +174,14 @@ export class AppService {
     this.postsQuery = this.apollo
       .watchQuery<any>({
         query: GET_LIST_CONDICION_DE_PAGO
+      });
+    return this.postsQuery.valueChanges;
+  }
+
+  getListadoPrecios(): Observable<any> {
+    this.postsQuery = this.apollo
+      .watchQuery<any>({
+        query: GET_PRODUCT_LIST
       });
     return this.postsQuery.valueChanges;
   }
