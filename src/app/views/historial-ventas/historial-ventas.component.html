@@ -71,10 +71,10 @@
                     <th>{{venta.ordene.id}}</th>
                     <td>{{venta.producto.nombre}}</td>
                     <td>{{venta.cantidad}}</td>
-                    <td>{{venta.producto.precio_venta}}</td>
+                    <td>{{venta.producto.precio_venta | currency:'':'symbol':'1.0-2'}}</td>
                     <td>{{venta.producto.lineas_producto.nombre}}</td>
                     <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                    <td>{{venta.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -96,7 +96,7 @@
                     <td>{{venta.fecha_registro}}</td>
                     <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
                     <td>{{venta.ordene.usuario.nombres}} {{venta.ordene.usuario.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                    <td>{{venta.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>

@@ -38,6 +38,7 @@ query InformeVentasDetallado($fechaInicio: date = "2022-01-01", $fechaFin: date 
     producto {
       nombre
       precio_venta
+      codigo_barras
       lineas_producto {
         nombre
       }

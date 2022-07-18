@@ -26,7 +26,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar Razón social"
+                                <input type="text" class="form-control" (keyup)="buscarDevolucion($event)" placeholder="Buscar Devolución"
                                     aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <span class="input-group-text" id="basic-addon2">Buscador</span>
                             </div>
@@ -58,10 +58,10 @@
                     <th>{{venta.ordene.id}}</th>
                     <td>{{venta.producto.nombre}}</td>
                     <td>{{venta.cantidad}}</td>
-                    <td>{{venta.producto.precio_venta}}</td>
+                    <td>{{venta.producto.precio_venta | currency:'':'symbol':'1.0-2'}}</td>
                     <td>{{venta.producto.lineas_producto.nombre}}</td>
                     <td>{{venta.ordene.cliente.nombres}} {{venta.ordene.cliente.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                    <td>{{venta.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>

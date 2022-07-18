@@ -20,6 +20,9 @@ export class InformeVentasComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  meses: any = [];
+  totalMeses: any = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
   private querySubscription!: Subscription;
 
   modalHistorial: boolean = false;
@@ -32,12 +35,12 @@ export class InformeVentasComponent implements OnInit, OnDestroy {
   });
 
   dataGrafico = {
-    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    labels: this.meses,
     datasets: [
       {
         label: 'Valor Ventas',
         backgroundColor: '#f87979',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        data: this.totalMeses
       }
     ]
   };
@@ -62,13 +65,60 @@ export class InformeVentasComponent implements OnInit, OnDestroy {
     this.initData(this.form.controls["fechaInicio"].value, this.form.controls["fechaFin"].value);
   }
 
-  addDataGrafico(mes:any, valor:any){
+  addDataGrafico(mes: any, valor: any) {
     console.log("precio: ", valor);
-    switch(mes){
+    switch (mes) {
       case 'Enero':
-        this.dataGrafico.datasets[0].data[0] += valor;
+        this.meses[0] = mes;
+        this.totalMeses[0] += valor;
+        break;
+      case 'Febrero':
+        this.meses[1] = mes;
+        this.totalMeses[1] += valor;
+        break;
+      case 'Marzo':
+        this.meses[2] = mes;
+        this.totalMeses[2] += valor;
+        break;
+      case 'Abril':
+        this.meses[3] = mes;
+        this.totalMeses[3] += valor;
+        break;
+      case 'Mayo':
+        this.meses[4] = mes;
+        this.totalMeses[4] += valor;
+        break;
+      case 'Junio':
+        this.meses[5] = mes;
+        this.totalMeses[5] += valor;
+        break;
+      case 'Julio':
+        this.meses[6] = mes;
+        this.totalMeses[6] += valor;
+        break;
+      case 'Agosto':
+        this.meses[7] = mes;
+        this.totalMeses[7] += valor;
+        break;
+      case 'Septiembre':
+        this.meses[8] = mes;
+        this.totalMeses[8] += valor;
+        break;
+      case 'Octubre':
+        this.meses[9] = mes;
+        this.totalMeses[9] += valor;
+        break;
+      case 'Noviembre':
+        this.meses[10] = mes;
+        this.totalMeses[10] += valor;
+        break;
+      case 'Diciembre':
+        this.meses[11] = mes;
+        this.totalMeses[11] += valor;
         break;
     }
+    console.log(this.meses);
+    console.log(this.totalMeses);
   }
 
   openModal(data?: any) {
@@ -117,8 +167,9 @@ export class InformeVentasComponent implements OnInit, OnDestroy {
         this.listado = data.detalle_ordenes;
         console.log("--> ", data);
 
-        data.detalle_ordenes.forEach((venta:any) => {
+        data.detalle_ordenes.forEach((venta: any) => {
           this.addDataGrafico('Enero', venta.total);
+        
         });
       });
 

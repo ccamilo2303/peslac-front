@@ -48,7 +48,20 @@ export class ModalDetalleVentaComponent implements OnInit, OnDestroy {
     .subscribe(({ data, loading }) => {
       this.loading = loading;
       this.listado = data.ventas;
-      console.log("--> ", data);
+      
+      let ventas:any[] = [];
+      data.ventas.forEach((venta:any)=>{
+        let total:any = 0;
+
+        venta.ordene.detalle_ordenes.forEach((orden:any) => {
+          total += orden.total;
+        });
+        let ventaNueva = {...venta, total:total};
+        ventas.push(ventaNueva);
+      });
+
+      this.listado = ventas;
+      console.log("--> ", this.listado);
     });
 
     $("#modalProveedor").modal({ backdrop: 'static', keyboard: false, show: true });

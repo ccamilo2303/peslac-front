@@ -53,7 +53,7 @@
                     <td>{{informe.cantidad}}</td>
                     <td>{{informe.producto.precio_informe}}</td>
                     <td>{{informe.producto.lineas_producto.nombre}}</td>
-                    <td>{{informe.total}}</td>
+                    <td>{{informe.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>

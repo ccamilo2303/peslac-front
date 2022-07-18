@@ -21,6 +21,8 @@ export class HistorialComprasComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalDetalleCompra: boolean = false;
@@ -87,6 +89,24 @@ export class HistorialComprasComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
+  buscarCompra(event: any) {
+    if (this.tipoVista == 1) {
+      let listadoTemp: any[] = this.listadoCopia.filter((compra: any) => compra.id_venta.toString().includes(event.target.value) || compra.proveedor.includes(event.target.value));
+      if (event.target.value == '') {
+        this.listado = this.listadoCopia;
+      } else {
+        this.listado = listadoTemp;
+      }
+    } else {
+      let listadoTemp: any[] = this.listadoCopia.filter((compra: any) => compra.id.toString().includes(event.target.value));
+      if (event.target.value == '') {
+        this.listado = this.listadoCopia;
+      } else {
+        this.listado = listadoTemp;
+      }
+    }
+  }
+
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
@@ -108,8 +128,6 @@ export class HistorialComprasComponent implements OnInit, OnDestroy {
     this.createContextMenuComponent();
   }
 
-
-
   createContextMenuComponent() {
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContextMenuComponent);
@@ -127,6 +145,7 @@ export class HistorialComprasComponent implements OnInit, OnDestroy {
         .subscribe(({ data, loading }) => {
           this.loading = loading;
           this.listado = data.vis_detalle_compras;
+          this.listadoCopia = data.vis_detalle_compras;
           console.log("--> ", data);
         });
     } else {
@@ -146,6 +165,7 @@ export class HistorialComprasComponent implements OnInit, OnDestroy {
           });
 
           this.listado = compras;
+          this.listadoCopia = compras;
           this.tipoVista = 3;
         });
 

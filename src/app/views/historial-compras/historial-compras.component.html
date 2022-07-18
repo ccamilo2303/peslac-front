@@ -26,7 +26,7 @@
                     <div class="row mb-3">
                         <div class="col-6">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar Razón social"
+                                <input type="text" class="form-control" (keyup)="buscarCompra($event)" placeholder="Buscar Compra"
                                     aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <span class="input-group-text" id="basic-addon2">Buscador</span>
                             </div>
@@ -65,10 +65,10 @@
                     <th>{{compra.id_venta}}</th>
                     <td>{{compra.producto}}</td>
                     <td>{{compra.cantidad}}</td>
-                    <td>{{compra.precio_venta}}</td>
+                    <td>{{compra.precio_venta | currency:'':'symbol':'1.0-2'}}</td>
                     <td>{{compra.linea_producto}}</td>
                     <td>{{compra.proveedor}}</td>
-                    <td>{{compra.total}}</td>
+                    <td>{{compra.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -90,7 +90,7 @@
                     <td>{{compra.fecha_registro}}</td>
                     <td>{{compra.proveedore.nombre}}</td>
                     <td>{{compra.ordene.usuario.nombres}} {{compra.ordene.usuario.apellidos}}</td>
-                    <td>{{compra.ordene.detalle_ordenes[0].total}}</td>
+                    <td>{{compra.ordene.detalle_ordenes[0].total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>

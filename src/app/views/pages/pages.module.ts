@@ -9,7 +9,6 @@ import { Page500Component } from './page500/page500.component';
 import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 
-
 @NgModule({
   declarations: [
     LoginComponent,

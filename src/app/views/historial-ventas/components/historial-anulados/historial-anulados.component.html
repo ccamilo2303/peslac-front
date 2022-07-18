@@ -61,7 +61,7 @@
                     <td>{{venta.venta.fecha_registro}}</td>
                     <td>{{venta.venta.ordene.cliente.nombres}} {{venta.venta.ordene.cliente.apellidos}}</td>
                     <td>{{venta.venta.ordene.usuario.nombres}} {{venta.venta.ordene.usuario.apellidos}}</td>
-                    <td>{{venta.total}}</td>
+                    <td>{{venta.total | currency:'':'symbol':'1.0-2'}}</td>
                 </tr>
             </tbody>
         </table>

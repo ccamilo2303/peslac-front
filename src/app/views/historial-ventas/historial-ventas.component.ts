@@ -90,22 +90,31 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
-  buscarVenta(event:any){
-    //console.log("Consulta: " + event.target.value);
-    console.log(this.listadoCopia);
-    let listadoTemp:any[] = this.listadoCopia.filter((venta:any) => venta.ordene.id.includes(event.target.value) || venta.ordene.cliente.nombres.includes(event.target.value) || venta.ordene.cliente.apellidos.includes(event.target.value));
-    if(listadoTemp.length > 0){
-      this.listado = listadoTemp;  
-    }else{
-      this.listado = this.listadoCopia;
+  buscarVenta(event: any) {
+    console.log("LISTADO COPIA --> " , this.listadoCopia);
+    if (this.tipoVista == 1) {
+      let listadoTemp: any[] = this.listadoCopia.filter((venta: any) => venta.ordene.id.toString().includes(event.target.value) || venta.ordene.cliente.nombres.includes(event.target.value) || venta.ordene.cliente.apellidos.includes(event.target.value));
+      if (event.target.value == '') {
+        this.listado = this.listadoCopia;
+      } else {
+        this.listado = listadoTemp;
+      }
+    } else {
+      let listadoTemp:any[] = this.listadoCopia.filter((venta:any) => venta.id.toString().includes(event.target.value) || venta.ordene.cliente.nombres.includes(event.target.value) || venta.ordene.cliente.apellidos.includes(event.target.value));
+      if(event.target.value == ''){
+        this.listado = this.listadoCopia;
+      }else{
+        this.listado = listadoTemp;
+      }
     }
+
   }
 
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
     this.contextMenuSelector = event.srcElement;
-    if(this.tipoVista == 1){
+    if (this.tipoVista == 1) {
       this.rightClickMenuItems = [
         {
           menuText: 'Ver',
@@ -113,7 +122,7 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
           menuId: data,
         }
       ];
-    }else{
+    } else {
       this.rightClickMenuItems = [
         {
           menuText: 'Ver',
@@ -128,7 +137,7 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
         },
       ];
     }
-   
+
     this.createContextMenuComponent();
   }
 
@@ -157,14 +166,14 @@ export class HistorialVentasComponent implements OnInit, OnDestroy {
         .subscribe(({ data, loading }) => {
           this.loading = loading;
           console.log("--> ", data);
-          let ventas:any[] = [];
-          data.ventas.forEach((venta:any)=>{
-            let total:any = 0;
+          let ventas: any[] = [];
+          data.ventas.forEach((venta: any) => {
+            let total: any = 0;
 
-            venta.ordene.detalle_ordenes.forEach((orden:any) => {
+            venta.ordene.detalle_ordenes.forEach((orden: any) => {
               total += orden.total;
             });
-            let ventaNueva = {...venta, total:total};
+            let ventaNueva = { ...venta, total: total };
             ventas.push(ventaNueva);
           });
 

@@ -21,6 +21,8 @@ export class DevolucionesComponent implements OnInit {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalDetalleDevolucion: boolean = false;
@@ -77,6 +79,15 @@ export class DevolucionesComponent implements OnInit {
     this.refresh();
   }
 
+  buscarDevolucion(event: any) {
+    let listadoTemp: any[] = this.listadoCopia.filter((devolucion: any) => devolucion.ordene.id.toString().includes(event.target.value) || devolucion.producto.codigo_barras.includes(event.target.value));
+    if (event.target.value == '') {
+      this.listado = this.listadoCopia;
+    } else {
+      this.listado = listadoTemp;
+    }
+  }
+
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
@@ -88,7 +99,6 @@ export class DevolucionesComponent implements OnInit {
         menuId: data,
       }
     ];
-
 
     this.createContextMenuComponent();
   }
@@ -112,6 +122,7 @@ export class DevolucionesComponent implements OnInit {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.detalle_ordenes;
+        this.listadoCopia = data.detalle_ordenes;
         console.log("--> ", data);
       });
   }
