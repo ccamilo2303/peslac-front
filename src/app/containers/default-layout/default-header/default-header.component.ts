@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AppService } from '../../../app.service';
 import Swal from 'sweetalert2';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -32,7 +33,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
 
   private querySubscription!: Subscription;
 
-  constructor(private classToggler: ClassToggleService, private authService: AuthService, private userService: UserService, private appService: AppService) {
+  constructor(private classToggler: ClassToggleService, private route: Router, private authService: AuthService, private userService: UserService, private appService: AppService) {
     super();
   }
 
@@ -45,9 +46,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
         this.loading = loading;
         this.listado = data.usuarios[0];
       });
-
-
-
+      
   }
 
   refresh() {
@@ -77,9 +76,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
         console.log("LLEGO");
         this.modalAgregarUsuario = true;
         this.initForm();
-        //$("#modalAgregarUsuario").modal({ backdrop: 'static', keyboard: false, show: true });
         break;
     }
+    
   }
 
   closeEventModal() {
@@ -90,15 +89,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
     }
     this.refresh();
     this.form.reset();
-    $("#modalAgregarUsuario").modal('hide');
   }
 
 
 
 
   tiposUsuarios!: any;
-
-
 
   form: FormGroup = new FormGroup({
     nombres: new FormControl('', [Validators.required, Validators.maxLength(40)]),
@@ -111,23 +107,39 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
     telefono: new FormControl('', [Validators.required, Validators.maxLength(15)]),
     usuario: new FormControl('', [Validators.required, Validators.maxLength(10)]),
     clave: new FormControl('', [Validators.required, Validators.maxLength(40)]),
-    id_tipo_usuario: new FormControl('', [Validators.required]),
+    id_tipo_usuario: new FormControl({ value: '', disabled: true }, [Validators.required]),
 
   });
 
   submit() {
 
     this.form.controls["telefono"].setValue(this.form.controls["telefono"].value.toString())
-
-
-
     this.userService.editUser(this.form.value, this.listado.id)
       .subscribe(({ data }) => {
+
+        let usuario: any = {
+          idUsuario: this.listado.id,
+          nombres: this.form.get("nombres")?.value,
+          apellidos: this.form.get("apellidos")?.value,
+          nit: this.form.get("nit")?.value,
+          estacion: this.form.get("estacion")?.value,
+          idTipoUsuario: this.listado.id_tipo_usuario
+        };
+    
+        this.authService.setUsuario(usuario);
+        this.nombreUsuario = this.authService.getNombre();
+        console.log(this.route.url);
+        if(this.route.url == '/home/ventas'){
+          
+          this.route.navigate(['/', 'home']).then(x => {
+            console.log("cambiar ruta");  
+            this.route.navigate(['/home', 'ventas']);
+          });
+        }
         this.mensajeOk();
       }, (error) => {
         this.mensajeError();
       });
-
 
   }
 
@@ -154,8 +166,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
 
     }
 
-
-
   }
 
   private mensajeOk() {
@@ -177,14 +187,5 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit, O
       confirmButtonText: 'Ok'
     });
   }
-
-  private mensajeErrorValidacion(mensaje: string) {
-    Swal.fire({
-      title: mensaje,
-      icon: 'error',
-      confirmButtonText: 'Ok'
-    });
-  }
-
 
 }

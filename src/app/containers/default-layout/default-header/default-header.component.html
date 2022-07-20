@@ -82,17 +82,18 @@
   </c-dropdown>
 </ng-template>
 
+
 <!-- Modal -->
 
 
 
 
 <div *ngIf="modalAgregarUsuario" id="modalAgregarUsuario" class="modal fade show" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-aria-labelledby="staticBackdropLabel" aria-modal="true" style="padding-right: 0px; display: block;">
+aria-labelledby="staticBackdropLabel" aria-modal="true" style="display: block;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Usuario</h5>
+          <h5 class="modal-title">Editar Perfil</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeEventModal()" aria-label="Close"></button>
         </div>
         <form [formGroup]="form">
@@ -132,7 +133,7 @@ aria-labelledby="staticBackdropLabel" aria-modal="true" style="padding-right: 0p
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Tipo Usuario</label>
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">Cargo</label>
                   <div class="col-sm-9">
                     <select class="form-select" tabindex="11" aria-label="Default select example" formControlName="id_tipo_usuario">
                       <option *ngFor="let item of tiposUsuarios" value="{{item.id}}">{{item.nombre}}</option>
@@ -187,3 +188,5 @@ aria-labelledby="staticBackdropLabel" aria-modal="true" style="padding-right: 0p
     </div>
   </div>
   
+
+  <div *ngIf="modalAgregarUsuario" class="modal-backdrop fade show"></div>
