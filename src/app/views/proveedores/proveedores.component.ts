@@ -33,7 +33,6 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
   constructor(private proveedoresService:ProveedoresService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-  
     this.querySubscription = this.proveedoresService.getProveedores()
     .subscribe(({ data, loading }) => {
       this.loading = loading;

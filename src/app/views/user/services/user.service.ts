@@ -24,6 +24,28 @@ query ConsultarUsarios {
 }
 `;
 
+const GET_USUARIO = gql`
+query ConsultarUsarios($id: Int = 0) {
+  usuarios(where: {id: {_eq: $id}}) {
+    id
+    nombres
+    apellidos
+    nit
+    ciudad
+    estacion
+    correo
+    direccion
+    telefono
+    usuario
+    clave
+    id_tipo_usuario
+    tipos_usuario {
+      nombre
+    }
+  }
+}
+`;
+
 const POST_USUARIOS = gql`
 mutation InsertarUsuario($object: usuarios_insert_input!) {
   insert_usuarios_one(object: $object) {
@@ -58,6 +80,18 @@ export class UserService {
 
     this.postsQuery = this.apollo.watchQuery<any>({
       query: GET_USUARIOS
+    });
+
+    return this.postsQuery.valueChanges;
+  }
+
+  getUser(id:any): Observable<any> {
+
+    this.postsQuery = this.apollo.watchQuery<any>({
+      query: GET_USUARIO,
+      variables: {
+        id: id
+      }
     });
 
     return this.postsQuery.valueChanges;

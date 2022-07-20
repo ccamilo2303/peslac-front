@@ -15,7 +15,7 @@ declare var onScan: any;
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Free Angular Admin Template';
+  title = 'Peslac';
 
   
 

@@ -34,11 +34,7 @@ export class UserComponent implements OnInit, OnDestroy  {
 
 
 
-  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) {
-    
-   }
-
-  
+  constructor(private userService: UserService, private componentFactoryResolver: ComponentFactoryResolver) {}
   
   ngOnInit(): void {
    

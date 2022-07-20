@@ -10,21 +10,26 @@ import { RegisterComponent } from './views/pages/register/register.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
-    path: '',
+    path: 'login',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
     },
     children: [
-      {
+      /*{
         path: 'dashboard',
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
-      },
+      },*/
       {
         path: 'theme',
         loadChildren: () =>
@@ -155,7 +160,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     data: {
-      title: 'Login Page'
+      title: 'Iniciar Sesión'
     }
   },
   {
@@ -165,7 +170,7 @@ const routes: Routes = [
       title: 'Register Page'
     }
   },
-  {path: '**', redirectTo: 'dashboard'}
+  {path: '**', redirectTo: '404'}
 ];
 
 @NgModule({

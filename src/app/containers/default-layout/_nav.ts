@@ -8,90 +8,90 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Usuarios',
-    url: '/user',
-    iconComponent: { name: 'cil-user' },
+    url: '/home/user',
+    iconComponent: { name: 'cil-people' },
   },
   {
     name: 'Productos',
-    url: '/product',
-    iconComponent: { name: 'cil-puzzle' },
+    url: '/home/product',
+    iconComponent: { name: 'cil-layers' },
   },
   {
     name: 'Proveedores',
-    url: '/proveedores',
-    iconComponent: { name: 'cil-puzzle' },
+    url: '/home/proveedores',
+    iconComponent: { name: 'cil-layers' },
   },
   {
     name: 'Clientes y Estaciones',
-    url: '/clientes',
+    url: '/home/clientes',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Inventario',
-    url: '/inventario',
-    iconComponent: { name: 'cil-puzzle' },
+    url: '/home/inventario',
+    iconComponent: { name: 'cil-layers' },
   },
   {
     name: 'Ventas',
-    url: '/ventas',
+    url: '/home/ventas',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Historial de Ventas',
-    url: '/historial/ventas',
+    url: '/home/historial/ventas',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Compras',
-    url: '/compras',
+    url: '/home/compras',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Historial de Compras',
-    url: '/historial/compras',
+    url: '/home/historial/compras',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Remisiones',
-    url: '/remisiones',
+    url: '/home/remisiones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Transformación',
-    url: '/transformacion',
+    url: '/home/transformacion',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Devoluciones',
-    url: '/devoluciones',
+    url: '/home/devoluciones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Empaques y dotaciones',
-    url: '/empaques-dotaciones',
+    url: '/home/empaques-dotaciones',
     iconComponent: { name: 'cil-puzzle' },
   },
   {
     name: 'Estadística',
-    url: '/estadistica',
+    url: '/home/estadistica',
     iconComponent: { name: 'cil-puzzle' },
   },
   /*{
     name: 'Buttons',
-    url: '/buttons',
+    url: '/home/buttons',
     iconComponent: { name: 'cil-cursor' },
     children: [
       {
         name: 'Buttons',
-        url: '/buttons/buttons'
+        url: '/home/buttons/buttons'
       },
       {
         name: 'Button groups',
-        url: '/buttons/button-groups'
+        url: '/home/buttons/button-groups'
       },
       {
         name: 'Dropdowns',
-        url: '/buttons/dropdowns'
+        url: '/home/buttons/dropdowns'
       },
     ]
   },*/
