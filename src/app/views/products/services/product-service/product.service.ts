@@ -66,21 +66,6 @@ query ConsultaProductos {
     inventario_min
     id
     codigo_barras
-    tipos_impuesto {
-      id
-      nombre
-      cobra_iva
-    }
-    tipos_cantidad {
-      id
-      nombre
-    }
-    descuentos {
-      id
-      cantidad_max
-      cantidad_min
-      descuento
-    }
     lineas_producto {
       nombre
     }

@@ -6,10 +6,11 @@ import { VentasRoutingModule } from './ventas-routing.module';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClientesModule } from '../clientes/clientes.module';
+import { ModalBalanzaComponent } from './modals/modal-balanza/modal-balanza.component';
 
 
 @NgModule({
-  declarations: [VentasComponent],
+  declarations: [VentasComponent, ModalBalanzaComponent],
   imports: [
     CommonModule,
     VentasRoutingModule,  

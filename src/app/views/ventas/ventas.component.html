@@ -52,7 +52,7 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Producto</label>
-          <select class="form-select" formControlName="producto" id="producto" (change)="calcularPrecioVenta()">
+          <select class="form-select" formControlName="producto" id="producto" (change)="calcularPrecioVenta(); calcularPeso()">
             <option *ngFor="let item of productos" [ngValue]="item" >{{item.nombre}}</option>
           </select>
         </div>
@@ -185,4 +185,8 @@
 
 <div *ngIf="modalCliente">
   <app-modal-agregar-clientes (closeEvent)="closeEventModal()" [data]="dataModal"></app-modal-agregar-clientes>
+</div>
+
+<div *ngIf="modalBalanza">
+  <app-modal-balanza (closeEvent)="closeEventModal()" (peso)="pesoEvent($event)"></app-modal-balanza>
 </div>

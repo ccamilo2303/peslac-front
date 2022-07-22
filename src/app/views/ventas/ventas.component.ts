@@ -43,6 +43,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   public condicionesPago: any[] = [];
   public listadoProductos: any[] = [];
   public modalCliente: boolean = false;
+  public modalBalanza: boolean = false;
   public dataModal!: any;
 
   form: FormGroup = new FormGroup({
@@ -121,6 +122,15 @@ export class VentasComponent implements OnInit, OnDestroy {
 
   }
 
+  calcularPeso(){
+    console.log("Calcular Peso");
+    let productoSeleccionado = this.form.controls['producto'].value;
+    if(productoSeleccionado.id_tipo_cantidad == 1){
+      this.abrirModalBalanza();
+    }
+    console.log("Producto --> ", productoSeleccionado);
+  }
+
   calcularPrecioVenta() {
     let productoSeleccionado = this.form.controls['producto'].value;
     let cantidad = this.form.controls['cantidad'].value;
@@ -132,11 +142,11 @@ export class VentasComponent implements OnInit, OnDestroy {
   }
 
   calcularDescuento(producto: any, cantidad: any) {
-    let descuento = producto.descuentos.filter((x: any) => cantidad >= x.cantidad_min && cantidad <= x.cantidad_max);
+    /*let descuento = producto.descuentos.filter((x: any) => cantidad >= x.cantidad_min && cantidad <= x.cantidad_max);
     if (descuento && descuento.length > 0) {
       return (producto.precio_venta * descuento[0].descuento) / 100
     }
-    return 0;
+    return 0;*/
   }
 
 
@@ -156,9 +166,18 @@ export class VentasComponent implements OnInit, OnDestroy {
     this.modalCliente = true;
   }
 
+  abrirModalBalanza() {
+    this.modalBalanza = true;
+  }
+
+  pesoEvent(peso:any){
+    this.form.controls['cantidad'].setValue(peso);
+  }
+
   closeEventModal() {
     this.modalCliente = false;
     this.refresh();
+    this.modalBalanza = false;
   }
 
   quitarProducto(item: any) {
