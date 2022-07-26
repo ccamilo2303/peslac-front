@@ -3,6 +3,8 @@ import { IpcRenderer} from "electron";
 
 import * as SerialPort from 'serialport';
 
+import $ from "jquery";
+
 @Injectable({
   providedIn: "root"
 })
@@ -10,12 +12,14 @@ export class IpcService {
 
   private ipc!: IpcRenderer;
   serialPort!: typeof SerialPort;
+  $!:any;
 
   constructor() {
     if (window.require) {
       try {
         this.ipc = window.require("electron").ipcRenderer;
         this.serialPort = window.require('serialport');
+        this.$ = window.require('jquery');
       } catch (e) {
         throw e;
       }

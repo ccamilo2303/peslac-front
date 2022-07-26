@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { VentasComponent } from './ventas.component';
 import { VentasRoutingModule } from './ventas-routing.module';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientesModule } from '../clientes/clientes.module';
 import { ModalBalanzaComponent } from './modals/modal-balanza/modal-balanza.component';
 
@@ -15,7 +15,8 @@ import { ModalBalanzaComponent } from './modals/modal-balanza/modal-balanza.comp
     CommonModule,
     VentasRoutingModule,  
     ReactiveFormsModule,
-    ClientesModule
+    ClientesModule,
+    FormsModule
     
   ]
 })

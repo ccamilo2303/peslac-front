@@ -38,13 +38,19 @@
               "src/scss/styles.scss"
             ],
             "scripts": [
-			  "node_modules/onscan.js/onscan.min.js"
-			],
+              "node_modules/onscan.js/onscan.min.js",
+              "node_modules/jquery/dist/jquery.js",
+              
+              "src/assets/js/jquery-3.3.1.slim.min.js",
+              "src/assets/js/bootstrap.min.js"
+              
+            ],
             "allowedCommonJsDependencies": [
               "chart.js",
               "@coreui/chartjs/dist/js/coreui-chartjs.js",
-			  "./node_modules/jquery/dist/jquery.min.js",
-			  "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/jquery/dist/jquery.js",
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {

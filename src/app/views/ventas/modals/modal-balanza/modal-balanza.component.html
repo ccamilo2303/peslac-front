@@ -9,7 +9,15 @@
       </div>
    
         <div class="modal-body">
+
+          <form [formGroup]="form">
+            <input type="text" formControlName="peso">
+            <input type="text" [ngModel]="pesoCalculado">
+            <input type="button" (click)="prueba()" value="oprimir">
+            {{prueba()}}
+          </form>
           
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"

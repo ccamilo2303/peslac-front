@@ -9,8 +9,8 @@ createWindow = () => {
         title: "Angular and Electron",
         resizable: true,
         webPreferences: {
-            contextIsolation: false,
-            nodeIntegration: true
+            nodeIntegration: true, 
+            contextIsolation: false
         }
     });
     
@@ -29,7 +29,7 @@ app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
-      app.quit();
+        app.quit();
     }
 });
 
