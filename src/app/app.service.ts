@@ -93,7 +93,7 @@ query ConsultarListadoProductos {
 
 const GET_PRODUCT_LIST = gql`
 query ConsultaProductos {
-  lista_precios(order_by: {id: asc}) {
+  lista_precios(order_by: {id: desc}) {
     id
     nombre
     fecha_registro

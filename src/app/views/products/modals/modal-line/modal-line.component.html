@@ -15,7 +15,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <input type="text" class="form-control" id="nombre" formControlName="nombre">
                         </div>
                         <div class="col-2">
-                            <button type="button" (click)="submit()" class="btn btn-primary mb-3">Agregar</button>
+                            <button type="button" (click)="submit()" [disabled]="form.invalid" class="btn btn-primary mb-3">Agregar</button>
                         </div>
                     </div>
                 </form>

@@ -49,7 +49,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     (click)="closeModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary" (click)="submit()">Guardar</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Guardar</button>
                 
             </div>
         </div>

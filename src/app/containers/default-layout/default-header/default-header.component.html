@@ -1,16 +1,8 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
   <c-container [fluid]="true">
-    <button
-      toggle="visible"
-      cHeaderToggler
-      [cSidebarToggle]="sidebarId"
-      class="ps-1"
-    >
-      <svg cIcon
-        name="cilMenu"
-        size="lg"
-      ></svg>
+    <button toggle="visible" cHeaderToggler [cSidebarToggle]="sidebarId" class="ps-1">
+      <svg cIcon name="cilMenu" size="lg"></svg>
     </button>
     <c-header-nav class="d-none d-lg-flex me-auto">
       <c-nav-item>
@@ -21,11 +13,7 @@
     </c-header-nav>
 
     <c-header-nav class="d-none d-lg-flex">
-      <c-nav-item>
-        <a routerLink="./" cNavLink>
-          <svg cIcon name="cilBell" size="lg"></svg>
-        </a>
-      </c-nav-item>
+      <ng-container *ngTemplateOutlet="userNotifications"></ng-container>
     </c-header-nav>
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
@@ -41,20 +29,9 @@
 
 <ng-template #userDropdown>
   <c-dropdown alignment="end" variant="nav-item">
-    <button
-      cButton
-      color=""
-      [caret]="false"
-      cDropdownToggle
-      class="py-0"
-    >
-      <c-avatar
-        cTextColor="primary"
-        shape="rounded-1"
-        size="md"
-        src="./assets/img/avatars/avatar-user.png"
-        status="success"
-      >
+    <button cButton color="" [caret]="false" cDropdownToggle class="py-0">
+      <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/avatar-user.png"
+        status="success">
       </c-avatar>
     </button>
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
@@ -69,7 +46,7 @@
         </a>
       </li>
       <li>
-        <hr cDropdownDivider/>
+        <hr cDropdownDivider />
       </li>
       <li>
         <a routerLink="/login" cDropdownItem (click)="cerrarSesion()">
@@ -82,111 +59,138 @@
   </c-dropdown>
 </ng-template>
 
+<ng-template #userNotifications>
+  <c-dropdown alignment="end" variant="nav-item">
+    <button cButton color="" [caret]="false" cDropdownToggle class="py-0">
+      <c-avatar>
+        <svg cIcon name="cilBell" size="lg"></svg>
+      </c-avatar>
+    </button>
+    <ul cDropdownMenu class="pt-0 pr-5 w-auto">
+
+      <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <svg cIcon name="cil-speech" size="lg"></svg>
+          <strong class="ms-2 me-auto">Inventario Minimo</strong>
+          <small>11 minutos</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          El producto Mantequilla tiene inventario mínimo.
+        </div>
+      </div>
+
+    </ul>
+  </c-dropdown>
+</ng-template>
 
 <!-- Modal -->
 
 
 
 
-<div *ngIf="modalAgregarUsuario" id="modalAgregarUsuario" class="modal fade show" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-aria-labelledby="staticBackdropLabel" aria-modal="true" style="display: block;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Editar Perfil</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeEventModal()" aria-label="Close"></button>
-        </div>
-        <form [formGroup]="form">
+<div *ngIf="modalAgregarUsuario" id="modalAgregarUsuario" class="modal fade show" tabindex="-1"
+  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-modal="true"
+  style="display: block;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Perfil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeEventModal()"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="form">
         <div class="modal-body">
-  
-            <div class="row">
-  
-              <div class="col">
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="1" formControlName="nombres" id="nombres">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">NIT</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="3" formControlName="nit" id="nit">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Estación</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="5" formControlName="estacion" id="estacion">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Dirección</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="7" formControlName="direccion" id="direccion">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Usuario</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="9" formControlName="usuario" id="usuario">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Cargo</label>
-                  <div class="col-sm-9">
-                    <select class="form-select" tabindex="11" aria-label="Default select example" formControlName="id_tipo_usuario">
-                      <option *ngFor="let item of tiposUsuarios" value="{{item.id}}">{{item.nombre}}</option>
-                    </select>
-                  </div>
+
+          <div class="row">
+
+            <div class="col">
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Nombre</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="1" formControlName="nombres" id="nombres">
                 </div>
               </div>
-  
-  
-              <div class="col">
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Apellido</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="2" formControlName="apellidos" id="apellidos">
-                  </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">NIT</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="3" formControlName="nit" id="nit">
                 </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Ciudad</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="4" formControlName="ciudad" id="ciudad">
-                  </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Estación</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="5" formControlName="estacion" id="estacion">
                 </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" tabindex="6" formControlName="correo" id="correo">
-                  </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Dirección</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="7" formControlName="direccion" id="direccion">
                 </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Télefono</label>
-                  <div class="col-sm-9">
-                    <input type="number" class="form-control" tabindex="8" formControlName="telefono" id="telefono">
-                  </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Usuario</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="9" formControlName="usuario" id="usuario">
                 </div>
-                <div class="row mb-3">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Contraseña</label>
-                  <div class="col-sm-9">
-                    <input type="password" class="form-control" tabindex="10" formControlName="clave" id="clave">
-                  </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Cargo</label>
+                <div class="col-sm-9">
+                  <select class="form-select" tabindex="11" aria-label="Default select example"
+                    formControlName="id_tipo_usuario">
+                    <option *ngFor="let item of tiposUsuarios" value="{{item.id}}">{{item.nombre}}</option>
+                  </select>
                 </div>
               </div>
             </div>
-  
-            
+
+
+            <div class="col">
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Apellido</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="2" formControlName="apellidos" id="apellidos">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Ciudad</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="4" formControlName="ciudad" id="ciudad">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" tabindex="6" formControlName="correo" id="correo">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Télefono</label>
+                <div class="col-sm-9">
+                  <input type="number" class="form-control" tabindex="8" formControlName="telefono" id="telefono">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-3 col-form-label">Contraseña</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" tabindex="10" formControlName="clave" id="clave">
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  (click)="closeEventModal()">Cancelar</button>
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Aceptar</button>
-          </div>
-        </form>
-      </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="closeEventModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid" (click)="submit()">Aceptar</button>
+        </div>
+      </form>
     </div>
   </div>
-  
+</div>
 
-  <div *ngIf="modalAgregarUsuario" class="modal-backdrop fade show"></div>
+
+<div *ngIf="modalAgregarUsuario" class="modal-backdrop fade show"></div>

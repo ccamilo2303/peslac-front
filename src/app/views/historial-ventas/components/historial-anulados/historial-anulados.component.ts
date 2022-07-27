@@ -22,6 +22,8 @@ export class HistorialAnuladosComponent implements OnInit {
   loading: boolean = false;
   modal: string = '';
   listado: any = [];
+  listadoCopia: any = [];
+
   private querySubscription!: Subscription;
 
   modalDetalleVenta: boolean = false;
@@ -75,6 +77,19 @@ export class HistorialAnuladosComponent implements OnInit {
     this.refresh();
   }
 
+  buscarVentaAnulada(event: any) {
+    console.log("LISTADO COPIA --> ", this.listadoCopia);
+
+    let listadoTemp: any[] = this.listadoCopia.filter((venta: any) => venta.venta.id.toString().includes(event.target.value) || venta.venta.ordene.cliente.nombres.includes(event.target.value) || venta.venta.ordene.cliente.apellidos.includes(event.target.value));
+    if (event.target.value == '') {
+      this.listado = this.listadoCopia;
+    } else {
+      this.listado = listadoTemp;
+    }
+
+
+  }
+
   onTableClick(event: any, data: any) {
     this.modal = event.path[1].attributes.modal.nodeValue;
     this.menuEvent = event;
@@ -121,6 +136,7 @@ export class HistorialAnuladosComponent implements OnInit {
         });
 
         this.listado = ventas;
+        this.listadoCopia = ventas;
 
       });
 

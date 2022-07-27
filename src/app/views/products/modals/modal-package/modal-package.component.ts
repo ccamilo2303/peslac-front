@@ -87,10 +87,10 @@ export class ModalPackageComponent implements OnInit {
 
   buscarPaquete(event:any){
     let listadoTemp:any[] = this.listadoCopia.filter((paquete:any) => paquete.producto.codigo_barras.includes(event.target.value) || paquete.producto.nombre.includes(event.target.value));
-    if(listadoTemp.length > 0){
-      this.listado = listadoTemp;  
-    }else{
+    if(event.target.value == ''){
       this.listado = this.listadoCopia;
+    }else{
+      this.listado = listadoTemp;  
     }
   }
 

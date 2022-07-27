@@ -109,5 +109,5 @@
 <!-- MODAL -->
 
 <div *ngIf="modalAgregarListaPrecios">
-  <app-modal-add-price-list (closeEvent)="closeEventModal()"></app-modal-add-price-list>
+  <app-modal-add-price-list (closeEvent)="closeEventModal()" [data]="dataPriceList"></app-modal-add-price-list>
 </div>

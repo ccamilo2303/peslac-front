@@ -88,6 +88,7 @@ query ConsultarDetalleListaProductos($id_lista_precio: Int) {
       nombre
     }
     codigo_barras
+    precio_venta
   }
 }
 `;

@@ -40,9 +40,9 @@ export class ModalAddPriceListComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         
-
+        console.log(" DATA --> ", data);
         this.listado = data.productos.map( (x:any) => {
-          let obj = {...x, valor_nuevo : (x.detalle_lista_precios.length > 0 && x.detalle_lista_precios[0].precio_lista != null ? x.detalle_lista_precios[0].precio_lista : 0) }
+          let obj = {...x, valor_nuevo : (x.detalle_lista_precios.length > 0 && x.detalle_lista_precios[0].precio_lista != null ? x.detalle_lista_precios[0].precio_lista : x.precio_venta) }
           
           return obj;
         });

@@ -26,6 +26,7 @@ export class ModalPriceListComponent implements OnInit, OnDestroy {
   contextMenuSelector: string = '';
   menuEvent: any;
   listado: any = [];
+  listadoCopia: any = [];
   modal: string = '';
 
   loading: boolean = false;
@@ -51,6 +52,8 @@ export class ModalPriceListComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.listado = data.lista_precios;
+        this.listadoCopia = data.lista_precios;
+        console.log("Listas --> ", this.listadoCopia);
       });
       $("#modalListaPrecios").modal({ backdrop: 'static', keyboard: false, show: true });
   }
@@ -89,6 +92,15 @@ export class ModalPriceListComponent implements OnInit, OnDestroy {
         break;
     }
     this.refresh();
+  }
+
+  buscarListaPrecios(event:any){
+    let listadoTemp:any[] = this.listadoCopia.filter((listaPrecios:any) => listaPrecios.nombre.includes(event.target.value) || listaPrecios.nombre.includes(event.target.value));
+    if(event.target.value == ''){
+      this.listado = this.listadoCopia;
+    }else{
+      this.listado = listadoTemp;  
+    }
   }
 
   onTableClick(event: any, data: any) {

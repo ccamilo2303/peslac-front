@@ -25,6 +25,7 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   public closeEvent = new EventEmitter<boolean>();
 
   modalAgregarListaPrecios:boolean = false;
+  dataPriceList: any;
 
   public listaPrecios!: any;
   private querySubscription!: Subscription;
@@ -42,7 +43,11 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   constructor(private clientesService: ClientesService, private appService: AppService) { }
 
   ngOnInit(): void {
-    
+
+    this.querySubscription = this.appService.getListadoPrecios().subscribe(({ data, loading }) => {
+      this.listaPrecios = data.lista_precios;
+    });
+
     this.initForm();
 
     $("#modalAgregarCliente").modal({ backdrop: 'static', keyboard: false, show: true });
@@ -51,6 +56,11 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   refresh() {
     this.clientesService.refreshClientes();
+  }
+
+  refreshListasPrecios() {
+    this.appService.refreshAppService();
+    this.form.controls["id_lista_precios"].setValue(this.listaPrecios[0].id)
   }
 
   ngOnDestroy() {
@@ -65,11 +75,16 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
 
   openModal(data?: any) {
     this.modalAgregarListaPrecios = true;
+    if (data) {
+      this.dataPriceList = data;
+    } else {
+      this.dataPriceList = {};
+    }
   }
 
   closeEventModal(){
     this.modalAgregarListaPrecios = false;
-    this.refresh();
+    this.refreshListasPrecios();
   }
 
 
@@ -107,10 +122,6 @@ export class ModalAgregarClientesComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-
-    this.querySubscription = this.appService.getListadoPrecios().subscribe(({ data, loading }) => {
-      this.listaPrecios = data.lista_precios;
-    });
 
     if (this.data && this.data.id != null) {
       this.form.setValue({

@@ -77,10 +77,10 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
   buscarProveedor(event:any){
     //console.log("Consulta: " + event.target.value);
     let listadoTemp:any[] = this.listadoCopia.filter((proveedor:any) => proveedor.nit.includes(event.target.value) || proveedor.razon_social.includes(event.target.value));
-    if(listadoTemp.length > 0){
-      this.listado = listadoTemp;  
-    }else{
+    if(event.target.value == ''){
       this.listado = this.listadoCopia;
+    }else{
+      this.listado = listadoTemp;  
     }
   }
 

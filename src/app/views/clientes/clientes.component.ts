@@ -78,10 +78,10 @@ export class ClientesComponent implements OnInit, OnDestroy {
   buscarCliente(event:any){
     //console.log("Consulta: " + event.target.value);
     let listadoTemp:any[] = this.listadoCopia.filter((cliente:any) => cliente.cedula.includes(event.target.value));
-    if(listadoTemp.length > 0){
-      this.listado = listadoTemp;  
-    }else{
+    if(event.target.value == ''){
       this.listado = this.listadoCopia;
+    }else{
+      this.listado = listadoTemp;  
     }
   }
 
