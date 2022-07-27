@@ -6,7 +6,6 @@ declare var $: any;
 
 var port:any;
 var parser:any;
-var pruebaPeso:any;
 
 @Component({
   selector: 'app-modal-balanza',
@@ -21,13 +20,10 @@ export class ModalBalanzaComponent implements OnInit, OnDestroy {
   @Output()
   public closeEvent = new EventEmitter<boolean>();
 
-  public pesoCalculado:String = 'No se';
-
   form: FormGroup = new FormGroup({
-    peso: new FormControl('Hola', [Validators.required]),
+    peso: new FormControl({ value: 'Calculando...', disabled: true }, [Validators.required]),
   });
 
-  cambio: boolean = false;
   constructor(private ipcService: IpcService) { }
 
   ngOnInit(): void {
@@ -38,7 +34,11 @@ export class ModalBalanzaComponent implements OnInit, OnDestroy {
     port = new this.ipcService.serialPort.SerialPort({ path: 'COM4', baudRate: 9600 });
     parser = new this.ipcService.serialPort.ReadlineParser();
     port.pipe(parser);
-    parser.on('data', this.calcularPeso);
+    parser.on('data', (data:any) => {
+      let peso = data;
+      peso = peso.slice(7);
+      this.form.controls['peso'].setValue(peso);
+    });
     port.write('ROBOT PLEASE RESPOND\n');
     //parser.off('data', console.log);
     console.log("PUERTO --> ", port.port);
@@ -51,34 +51,23 @@ export class ModalBalanzaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("Destruye listener port: " , this.pesoCalculado);
+    console.log("Destruye listener port");
     port.close( (err:any) => {
       console.log('port closed', err);
   });
   }
 
   closeModal() {
-    this.peso.emit(1);
     this.closeEvent.emit(true);
     $("#modalBalanza").modal('hide');
   }
-  
-  prueba():any{
-    this.pesoCalculado = pruebaPeso;
-    console.log("ACTUALIZAR INPUIT --> ", this.pesoCalculado);
-    console.log("Cambio --> ", this.cambio);
-    return pruebaPeso;
-  }
 
   submit() {
-
-  }
-
-  calcularPeso(event:any){
-    console.log("Lo que llega  --> ", event);
-    pruebaPeso = event;
-    //console.log("Peso --> " + this.peso2);
-    this.cambio = true;
+    let x = this.form.get("peso")?.value
+    x = x.slice(0, -3);
+    console.log("Data --> ",x);
+    this.peso.emit(x);
+    this.closeModal();
   }
 
 }
