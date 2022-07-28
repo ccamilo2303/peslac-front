@@ -6,8 +6,6 @@ import { Subscription } from 'rxjs';
 import { AppService } from '../../app.service';
 import { EventInterface } from '../../event.interface';
 
-import { IpcService } from 'src/app/ipc.service';
-
 declare var $: any;
 declare var onScan: any;
 
@@ -18,8 +16,6 @@ declare var onScan: any;
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, OnDestroy, EventInterface {
-
-  pong: boolean = false;
   
   modalAgregarProducto = false;
   modalLinea = false;
@@ -44,22 +40,7 @@ export class ProductComponent implements OnInit, OnDestroy, EventInterface {
 
   @ViewChild('contextMenu', { read: ViewContainerRef, static: true }) container: any;
 
-  constructor(private ipcService: IpcService, private cdRef: ChangeDetectorRef, private appService: AppService, private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) { 
-    if (ipcService.isElectron) {
-      console.log('Run in electron');
-    } else {
-      console.log('Run in browser');
-    }
-  }
-
-  ping = (): void => {
-    this.ipcService.send("message", "ping");
-    this.ipcService.on("reply", (event: any, arg: string) => {
-      this.pong = arg === "pong";
-      this.cdRef.detectChanges();
-    });
-  }
-
+  constructor(private cdRef: ChangeDetectorRef, private appService: AppService, private productService: ProductService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
   ngOnInit(): void {
 
@@ -72,23 +53,6 @@ export class ProductComponent implements OnInit, OnDestroy, EventInterface {
       });
 
     this.appService.eventInterface = this;
-
-
-
-    console.log("VA A LEER");
-    const port = new this.ipcService.serialPort.SerialPort({ path: 'COM4', baudRate: 9600 });
-    const parser = new this.ipcService.serialPort.ReadlineParser();
-      port.pipe(parser);
-      parser.on('data', console.log);
-      port.write('ROBOT PLEASE RESPOND\n');
-      //parser.off('data', console.log);
-      console.log("PUERTO --> ", port);
-    if(port.port){
-      
-    }else{
-      console.log("No abre ");
-    }
-
 
   }
 
@@ -108,7 +72,7 @@ export class ProductComponent implements OnInit, OnDestroy, EventInterface {
 
   ngOnDestroy() {
     this.querySubscription.unsubscribe();
-    this.ipcService.removeAllListeners("reply");
+    //this.ipcService.removeAllListeners("reply");
   }
 
   openModal(data?: any) {

@@ -225,7 +225,11 @@ export class ModalAddPackageComponent implements OnInit, OnDestroy {
   }
 
   inputCodigoBarras(event: any, producto: string) {
-    let codigoBarras = event.path[0][event.target.value - 1].attributes[3].nodeValue;
+    console.log(event);
+    console.log(event.target);
+    console.log(event.target.value);
+    console.log(event.target.codigo_barras);
+    let codigoBarras = event.path[0][event.target.value - 1].attributes[2].nodeValue;
     modificarValorCodigoBarras(producto, codigoBarras);
   }
 

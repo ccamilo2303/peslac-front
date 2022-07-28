@@ -149,7 +149,8 @@ export class ModalAddProductComponent implements OnInit, OnDestroy, EventInterfa
   }
 
   inputImpuesto(event: any) {
-    if (event.path[0][event.target.value - 1].attributes[3].nodeValue == 'true') {
+    console.log(event.path[0][event.target.value - 1].attributes);
+    if (event.path[0][event.target.value - 1].attributes[2].nodeValue == 'true') {
       this.form.controls['valor_impuesto'].enable();
     } else {
       this.form.controls['valor_impuesto'].setValue(0);
