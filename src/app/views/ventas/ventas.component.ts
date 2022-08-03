@@ -6,6 +6,7 @@ import { ProductService } from '../products/services/product-service/product.ser
 import { AppService } from '../../app.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { PrintService } from './services/print.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,8 +15,11 @@ import Swal from 'sweetalert2';
   styleUrls: ['./ventas.component.scss']
 })
 export class VentasComponent implements OnInit, OnDestroy {
-
-
+  title = 'angular-print-service';
+  onPrintInvoice() {
+    const invoiceIds = ['101'];
+    this.printService.printDocument('invoice', invoiceIds);
+  }
 
   onStarted(started: any) {
     console.log(started);
@@ -63,7 +67,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   });
 
 
-  constructor(private authService: AuthService, private appService: AppService, private productService: ProductService, private clientesService: ClientesService, private ventasService: VentasService) { }
+  constructor(private authService: AuthService, private appService: AppService, private productService: ProductService, private clientesService: ClientesService, private ventasService: VentasService, public printService: PrintService) { }
 
   ngOnInit(): void {
 

@@ -7,7 +7,7 @@ createWindow = () => {
         /*width: 800,
         height: 600,*/
         title: "Angular and Electron",
-        resizable: true,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true, 
             contextIsolation: false
@@ -18,11 +18,15 @@ createWindow = () => {
 
     appWin.setMenu(null);
 
-    appWin.webContents.openDevTools();
+    appWin.maximize();
+
+    //appWin.webContents.openDevTools();
 
     appWin.on("closed", () => {
         appWin = null;
     });
+
+
 }
 
 app.on("ready", createWindow);

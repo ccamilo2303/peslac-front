@@ -161,7 +161,7 @@
 
       <div class="row mb-3">
         <div class="col-md-2">
-          <button type="button" class="form-control btn btn-outline-info">Imprimir</button>
+          <button type="button" class="form-control btn btn-outline-info" (click)="onPrintInvoice()">Imprimir</button>
         </div>
         <div class="col-md-6">
 
@@ -189,4 +189,16 @@
 
 <div *ngIf="modalBalanza">
   <app-modal-balanza (closeEvent)="closeEventModal()" (peso)="pesoEvent($event)"></app-modal-balanza>
+</div>
+
+<div [class.isPrinting]="printService.isPrinting">
+  <div style="text-align:center">
+    <h1>
+      Welcome to {{ title }}!
+    </h1>
+    <button (click)="onPrintInvoice()">PRINT INVOICE</button>
+  </div>
+  <router-outlet></router-outlet>
+  <router-outlet name="print"></router-outlet>
+  <app-print-layout></app-print-layout>
 </div>
