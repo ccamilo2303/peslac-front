@@ -29,9 +29,9 @@
 
       <div class="row mb-3">
         <div class="col-md-4">
-          <label class="form-label">Cliente</label>
-          <select class="form-select" formControlName="cliente" id="cliente" (change)="buscarProductos()">
-            <option *ngFor="let item of clientes" [ngValue]="item">{{item.nombres}} {{item.apellidos}}</option>
+          <label class="form-label">Proveedor</label>
+          <select class="form-select" formControlName="cliente" id="cliente">
+            <option *ngFor="let item of clientes" [ngValue]="item">{{item.razon_social}}</option>
           </select>
         </div>
         <div class="col-md-2">
@@ -52,11 +52,9 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Producto </label>
-          <h6 *ngIf="productos.length == 0">Para mostrar los productos, por favor seleccione un cliente</h6>
           <select class="form-select" formControlName="producto" id="producto" 
-            (change)="calcularPrecioVenta(); calcularPeso()" 
-            *ngIf="productos.length > 0">
-            <option *ngFor="let item of productos" [ngValue]="item" >{{item.producto.nombre}}</option>
+            (change)="calcularPrecioVenta(); calcularPeso()" >
+            <option *ngFor="let item of productos" [ngValue]="item" >{{item.nombre}}</option>
           </select>
         </div>
 
@@ -80,6 +78,26 @@
 
 
       </div>
+
+      <div class="row mb-3">
+
+        <div class="col-md-3">
+          <label class="form-label">Impuesto</label>
+          <select class="form-select" (change)="inputImpuesto($event)" aria-label="Default select example"
+              formControlName="id_tipo_impuesto">
+              <option *ngFor="let item of tiposImpuestos" [attr.iva]="item.cobra_iva" value="{{item.id}}">
+                {{item.nombre}}</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">IVA</label>
+          <input type="number" class="form-control" >
+        </div>
+
+      </div>
+
+
 
       <div class="row mb-3">
         

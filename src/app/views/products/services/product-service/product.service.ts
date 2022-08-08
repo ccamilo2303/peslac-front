@@ -69,6 +69,11 @@ query ConsultaProductos {
     lineas_producto {
       nombre
     }
+    config_descuentos {
+      cantidad_min
+      cantidad_max
+      descuento
+    }
   }
 }
 
@@ -92,6 +97,39 @@ mutation ActualizarProducto($object: productos_set_input!, $id: Int) {
 }
 `;
 
+const GET_PRODUCTOS_LISTA_PRECIOS = gql`
+
+query ConsultaProductosListaPrecios($idListaPrecio: Int) {
+  detalle_lista_precios(where: {id_lista_precio: {_eq: $idListaPrecio}}, order_by: {id_producto: desc}) {
+    producto {
+      nombre
+      cantidad
+      id_tipo_cantidad
+      precio_costo
+      id_tipo_impuesto
+      valor_impuesto
+      precio_venta
+      id_proveedor
+      descripcion
+      habilitado
+      inventario_min
+      id
+      codigo_barras
+      lineas_producto {
+        nombre
+      }
+      config_descuentos {
+        cantidad_min
+        cantidad_max
+        descuento
+      }
+    }
+    precio_lista
+  }
+}
+
+  `;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -99,6 +137,7 @@ mutation ActualizarProducto($object: productos_set_input!, $id: Int) {
 export class ProductService {
 
   postsQuery!: QueryRef<any>;
+  productosQuery!: QueryRef<any>;
 
 
   constructor(private apollo: Apollo) { }
@@ -144,6 +183,18 @@ export class ProductService {
         id: id
       }
     });
+  }
+
+  productosListaPrecios(idListaPrecio:any){
+    console.log("Entra a productosListaPrecios: ", idListaPrecio);
+    this.productosQuery = this.apollo.watchQuery<any>({
+      query: GET_PRODUCTOS_LISTA_PRECIOS,
+      variables: {
+        idListaPrecio: idListaPrecio
+      }
+    });
+
+    return this.productosQuery.valueChanges;
   }
 
   delete(data: any) {

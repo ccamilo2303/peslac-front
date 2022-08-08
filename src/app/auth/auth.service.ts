@@ -25,23 +25,27 @@ export class AuthService {
     };
     
     getInfoUsuario():Usuario{
-        return this.usuario;
+        return this.getObjUsuario();
     }
 
     getNombre(){
-        return this.usuario.nombres.concat(" ", this.usuario.apellidos);
+        return this.getObjUsuario().nombres.concat(" ", this.usuario.apellidos);
     }
 
     getTipoUsuario(){
-        return this.usuario.idTipoUsuario;
+        return this.getObjUsuario().idTipoUsuario;
     }
 
     getIdUsuario(){
-        return this.usuario.idUsuario;
+        return this.getObjUsuario().idUsuario;
     }
 
     setUsuario(usuario:any){
+        localStorage.setItem('usuario', JSON.stringify(usuario));
         this.usuario = usuario;
     }
 
+    getObjUsuario(){
+        return JSON.parse(localStorage.getItem('usuario') || '');
+    }
 }

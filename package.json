@@ -45,6 +45,7 @@
     "graphql": "^16",
     "jquery": "^3.6.0",
     "ngx-perfect-scrollbar": "^10.1.1",
+    "ngx-print": "^1.2.1",
     "onscan.js": "^1.5.2",
     "rxjs": "~7.5.0",
     "serialport": "^10.4.0",

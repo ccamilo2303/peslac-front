@@ -8,13 +8,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { PrintService } from './services/print.service';
 import Swal from 'sweetalert2';
+import { ProveedoresService } from '../proveedores/services/proveedores.service';
 
 @Component({
-  selector: 'app-ventas',
-  templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.scss']
+  selector: 'app-compras',
+  templateUrl: './compras.component.html',
+  styleUrls: ['./compras.component.scss']
 })
-export class VentasComponent implements OnInit, OnDestroy {
+export class ComprasComponent implements OnInit, OnDestroy {
   title = 'angular-print-service';
   onPrintInvoice() {
     const invoiceIds = ['101'];
@@ -37,6 +38,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   private queryProductosSubscription!: Subscription;
   private queryMetodosPagoSubscription!: Subscription;
   private queryCondicionPagoSubscription!: Subscription;
+  private queryTiposImpuestoSubscription!: Subscription;
 
 
 
@@ -50,6 +52,8 @@ export class VentasComponent implements OnInit, OnDestroy {
   public modalBalanza: boolean = false;
   public dataModal!: any;
   public valorTotal : number = 0;
+  public tiposImpuestos: any[] = [];
+
 
   form: FormGroup = new FormGroup({
     fecha: new FormControl({ value: this.formatDate(new Date()), disabled: true }, []),
@@ -68,17 +72,19 @@ export class VentasComponent implements OnInit, OnDestroy {
   });
 
 
-  constructor(private authService: AuthService, private appService: AppService, private productService: ProductService, private clientesService: ClientesService, private ventasService: VentasService, public printService: PrintService) { }
+  constructor(private authService: AuthService, private appService: AppService, private productService: ProductService, private clientesService: ClientesService, private ventasService: VentasService, public printService: PrintService, private proveedoresService:ProveedoresService) { }
 
   ngOnInit(): void {
     
-    this.queryClientesSubscription = this.clientesService.getClientes().subscribe(({ data }) => {
-      this.clientes = data.clientes;
+    
+
+    this.queryClientesSubscription = this.proveedoresService.getProveedores().subscribe(({ data }) => {
+      this.clientes = data.proveedores;
     });
 
-    /*this.queryProductosSubscription = this.productService.getProductsVenta().subscribe(({ data }) => {
+    this.queryProductosSubscription = this.productService.getProductsVenta().subscribe(({ data }) => {
       this.productos = data.productos;
-    });*/
+    });
 
     this.queryMetodosPagoSubscription = this.appService.getListadoMetodosPago().subscribe(({ data }) => {
       this.metodosPago = data.metodos_pago;
@@ -86,6 +92,10 @@ export class VentasComponent implements OnInit, OnDestroy {
 
     this.queryCondicionPagoSubscription = this.appService.getListadoCondicionPago().subscribe(({ data }) => {
       this.condicionesPago = data.condiciones_pago;
+    });
+
+    this.queryTiposImpuestoSubscription = this.appService.getTiposImpuesto().subscribe(({ data, loading }) => {
+      this.tiposImpuestos = data.tipos_impuesto;
     });
 
     this.form.reset(); 
@@ -137,7 +147,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   addProducto() {
 
 
-    let productoSeleccionado: any = this.form.controls['producto'].value.producto;
+    let productoSeleccionado: any = this.form.controls['producto'].value;
 
     if (!productoSeleccionado.id) {
       Swal.fire({
@@ -161,7 +171,7 @@ export class VentasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if(this.form.controls['producto'].value.precio_lista == undefined || this.form.controls['producto'].value.precio_lista == null || this.form.controls['producto'].value.precio_lista == 0){
+    /*if(this.form.controls['producto'].value.precio_lista == undefined || this.form.controls['producto'].value.precio_lista == null || this.form.controls['producto'].value.precio_lista == 0){
       Swal.fire({
         title: 'Error!',
         text: 'El producto para este cliente no tiene configurado un precio de lista, no se puede agregar el producto',
@@ -169,7 +179,7 @@ export class VentasComponent implements OnInit, OnDestroy {
         confirmButtonText: 'Ok'
       });
       return;
-    }
+    }*/
 
 
     let previo = this.listadoProductos.filter(x => x.id == productoSeleccionado.id);
@@ -179,7 +189,7 @@ export class VentasComponent implements OnInit, OnDestroy {
       this.listadoProductos = this.listadoProductos.filter(x => x.id != productoSeleccionado.id);
     }
 
-    productoSeleccionado = {...productoSeleccionado, precio_lista: this.form.controls['producto'].value.precio_lista };
+    productoSeleccionado = {...productoSeleccionado, precio_lista: this.form.controls['producto'].value.precio_costo };
     let productoLista = { ...productoSeleccionado, cantidad: cantidad }
     productoLista.valor_descuento = this.calcularDescuento(productoSeleccionado, cantidad);
     productoLista.total = productoLista.precio_lista * productoLista.cantidad;
@@ -197,7 +207,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   calcularPeso(){
     console.log("Calcular Peso");
     let productoSeleccionado = this.form.controls['producto'].value;
-    if(productoSeleccionado.producto.id_tipo_cantidad == 1){
+    if(productoSeleccionado.id_tipo_cantidad == 1){
       this.abrirModalBalanza();
     }
     console.log("Producto --> ", productoSeleccionado);
@@ -209,7 +219,7 @@ export class VentasComponent implements OnInit, OnDestroy {
     if (productoSeleccionado.id && cantidad > 0) {
     }
 
-    this.form.controls['precioVenta'].setValue(productoSeleccionado.precio_lista);
+    this.form.controls['precioVenta'].setValue(productoSeleccionado.precio_costo);
 
   }
 
@@ -400,6 +410,26 @@ export class VentasComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  inputImpuesto(event: any) {
+    console.log(event.path[0][event.target.value - 1].attributes);
+    if (event.path[0][event.target.value - 1].attributes[2].nodeValue == 'true') {
+      this.form.controls['valor_impuesto'].enable();
+    } else {
+      this.form.controls['valor_impuesto'].setValue(0);
+      this.form.controls['valor_impuesto'].disable();
+      this.precioVenta();
+    }
+    console.log(this.form.controls['valor_impuesto'].status);
+  }
+
+  precioVenta() {
+    let porcentaje = (this.form.controls['precio_costo'].value * this.form.controls['valor_impuesto'].value) / 100;
+    this.form.controls['precio_venta'].setValue(this.form.controls['precio_costo'].value + porcentaje);
+  }
+
+
+
   keyPress(event: KeyboardEvent) {
     console.log("event: ", event);
   }
@@ -417,10 +447,15 @@ export class VentasComponent implements OnInit, OnDestroy {
     if(this.queryMetodosPagoSubscription){
       this.queryMetodosPagoSubscription.unsubscribe();
     }
-    
+
     if(this.queryCondicionPagoSubscription){
       this.queryCondicionPagoSubscription.unsubscribe();
     }
+    
+    if(this.queryTiposImpuestoSubscription){
+      this.queryTiposImpuestoSubscription.unsubscribe();
+    }
+
   }
 
 

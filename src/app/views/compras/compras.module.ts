@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { VentasComponent } from './ventas.component';
-import { VentasRoutingModule } from './ventas-routing.module';
+import { ComprasComponent } from './compras.component';
+import { ComprasRoutingModule } from './compras-routing.module';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ClientesModule } from '../clientes/clientes.module';
@@ -14,10 +14,10 @@ import {PrintService} from './services/print.service';
 import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
-  declarations: [VentasComponent, ModalBalanzaComponent, InvoiceComponent, PrintLayoutComponent],
+  declarations: [ComprasComponent, ModalBalanzaComponent, InvoiceComponent, PrintLayoutComponent],
   imports: [
     CommonModule,
-    VentasRoutingModule,  
+    ComprasRoutingModule,  
     ReactiveFormsModule,
     ClientesModule,
     FormsModule,
@@ -25,5 +25,5 @@ import {NgxPrintModule} from 'ngx-print';
   ],
   providers: [PrintService],
 })
-export class VentasModule {
+export class ComprasModule {
 }
