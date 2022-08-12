@@ -75,10 +75,6 @@ export class VentasComponent implements OnInit, OnDestroy {
       this.clientes = data.clientes;
     });
 
-    this.queryProductosSubscription = this.productService.getProductsVenta().subscribe(({ data }) => {
-      this.productos = data.productos;
-    });
-
     this.queryMetodosPagoSubscription = this.appService.getListadoMetodosPago().subscribe(({ data }) => {
       this.metodosPago = data.metodos_pago;
     });
@@ -133,6 +129,13 @@ export class VentasComponent implements OnInit, OnDestroy {
       this.abrirModalBalanza();
     }
     console.log("Producto --> ", productoSeleccionado);
+  }
+
+  consultarProductos(idListaProducto:any){
+    this.queryProductosSubscription = this.productService.productosListaPrecios(idListaProducto).subscribe(({ data }) => {
+      this.productos = data.detalle_lista_precios;
+    });
+
   }
 
   calcularPrecioVenta() {

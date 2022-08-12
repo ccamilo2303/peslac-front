@@ -30,7 +30,7 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Cliente</label>
-          <select class="form-select" formControlName="cliente" id="cliente">
+          <select class="form-select" formControlName="cliente" id="cliente" (change)="consultarProductos($event.target.value.id_lista_precios)">
             <option *ngFor="let item of clientes" [ngValue]="item">{{item.nombres}} {{item.apellidos}}</option>
           </select>
         </div>
@@ -53,7 +53,7 @@
         <div class="col-md-4">
           <label class="form-label">Producto</label>
           <select class="form-select" formControlName="producto" id="producto" (change)="calcularPrecioVenta(); calcularPeso()">
-            <option *ngFor="let item of productos" [ngValue]="item" >{{item.nombre}}</option>
+            <option *ngFor="let item of productos" [ngValue]="item" >{{item.producto.nombre}}</option>
           </select>
         </div>
 

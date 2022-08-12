@@ -92,6 +92,33 @@ mutation ActualizarProducto($object: productos_set_input!, $id: Int) {
 }
 `;
 
+const GET_PRODUCTOS_LISTA_PRECIOS = gql`
+
+query ConsultaProductosListaPrecios($idListaPrecio: Int) {
+  detalle_lista_precios(where: {id_lista_precio: {_eq: $idListaPrecio}}, order_by: {id_producto: desc}) {
+    producto {
+      nombre
+      cantidad
+      id_tipo_cantidad
+      precio_costo
+      id_tipo_impuesto
+      valor_impuesto
+      precio_venta
+      id_proveedor
+      descripcion
+      habilitado
+      inventario_min
+      id
+      codigo_barras
+      lineas_producto {
+        nombre
+      }
+    }
+    precio_lista
+  }
+}
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -144,6 +171,17 @@ export class ProductService {
         id: id
       }
     });
+  }
+
+  productosListaPrecios(idListaPrecio:any){
+    this.postsQuery = this.apollo.watchQuery<any>({
+      query: GET_PRODUCTOS_LISTA_PRECIOS,
+      variables: {
+        object: idListaPrecio
+      }
+    });
+
+    return this.postsQuery.valueChanges;
   }
 
   delete(data: any) {
